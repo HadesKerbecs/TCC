@@ -1,16 +1,17 @@
-body {
+body { /*corpo*/
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
     height: 100vh;
 }
 
-.container {
+.container { /*Organizar o espaçamento*/
     display: flex;
     width: 100%;
+    
 }
 
-.sidebar {
+.sidebar { /*ContainerLateral*/
     background-color: #F2F2F2;
     padding: 20px;
     width: 300px;
@@ -19,35 +20,39 @@ body {
     justify-content: space-between;
 }
 
-.sidebar h1 {
-    color: #1E1E1E;
+.sidebar h1 { /*PsicoSimula*/
+    color: #1B2559;
     font-size: 24px;
+    text-align: center;
+    border-bottom: 1px solid #CCCCCC;
+    padding-bottom: 10%;
+    width: 100%;
 }
 
-.menu h2 {
+.menu h2 { /*NovosCasos e Informações*/
     color: #B3B3B3;
     font-size: 18px;
     margin: 20px 0;
 }
 
-.about {
+.about { /*Sobre*/
     background-color: #6200EA;
     color: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 16px;
 }
 
-.about h3 {
+.about h3 { /*Espaçamento entre NovosCasos e Sobre*/
     margin: 0 0 10px 0;
     font-size: 20px;
 }
 
-.about p {
+.about p { /*Encolhendo Tamanho NovosCasos e Sobre*/
     margin: 0;
     font-size: 14px;
 }
 
-.main-content {
+.main-content { /*Espaço de escrever o texto*/
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -57,39 +62,39 @@ body {
     padding: 20px;
 }
 
-.main-content h2 {
-    color: #333333;
+.main-content h2 { /*CasosHipoteticos Titulo*/
+    color: #1B2559;
     font-size: 24px;
 }
 
-.input-container {
+.input-container { /*Espaçamento do Titulo CasosHipoteticos*/
     display: flex;
     align-items: center;
     margin-top: 20px;
 }
 
-.input-container input {
+.input-container input { /*Borda do TextField*/
     width: 300px;
     padding: 10px;
     border: 1px solid #CCCCCC;
-    border-radius: 5px;
+    border-radius: 45px;
     margin-right: 10px;
 }
 
-.input-container button {
+.input-container button { /*Botão Simular*/
     padding: 10px 20px;
-    background-color: #6200EA;
+    background-color: #6a00ff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 45px;
     cursor: pointer;
 }
 
-.input-container button:hover {
+.input-container button:hover { /*Passar Mouse no Botão*/
     background-color: #4500B5;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) { /*Responsividade*/
     .container {
         flex-direction: column;
     }
