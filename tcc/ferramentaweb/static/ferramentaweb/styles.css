@@ -1,10 +1,127 @@
-/* static/ferramentaweb/styles.css */
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
+    display: flex;
+    height: 100vh;
 }
 
-h1 {
-    color: #007bff;
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    background-color: #F2F2F2;
+    padding: 20px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar h1 {
+    color: #1E1E1E;
+    font-size: 24px;
+}
+
+.menu h2 {
+    color: #B3B3B3;
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+.about {
+    background-color: #6200EA;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.about h3 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+
+.about p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    padding: 20px;
+}
+
+.main-content h2 {
+    color: #333333;
+    font-size: 24px;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.input-container input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.input-container button {
+    padding: 10px 20px;
+    background-color: #6200EA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.input-container button:hover {
+    background-color: #4500B5;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .about {
+        flex: 1;
+        margin-left: 20px;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .input-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .input-container input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .input-container button {
+        width: 100%;
+    }
 }

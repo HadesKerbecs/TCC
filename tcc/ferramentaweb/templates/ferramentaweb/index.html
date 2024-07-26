@@ -1,12 +1,32 @@
-{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Página Inicial</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsicoSimula</title>
+    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'ferramentaweb/styles.css' %}">
 </head>
 <body>
-    <h1>Bem-vindo à minha aplicação!</h1>
-    <p>Esta é a página inicial da aplicação Django.</p>
+    <div class="container">
+        <div class="sidebar">
+            <h1>PsicoSimula</h1>
+            <div class="menu">
+                <h2>Informações</h2>
+                <h2>Criar Novo Caso</h2>
+            </div>
+            <div class="about">
+                <h3>Sobre</h3>
+                <p>Explore e gere casos clínicos hipotéticos para estudo em psicopatologia com o poder da inteligência artificial generativa. Encontre respostas e recursos que você precisa.</p>
+            </div>
+        </div>
+        <div class="main-content">
+            <h2>Casos Hipotéticos</h2>
+            <div class="input-container">
+                <input type="text" placeholder="Informe o caso clínico">
+                <button>Simular</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
