@@ -6,6 +6,7 @@
     <title>PsicoSimula</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'ferramentasweb/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -13,9 +14,14 @@
             <h1>PsicoSimula</h1>
             <div class="menu">
                 <h2>Informações</h2>
-                <h2>Criar Novo Caso</h2>
+                <div class="menu2">
+                    <h2>Criar Novo Caso</h2>
+                </div>
             </div>
             <div class="about">
+                <div class="circle">
+                    <img src="{% static 'ferramentaweb/images/Vector.png' %}" alt="Icon" />
+                </div>
                 <h3>Sobre</h3>
                 <p>Explore e gere casos clínicos hipotéticos para estudo em psicopatologia com o poder da inteligência artificial generativa. Encontre respostas e recursos que você precisa.</p>
             </div>
