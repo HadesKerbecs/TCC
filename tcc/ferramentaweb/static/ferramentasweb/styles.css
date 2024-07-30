@@ -1,25 +1,29 @@
-body { /*corpo*/
+/* Estilos gerais */
+body { /* Corpo da página */
     margin: 0;
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-    display: flex;
     height: 100vh;
+    background: linear-gradient(to bottom, #ffffff 50%, #727272 300%);
+    display: flex;
 }
 
-.container { /*Organizar o espaçamento*/
+.container { /* Organizar o espaçamento */
     display: flex;
     width: 100%;
 }
 
-.sidebar { /*ContainerLateral*/
-    background: linear-gradient(190deg, #E4E4E4 50%, #727272 250%);
+.sidebar { /* Container lateral */
+    background: #E4E4E4;
     padding: 20px;
     width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+    z-index: 1;
 }
 
-.sidebar h1 { /*PsicoSimula*/
+.sidebar h1 { /* Título PsicoSimula */
     color: #120F43;
     font-size: 24px;
     text-align: center;
@@ -29,43 +33,31 @@ body { /*corpo*/
     font-weight: bold;
 }
 
-.menu-item { /*Item do menu com ícone*/
+.menu-item, .menu-item2 { /* Item do menu com ícone */
     display: flex;
     align-items: center;
     margin: 10px 0;
 }
 
-.menu-item img { /*Estilo da imagem do ícone*/
-    width: 24px; 
-    height: 24px; 
+.menu-item img, .menu-item2 img { /* Estilo da imagem do ícone */
     margin-right: 10px;
 }
 
-.menu-item2 { /*Item do menu com ícone*/
-    display: flex;
-    align-items: center;
-    margin: 15px 0 0 10px;
-}
-
-.menu-item2 img { /*Estilo da imagem do ícone*/
-    width: 15px; 
-    height: 15px; 
-    margin-right: 10px;
-}
-
-.menu h2 { /*Informações*/
+.menu h2, .menu2 h2 { /* Texto dos itens do menu */
     color: #120F43;
-    font-size: 18px;
-    margin: 0; 
+    margin: 0;
 }
 
-.menu2 h2 { /*NovosCasos*/
-    color: #120F43 ;
-    font-size: 16px;
-    margin: 10px 0;
+.menu-link { /* Link do menu */
+    text-decoration: none;
+    color: #120F43;
 }
 
-.about { /*Sobre*/
+.menu-link:hover { /* Efeito de hover no link do menu */
+    text-decoration: underline;
+}
+
+.about { /* Seção Sobre */
     background: linear-gradient(190deg, #7B5AFF, #4A25E1);
     color: white;
     padding: 60px 20px 30px 20px;
@@ -79,114 +71,120 @@ body { /*corpo*/
     top: -40px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70px; 
-    height: 70px; 
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    background: linear-gradient(190deg, #7B5AFF, #4A25E1);
-    border: 5px solid white; 
-    margin: 0 auto 20px auto; 
+    background: linear-gradient(190deg, white 50%, #CCCCCC 100%);
+    border: 5px solid #7B5AFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.about .circle img {
-    width: 50px; 
-    height: 50px; 
-    border-radius: 50%; 
+.about .circle img { /* Imagem no círculo */
+    width: 50px;
+    height: 50px;
 }
 
-.about h3 { /*Espaçamento entre NovosCasos e Sobre*/
+.about h3 { /* Título da seção Sobre */
     margin: 0 0 10px 0;
     font-size: 20px;
 }
 
-.about p { /*Encolhendo Tamanho NovosCasos e Sobre*/
+.about p { /* Texto da seção Sobre */
     margin: 25px 0 0 0;
     font-size: 14px;
 }
 
-.main-content { /*Espaço de escrever o texto*/
+.main-content { /* Espaço de escrever o texto */
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; 
-    background-color: #FFFFFF;
+    justify-content: space-between;
+    background-color: transparent;
     padding: 20px;
+    position: relative;
+    z-index: 0;
 }
 
-.main-content h2 { /*CasosHipoteticos Titulo*/
+.main-content h2 { /* Título Casos Hipotéticos */
     color: #1B2559;
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: auto; 
+    margin-bottom: auto;
 }
 
-.input-container { /*Espaçamento do Titulo CasosHipoteticos*/
+.input-container { /* Container do input e botão */
     display: flex;
     align-items: center;
     margin-top: auto;
     margin-bottom: 20px;
 }
 
-.input-container textarea { /*Borda do TextField*/
+.input-container textarea { /* Campo de texto */
     width: 700px;
     padding: 10px;
     border: 2px solid #CCCCCC;
     border-radius: 10px;
     margin-right: 10px;
-    resize: none; /* Permite redimensionamento vertical */
-    min-height: 50px; /* Altura mínima */
-    max-height: 200px; /* Altura máxima */
+    resize: none;
+    min-height: 50px;
+    max-height: 200px;
 }
 
-.input-container button { /*Botão Simular*/
+.input-container button { /* Botão Simular */
     padding: 10px 20px;
     background: linear-gradient(190deg, #7B5AFF, #4A25E1);
     color: white;
     border: none;
     border-radius: 45px;
     cursor: pointer;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+    transition: background-color 0.3s ease; /* Transição suave */
 }
 
-.input-container button:hover { /*Passar Mouse no Botão*/
+.input-container button:hover { /* Efeito ao passar o mouse no botão */
     background-color: #4500B5;
 }
 
-@media (max-width: 768px) { /*Responsividade*/
-    .container {
+.input-container button:active { /* Efeito ao clicar no botão */
+    background-color: #2E007A;
+}
+
+@media (max-width: 768px) { /* Responsividade */
+    .container { /* Ajuste de layout para dispositivos menores */
         flex-direction: column;
     }
 
-    .sidebar {
+    .sidebar { /* Ajuste de layout para a sidebar */
         width: 100%;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
     }
 
-    .about {
+    .about { /* Ajuste de layout para a seção Sobre */
         flex: 1;
         margin-left: 20px;
     }
 
-    .main-content {
+    .main-content { /* Ajuste de layout para o conteúdo principal */
         width: 100%;
         padding: 10px;
     }
 
-    .input-container {
+    .input-container { /* Ajuste de layout para o container de input */
         flex-direction: column;
         align-items: stretch;
     }
 
-    .input-container textarea {
+    .input-container textarea { /* Ajuste de layout para o campo de texto */
         width: 100%;
         margin-bottom: 10px;
     }
 
-    .input-container button {
+    .input-container button { /* Ajuste de layout para o botão */
         width: 100%;
     }
 }
