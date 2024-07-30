@@ -13,9 +13,15 @@
         <div class="sidebar">
             <h1>PsicoSimula</h1>
             <div class="menu">
-                <h2>Informações</h2>
+                <div class="menu-item">
+                    <img src="{% static 'ferramentasweb/images/Vector2.png' %}" alt="Ícone Informações">
+                    <h2>Informações</h2>
+                </div>
                 <div class="menu2">
-                    <h2>Criar Novo Caso</h2>
+                    <div class="menu-item2">
+                        <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Informações">
+                        <h2>Criar Novo Caso</h2>
+                    </div>
                 </div>
             </div>
             <div class="about">
@@ -29,7 +35,7 @@
         <div class="main-content">
             <h2>Casos Hipotéticos</h2>
             <div class="input-container">
-                <input type="text" placeholder="Informe o caso clínico">
+                <textarea placeholder="Informe o caso clínico"></textarea>
                 <button>Simular</button>
             </div>
         </div>

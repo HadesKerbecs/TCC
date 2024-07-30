@@ -11,17 +11,16 @@ body { /*corpo*/
 }
 
 .sidebar { /*ContainerLateral*/
-    background-color: #F2F2F2;
+    background: linear-gradient(190deg, #E4E4E4 50%, #727272 250%);
     padding: 20px;
     width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative;
 }
 
 .sidebar h1 { /*PsicoSimula*/
-    color: #1B2559;
+    color: #120F43;
     font-size: 24px;
     text-align: center;
     border-bottom: 1px solid #CCCCCC;
@@ -30,54 +29,80 @@ body { /*corpo*/
     font-weight: bold;
 }
 
-.menu h2 { /*NovosCasos e Informações*/
-    color: #1B2559;
-    font-size: 18px;
-    margin: 20px 0;
+.menu-item { /*Item do menu com ícone*/
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
 }
 
-.menu2 h2 { /*NovosCasos e Informações*/
-    color: #B3B3B3 ;
+.menu-item img { /*Estilo da imagem do ícone*/
+    width: 24px; 
+    height: 24px; 
+    margin-right: 10px;
+}
+
+.menu-item2 { /*Item do menu com ícone*/
+    display: flex;
+    align-items: center;
+    margin: 15px 0 0 10px;
+}
+
+.menu-item2 img { /*Estilo da imagem do ícone*/
+    width: 15px; 
+    height: 15px; 
+    margin-right: 10px;
+}
+
+.menu h2 { /*Informações*/
+    color: #120F43;
     font-size: 18px;
-    margin: 20px 0;
+    margin: 0; 
+}
+
+.menu2 h2 { /*NovosCasos*/
+    color: #120F43 ;
+    font-size: 16px;
+    margin: 10px 0;
 }
 
 .about { /*Sobre*/
-    background-color: #7B5AFF;
+    background: linear-gradient(190deg, #7B5AFF, #4A25E1);
     color: white;
-    padding: 20px;
+    padding: 60px 20px 30px 20px;
     border-radius: 16px;
+    text-align: center;
     position: relative;
-    padding-top: 60px; /* Space for the circle */
 }
 
-.circle {
-    width: 60px;
-    height: 60px;
-    background-color: white;
-    border-radius: 50%;
+.about .circle { /* Estilo para o círculo */
     position: absolute;
-    top: -30px; /* Half the height to center it */
+    top: -40px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 70px; 
+    height: 70px; 
+    border-radius: 50%;
+    background: linear-gradient(190deg, #7B5AFF, #4A25E1);
+    border: 5px solid white; 
+    margin: 0 auto 20px auto; 
 }
 
-.circle img {
-    width: 30px; /* Adjust the size of the image as needed */
-    height: 30px; /* Adjust the size of the image as needed */
+.about .circle img {
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
 }
 
 .about h3 { /*Espaçamento entre NovosCasos e Sobre*/
     margin: 0 0 10px 0;
     font-size: 20px;
-    font-weight: bold;
 }
 
 .about p { /*Encolhendo Tamanho NovosCasos e Sobre*/
-    margin: 0;
+    margin: 25px 0 0 0;
     font-size: 14px;
 }
 
@@ -86,7 +111,7 @@ body { /*corpo*/
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; 
     background-color: #FFFFFF;
     padding: 20px;
 }
@@ -95,30 +120,34 @@ body { /*corpo*/
     color: #1B2559;
     font-size: 24px;
     font-weight: bold;
+    margin-bottom: auto; 
 }
 
 .input-container { /*Espaçamento do Titulo CasosHipoteticos*/
     display: flex;
     align-items: center;
-    margin-top: 20px;
+    margin-top: auto;
+    margin-bottom: 20px;
 }
 
-.input-container input { /*Borda do TextField*/
-    width: 300px;
+.input-container textarea { /*Borda do TextField*/
+    width: 700px;
     padding: 10px;
-    border: 1px solid #CCCCCC;
-    border-radius: 45px;
+    border: 2px solid #CCCCCC;
+    border-radius: 10px;
     margin-right: 10px;
+    resize: none; /* Permite redimensionamento vertical */
+    min-height: 50px; /* Altura mínima */
+    max-height: 200px; /* Altura máxima */
 }
 
 .input-container button { /*Botão Simular*/
     padding: 10px 20px;
-    background-color: #7B5AFF;
+    background: linear-gradient(190deg, #7B5AFF, #4A25E1);
     color: white;
     border: none;
     border-radius: 45px;
     cursor: pointer;
-    font-weight: bold;
 }
 
 .input-container button:hover { /*Passar Mouse no Botão*/
@@ -152,7 +181,7 @@ body { /*corpo*/
         align-items: stretch;
     }
 
-    .input-container input {
+    .input-container textarea {
         width: 100%;
         margin-bottom: 10px;
     }
