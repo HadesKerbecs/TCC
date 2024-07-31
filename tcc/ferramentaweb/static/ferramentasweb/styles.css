@@ -3,7 +3,7 @@ body { /* Corpo da página */
     margin: 0;
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
     height: 100vh;
-    background: linear-gradient(to bottom, #ffffff 50%, #727272 300%);
+    background: linear-gradient(to bottom, #ffffff 65%, #727272 200%);
     display: flex;
 }
 
@@ -33,28 +33,50 @@ body { /* Corpo da página */
     font-weight: bold;
 }
 
-.menu-item, .menu-item2 { /* Item do menu com ícone */
+.menu-item { /* Item do menu com ícone */
     display: flex;
     align-items: center;
     margin: 10px 0;
 }
 
-.menu-item img, .menu-item2 img { /* Estilo da imagem do ícone */
+.menu-item img { /* Estilo da imagem do ícone */
+    width: 24px; 
+    height: 24px; 
     margin-right: 10px;
 }
 
-.menu h2, .menu2 h2 { /* Texto dos itens do menu */
+.menu-item2 { /* Item do menu com ícone */
+    display: flex;
+    align-items: center;
+    margin: 15px 0 0 10px;
+}
+
+.menu-item2 img { /* Estilo da imagem do ícone */
+    width: 15px; 
+    height: 15px; 
+    margin-right: 10px;
+}
+
+.menu h2 { /* Informações */
     color: #120F43;
+    font-size: 20px;
+    margin: 0;
+}
+
+.menu2 h2 { /* Criar Novo Caso */
+    color: #120F43;
+    font-size: 18px;
     margin: 0;
 }
 
 .menu-link { /* Link do menu */
     text-decoration: none;
     color: #120F43;
+    cursor: pointer; /* Garante que o cursor de link apareça */
 }
 
 .menu-link:hover { /* Efeito de hover no link do menu */
-    text-decoration: underline;
+    color: #333333; /* Cor mais escura ao passar o mouse */
 }
 
 .about { /* Seção Sobre */
@@ -105,7 +127,7 @@ body { /* Corpo da página */
     background-color: transparent;
     padding: 20px;
     position: relative;
-    z-index: 0;
+    z-index: 2;
 }
 
 .main-content h2 { /* Título Casos Hipotéticos */
@@ -115,11 +137,13 @@ body { /* Corpo da página */
     margin-bottom: auto;
 }
 
-.input-container { /* Container do input e botão */
+.input-container { /* Container do input */
     display: flex;
     align-items: center;
     margin-top: auto;
     margin-bottom: 20px;
+    position: relative;
+    z-index: 3;
 }
 
 .input-container textarea { /* Campo de texto */
@@ -133,7 +157,16 @@ body { /* Corpo da página */
     max-height: 200px;
 }
 
-.input-container button { /* Botão Simular */
+.button-container { /* Container do botão */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 3;
+}
+
+.button-container button { /* Botão Simular */
     padding: 10px 20px;
     background: linear-gradient(190deg, #7B5AFF, #4A25E1);
     color: white;
@@ -141,14 +174,16 @@ body { /* Corpo da página */
     border-radius: 45px;
     cursor: pointer;
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-    transition: background-color 0.3s ease; /* Transição suave */
+    transition: background-color 0.3s ease;
+    z-index: 4;
 }
 
-.input-container button:hover { /* Efeito ao passar o mouse no botão */
-    background-color: #4500B5;
+.button-container button:hover { /* Efeito ao passar o mouse no botão */
+    background-color: #b50036;
+    outline: 2px solid #FFF;
 }
 
-.input-container button:active { /* Efeito ao clicar no botão */
+.button-container button:active { /* Efeito ao clicar no botão */
     background-color: #2E007A;
 }
 
@@ -184,7 +219,12 @@ body { /* Corpo da página */
         margin-bottom: 10px;
     }
 
-    .input-container button { /* Ajuste de layout para o botão */
+    .button-container { /* Ajuste de layout para o container do botão */
+        width: 100%;
+        justify-content: center;
+    }
+
+    .button-container button { /* Ajuste de layout para o botão */
         width: 100%;
     }
 }
