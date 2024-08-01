@@ -4,6 +4,7 @@ body { /* Corpo da página */
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
     height: 100vh;
     background: linear-gradient(to bottom, #ffffff 65%, #727272 200%);
+    background-repeat: no-repeat;
     display: flex;
 }
 
@@ -13,9 +14,14 @@ body { /* Corpo da página */
 }
 
 .sidebar { /* Container lateral */
-    background: #E4E4E4;
+    background: linear-gradient(to bottom, #dddddd 65%, #727272 100%);
+    border: 3px dashed red;
+    background-repeat: no-repeat;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border: #b50036;
     padding: 20px;
-    width: 300px;
+    width: 25vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -27,7 +33,7 @@ body { /* Corpo da página */
     color: #120F43;
     font-size: 24px;
     text-align: center;
-    border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #7B5AFF;
     padding-bottom: 10%;
     width: 100%;
     font-weight: bold;
@@ -76,7 +82,7 @@ body { /* Corpo da página */
 }
 
 .menu-link:hover { /* Efeito de hover no link do menu */
-    color: #333333; /* Cor mais escura ao passar o mouse */
+    color: #553fd6; 
 }
 
 .about { /* Seção Sobre */
@@ -137,7 +143,7 @@ body { /* Corpo da página */
     margin-bottom: auto;
 }
 
-.input-container { /* Container do input */
+.input-container { /* Container do input e botão */
     display: flex;
     align-items: center;
     margin-top: auto;
@@ -155,16 +161,14 @@ body { /* Corpo da página */
     resize: none;
     min-height: 50px;
     max-height: 200px;
+    border: 1px solid #5131ce;
 }
 
-.button-container { /* Container do botão */
+.button-container {
     display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 20px;
-    position: relative;
-    z-index: 3;
+    align-items: center;
 }
+
 
 .button-container button { /* Botão Simular */
     padding: 10px 20px;
@@ -175,16 +179,41 @@ body { /* Corpo da página */
     cursor: pointer;
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
     transition: background-color 0.3s ease;
+    position: relative;
     z-index: 4;
 }
 
 .button-container button:hover { /* Efeito ao passar o mouse no botão */
-    background-color: #b50036;
+    background: linear-gradient(190deg, #917eff, #553fd6);
     outline: 2px solid #FFF;
 }
 
 .button-container button:active { /* Efeito ao clicar no botão */
-    background-color: #2E007A;
+    background: linear-gradient(190deg, #553fd6, #281880);
+}
+
+.hidden {
+    display: none;
+}
+
+#result-box { /* Caixa de resultado fixa e centralizada */
+    position: absolute;
+    top: 10%; /* Posição inicial do topo da caixa de resultado */
+    left: 50%;
+    transform: translate(-55%, 0);
+    width: 42%;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    overflow-y: auto; /* Adiciona barra de rolagem, se necessário */
+    max-height: 80vh;
+}
+
+.result-image { /* Icone do Resultado */
+    max-width: 25px;
+    height: auto;
 }
 
 @media (max-width: 768px) { /* Responsividade */
@@ -192,39 +221,28 @@ body { /* Corpo da página */
         flex-direction: column;
     }
 
-    .sidebar { /* Ajuste de layout para a sidebar */
+    .sidebar { /* Ajuste de layout para dispositivos menores */
         width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        height: auto;
     }
 
-    .about { /* Ajuste de layout para a seção Sobre */
-        flex: 1;
-        margin-left: 20px;
-    }
-
-    .main-content { /* Ajuste de layout para o conteúdo principal */
-        width: 100%;
+    .main-content {
         padding: 10px;
     }
 
-    .input-container { /* Ajuste de layout para o container de input */
+    .input-container { /* Ajuste de layout para dispositivos menores */
         flex-direction: column;
-        align-items: stretch;
     }
 
-    .input-container textarea { /* Ajuste de layout para o campo de texto */
+    .input-container textarea {
         width: 100%;
+        margin-right: 0;
         margin-bottom: 10px;
     }
 
-    .button-container { /* Ajuste de layout para o container do botão */
-        width: 100%;
-        justify-content: center;
-    }
-
-    .button-container button { /* Ajuste de layout para o botão */
-        width: 100%;
+    #result-box { /* Ajuste para caixa de resultado em dispositivos menores */
+        width: 90%;
+        max-height: 80%;
+        top: 5%;
     }
 }
