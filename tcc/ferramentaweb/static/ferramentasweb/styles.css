@@ -15,11 +15,10 @@ body { /* Corpo da página */
 
 .sidebar { /* Container lateral */
     background: linear-gradient(to bottom, #dddddd 65%, #727272 100%);
-    border: 3px dashed red;
+    border: 1px solid #7B5AFF; /* Definindo a borda */
     background-repeat: no-repeat;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
-    border: #b50036;
     padding: 20px;
     width: 25vh;
     display: flex;
