@@ -128,7 +128,7 @@ body { /* Corpo da página */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     background-color: transparent;
     padding: 20px;
     position: relative;
@@ -152,8 +152,9 @@ body { /* Corpo da página */
 }
 
 .input-container textarea { /* Campo de texto */
-    width: 700px;
-    padding: 10px;
+    width: 100%;
+    max-width: 700px;
+    padding: 10x;
     border: 2px solid #CCCCCC;
     border-radius: 10px;
     margin-right: 10px;
@@ -168,7 +169,6 @@ body { /* Corpo da página */
     align-items: center;
 }
 
-
 .button-container button { /* Botão Simular */
     padding: 10px 20px;
     background: linear-gradient(190deg, #7B5AFF, #4A25E1);
@@ -181,6 +181,7 @@ body { /* Corpo da página */
     position: relative;
     z-index: 4;
 }
+
 
 .button-container button:hover { /* Efeito ao passar o mouse no botão */
     background: linear-gradient(190deg, #917eff, #553fd6);
@@ -195,19 +196,42 @@ body { /* Corpo da página */
     display: none;
 }
 
-#result-box { /* Caixa de resultado fixa e centralizada */
-    position: absolute;
-    top: 10%; /* Posição inicial do topo da caixa de resultado */
-    left: 50%;
-    transform: translate(-55%, 0);
-    width: 42%;
+.chat-container { /* Container para mensagens de chat */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-box { /* Caixa de mensagens */
+    width: 60%;
+    height: 80vh;
+    overflow-y: auto;
     background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
     padding: 20px;
-    z-index: 1000;
-    overflow-y: auto; /* Adiciona barra de rolagem, se necessário */
-    max-height: 80vh;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.message { /* Estilo geral para mensagens */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.message.user { /* Mensagem do usuário */
+    background-color: #7B5AFF;
+    color: white;
+    align-self: flex-end;
+}
+
+.message.bot { /* Mensagem do sistema */
+    background-color: #f1f1f1;
+    color: #333;
+    align-self: flex-start;
 }
 
 .result-image { /* Icone do Resultado */
@@ -237,6 +261,10 @@ body { /* Corpo da página */
         width: 100%;
         margin-right: 0;
         margin-bottom: 10px;
+    }
+
+    #chat-box { /* Ajuste para caixa de mensagens em dispositivos menores */
+        height: 40vh;
     }
 
     #result-box { /* Ajuste para caixa de resultado em dispositivos menores */

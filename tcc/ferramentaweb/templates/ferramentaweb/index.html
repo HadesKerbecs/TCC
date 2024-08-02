@@ -20,7 +20,7 @@
                 <div class="menu2">
                     <div class="menu-item2">
                         <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Informações">
-                        <h2><a href="#" class="menu-link">Criar Novo Caso</a></h2>
+                        <h2><a href="#" class="menu-link" id="refresh-link">Criar Novo Caso</a></h2>
                     </div>
                 </div>
             </div>
@@ -35,39 +35,69 @@
         <div class="main-content">
             <h2>Casos Hipotéticos</h2>
             <img src="{% static 'ferramentasweb/images/Raio.png' %}" alt="Ícone Informações">
-            <div class="input-container">
-                <textarea placeholder="Informe o caso clínico"></textarea>
-                <div class="button-container">
-                    <button id="simulate-button" disabled>Simular</button>
+            <div class="chat-container">
+                <div id="chat-box">
+                    <div>
+                        <img src="{% static 'ferramentasweb/images/Brilho.png' %}" alt="ícone Resultado" class="result-image"/>
+                    </div>
+                    <!-- Mensagens da conversa serão adicionadas aqui -->
                 </div>
-            </div>
-            <div id="result-box" class="hidden">
-                <div>
-                    <img src="{% static 'ferramentasweb/images/Brilho.png' %}" alt="ícone Resultado" class="result-image"/>
+                <div class="input-container">
+                    <textarea id="user-input" placeholder="Informe o caso clínico"></textarea>
+                    <div class="button-container">
+                        <button id="send-button" disabled>Simular</button>
+                    </div>
                 </div>
-                <!-- Conteúdo gerado pela API do ChatGPT aparecerá aqui -->
             </div>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const textarea = document.querySelector('.input-container textarea');
-            const button = document.getElementById('simulate-button');
+            const chatBox = document.getElementById('chat-box');
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
             const resultBox = document.getElementById('result-box');
+            const refreshLink = document.getElementById('refresh-link');
 
-            textarea.addEventListener('input', function() {
-                if (textarea.value.trim() !== '') {
-                    button.disabled = false;
+            refreshLink.addEventListener('click', function(event) {
+                event.preventDefault(); 
+                location.reload(); 
+            });
+
+            userInput.addEventListener('input', function() {
+                if (userInput.value.trim() !== '') {
+                    sendButton.disabled = false;
                 } else {
-                    button.disabled = true;
+                    sendButton.disabled = true;
                 }
             });
 
-            button.addEventListener('click', function() {
-                if (textarea.value.trim() !== '') {
+            sendButton.addEventListener('click', function() {
+                const userMessage = userInput.value.trim();
+                if (userMessage !== '') {
+                    addMessageToChat('user', userMessage);
+                    processMessage(userMessage);
+                    userInput.value = '';
+                    sendButton.disabled = true;
                     resultBox.classList.remove('hidden');
                 }
             });
+
+            function addMessageToChat(sender, message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', sender);
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+
+            function processMessage(message) {
+                // Simulação de chamada à API
+                setTimeout(() => {
+                    const responseMessage = `Resposta gerada para: "${message}"`;
+                    addMessageToChat('bot', responseMessage);
+                }, 1000);
+            }
         });
     </script>
 </body>
