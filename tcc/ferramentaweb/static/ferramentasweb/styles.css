@@ -4,7 +4,6 @@ body { /* Corpo da página */
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
     height: 100vh;
     background: linear-gradient(to bottom, #ffffff 65%, #727272 200%);
-    background-repeat: no-repeat;
     display: flex;
 }
 
@@ -16,11 +15,12 @@ body { /* Corpo da página */
 .sidebar { /* Container lateral */
     background: linear-gradient(to bottom, #dddddd 65%, #727272 100%);
     border: 1px solid #7B5AFF; /* Definindo a borda */
-    background-repeat: no-repeat;
+    background-repeat:no-repeat;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
     padding: 20px;
     width: 25vh;
+    max-width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -87,6 +87,7 @@ body { /* Corpo da página */
 .about { /* Seção Sobre */
     background: linear-gradient(190deg, #7B5AFF, #4A25E1);
     color: white;
+    background-repeat: no-repeat;
     padding: 60px 20px 30px 20px;
     border-radius: 16px;
     text-align: center;
@@ -102,6 +103,7 @@ body { /* Corpo da página */
     height: 70px;
     border-radius: 50%;
     background: linear-gradient(190deg, white 50%, #CCCCCC 100%);
+    background-repeat: no-repeat;
     border: 5px solid #7B5AFF;
     display: flex;
     align-items: center;
@@ -128,7 +130,7 @@ body { /* Corpo da página */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     background-color: transparent;
     padding: 20px;
     position: relative;
@@ -145,6 +147,7 @@ body { /* Corpo da página */
 .input-container { /* Container do input e botão */
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-top: auto;
     margin-bottom: 20px;
     position: relative;
@@ -153,8 +156,9 @@ body { /* Corpo da página */
 
 .input-container textarea { /* Campo de texto */
     width: 100%;
-    max-width: 700px;
-    padding: 10x;
+    max-width: 100%;
+    width: 680px;
+    padding: 10px;
     border: 2px solid #CCCCCC;
     border-radius: 10px;
     margin-right: 10px;
@@ -172,6 +176,7 @@ body { /* Corpo da página */
 .button-container button { /* Botão Simular */
     padding: 10px 20px;
     background: linear-gradient(190deg, #7B5AFF, #4A25E1);
+    background-repeat: no-repeat;
     color: white;
     border: none;
     border-radius: 45px;
@@ -200,16 +205,18 @@ body { /* Corpo da página */
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    position: relative;
 }
 
 #chat-box { /* Caixa de mensagens */
-    width: 60%;
-    height: 80vh;
+    width: 70%;
+    height: 60vh;
     overflow-y: auto;
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     margin-bottom: 20px;
     position: relative;
 }
@@ -226,12 +233,17 @@ body { /* Corpo da página */
     background-color: #7B5AFF;
     color: white;
     align-self: flex-end;
+    font-size: 16px;
+    /*padding: 15px;  /*Aumenta o espaçamento interno */
+    max-width: 100%;
 }
 
 .message.bot { /* Mensagem do sistema */
     background-color: #f1f1f1;
     color: #333;
     align-self: flex-start;
+    font-size: 16px;
+    max-width: 100%;
 }
 
 .result-image { /* Icone do Resultado */
@@ -246,7 +258,21 @@ body { /* Corpo da página */
 
     .sidebar { /* Ajuste de layout para dispositivos menores */
         width: 100%;
-        height: auto;
+        max-width: none;
+        padding: 10px;
+    }
+    
+    .sidebar h1 {
+        font-size: 16px; /* Ajusta o tamanho da fonte do título em telas menores */
+    }
+
+    .sidebar .about {
+        padding: 40px 10px; /* Ajusta o padding da seção Sobre em telas menores */
+    }
+
+    .sidebar .menu-item, .sidebar .menu-item2 {
+        flex-direction: column; /* Ajusta a direção dos itens do menu para coluna em telas menores */
+        align-items: flex-start;
     }
 
     .main-content {
@@ -255,6 +281,10 @@ body { /* Corpo da página */
 
     .input-container { /* Ajuste de layout para dispositivos menores */
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 3;
     }
 
     .input-container textarea {

@@ -34,9 +34,9 @@
         </div>
         <div class="main-content">
             <h2>Casos Hipotéticos</h2>
-            <img src="{% static 'ferramentasweb/images/Raio.png' %}" alt="Ícone Informações">
+            <img id="raio-image" src="{% static 'ferramentasweb/images/Raio.png' %}" alt="Ícone Informações">
             <div class="chat-container">
-                <div id="chat-box">
+                <div id="chat-box" class="hidden">
                     <div>
                         <img src="{% static 'ferramentasweb/images/Brilho.png' %}" alt="ícone Resultado" class="result-image"/>
                     </div>
@@ -58,6 +58,7 @@
             const sendButton = document.getElementById('send-button');
             const resultBox = document.getElementById('result-box');
             const refreshLink = document.getElementById('refresh-link');
+            const raioImage = document.getElementById('raio-image');
 
             refreshLink.addEventListener('click', function(event) {
                 event.preventDefault(); 
@@ -79,7 +80,8 @@
                     processMessage(userMessage);
                     userInput.value = '';
                     sendButton.disabled = true;
-                    resultBox.classList.remove('hidden');
+                    chatBox.classList.remove('hidden'); // Mostra o chatbox
+                    raioImage.style.display = 'none'; // Esconde a imagem de raio
                 }
             });
 
