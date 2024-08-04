@@ -20,13 +20,13 @@
                 <div class="menu2">
                     <div class="menu-item2">
                         <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Informações">
-                        <h2><a href="#" class="menu-link" id="refresh-link">Criar Novo Caso</a></h2>
+                        <h2><a href="#" class="menu-link" id="refresh-link">Gerar Novo Caso</a></h2>
                     </div>
                 </div>
             </div>
             <div class="about">
                 <div class="circle">
-                    <img src="{% static 'ferramentasweb/images/psicosimula.png' %}" alt="Icon" />
+                    <img src="{% static 'ferramentasweb/images/psicosimula.png' %}" alt="Ícone" />
                 </div>
                 <h3>Sobre</h3>
                 <p>Explore e gere casos clínicos hipotéticos para estudo em psicopatologia com o poder da inteligência artificial generativa. Encontre respostas e recursos que você precisa.</p>
@@ -56,7 +56,6 @@
             const chatBox = document.getElementById('chat-box');
             const userInput = document.getElementById('user-input');
             const sendButton = document.getElementById('send-button');
-            const resultBox = document.getElementById('result-box');
             const refreshLink = document.getElementById('refresh-link');
             const raioImage = document.getElementById('raio-image');
 
@@ -73,7 +72,7 @@
                 }
             });
 
-            sendButton.addEventListener('click', function() {
+            function sendMessage() {
                 const userMessage = userInput.value.trim();
                 if (userMessage !== '') {
                     addMessageToChat('user', userMessage);
@@ -81,7 +80,15 @@
                     userInput.value = '';
                     sendButton.disabled = true;
                     chatBox.classList.remove('hidden'); // Mostra o chatbox
-                    raioImage.style.display = 'none'; // Esconde a imagem de raio
+                }
+            }
+
+            sendButton.addEventListener('click', sendMessage);
+
+            userInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Previne a quebra de linha
+                    sendMessage();
                 }
             });
 

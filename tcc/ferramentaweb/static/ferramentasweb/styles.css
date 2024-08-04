@@ -1,26 +1,29 @@
 /* Estilos gerais */
-body {
+body { /* Corpo da página */
     margin: 0;
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
     height: 100vh;
     min-height: 100vh; /* Garante que o fundo cubra toda a tela e além, se necessário */
-    background: linear-gradient(to bottom, #ffffff 65%, #727272 200%);
+    background: linear-gradient(to bottom, #ffffff 65%, #727272 190%);
+    background-size: cover; /* Garante que o fundo cubra toda a área visível */
     background-repeat: no-repeat;
+    background-position: center; /* Centraliza o fundo */
     display: flex;
     flex-direction: column;
 }
 
-.container {
+.container { /* Organizar o espaçamento */
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
 }
 
-.sidebar {
+.sidebar { /* Container lateral */
     background: linear-gradient(to bottom, #dddddd 65%, #727272 100%);
     border: 1px solid #7B5AFF;
-    border-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
     padding: 20px;
     width: 300px;
     box-sizing: border-box;
@@ -31,7 +34,7 @@ body {
     overflow: hidden; /* Garante que nada ultrapasse o limite da sidebar */
 }
 
-.sidebar h1 {
+.sidebar h1 { /* Título PsicoSimula */
     color: #120F43;
     font-size: 24px;
     text-align: center;
@@ -41,48 +44,54 @@ body {
     font-weight: bold;
 }
 
-.menu-item {
+.menu-item { /* Item do menu com ícone */
     display: flex;
     align-items: center;
     margin: 10px 0;
 }
 
-.menu-item2 {
+.menu-item2 { /* Item do menu com ícone */
     display: flex;
     align-items: center;
     margin: 15px 0 0 10px;
 }
 
-.menu-item img {
+.menu-item img { /* Estilo da imagem do ícone */
     width: 24px;
     height: 24px;
     margin-right: 10px;
 }
 
-.menu-item2 img {
+.menu-item2 img { /* Estilo da imagem do ícone */
     width: 16px;
     height: 16px;
     margin-right: 15px;
 }
 
-.menu h2, .menu2 h2 {
+.menu h2 { /* Informações */
     color: #120F43;
     font-size: 18px;
     margin: 0;
 }
 
-.menu-link {
+.menu2 h2 { /* Criar Novo Caso */
+    color: #120F43;
+    font-size: 18px;
+    margin: 0;
+}
+
+.menu-link { /* Link do menu */
     text-decoration: none;
     color: #120F43;
     cursor: pointer;
 }
 
-.menu-link:hover {
+.menu-link:hover {  /* Efeito de hover no link do menu */
     color: #553fd6; 
 }
 
-.about {
-    background: linear-gradient(190deg, #7B5AFF 30%, #4A25E1);
+.about { /* Seção Sobre */
+    background: linear-gradient(190deg, #7B5AFF 30%, #4A25E1 70%);
     color: white;
     padding: 60px 20px 30px 20px;
     height: auto;
@@ -92,12 +101,11 @@ body {
     max-width: 100%;
     box-sizing: border-box;
     margin: 0 auto;
-    overflow: hidden; /* Garante que o conteúdo não ultrapasse o limite */
 }
 
-.about .circle {
-    position: relative;
-    top: -35px;
+.about .circle { /* Estilo para o círculo */
+    position: absolute;
+    top: -40px;
     left: 50%;
     transform: translateX(-50%);
     width: 70px;
@@ -108,25 +116,28 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
-
-.about .circle img {
-    width: 50px;
-    height: 50px;
+.about .circle img { /* Imagem no círculo */
+    max-width: 80%;
+    max-height: 80%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
 }
 
-.about h3 {
+.about h3 { /* Título da seção Sobre */
     margin: 0 0 10px 0;
     font-size: 20px;
 }
 
-.about p {
+.about p { /* Texto da seção Sobre */
     margin: 25px 0 0 0;
     font-size: 14px;
 }
 
-.main-content {
+.main-content { /* Espaço de escrever o texto */
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -137,32 +148,32 @@ body {
     box-sizing: border-box;
 }
 
-.main-content h2 {
+.main-content h2 {  /* Título Casos Hipotéticos */
     color: #1B2559;
     font-size: 24px;
     font-weight: bold;
     margin-bottom: auto;
 }
 
-.input-container {
+.input-container { /* Container do input e botão */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: auto;
-    margin-bottom: 20px;
+    margin-top: 5px;
     width: 100%;
 }
 
-.input-container textarea {
+.input-container textarea { /* Campo de texto */
     width: 100%;
-    max-width: 680px;
+    max-width: 100%;
     padding: 10px;
     border: 2px solid #CCCCCC;
     border-radius: 10px;
     font-size: 16px;
     resize: none;
     box-sizing: border-box;
+    border: 1px solid #5131ce;
 }
 
 .button-container {
@@ -173,7 +184,7 @@ body {
     padding: 10px 0 0 0;
 }
 
-.button-container button {
+.button-container button { /* Botão Simular */
     background: linear-gradient(190deg, #7B5AFF, #4A25E1);
     color: white;
     border: none;
@@ -182,6 +193,7 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    position: relative;
 }
 
 .button-container button:disabled {
@@ -202,31 +214,33 @@ body {
     background: linear-gradient(190deg, #553fd6, #281880);
 }
 
-.chat-container {
+.chat-container { /* Container para mensagens de chat */
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     max-width: 680px;
+    position: relative;
 }
 
-#chat-box {
+#chat-box { /* Caixa de mensagens */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    max-height: 650px;
+    max-height: 400px;
     overflow-y: auto;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     background-color: white;
     padding: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
     box-sizing: border-box;
 }
 
-.result-image {
+.result-image { /*imagem do chat-box*/
     width: 20px;
     height: 20px;
     position: relative;
@@ -234,22 +248,23 @@ body {
     left: calc(50% - 20px);
 }
 
-.message {
+.message { /* Estilo geral para mensagens */
     width: 100%;
     padding: 10px;
     margin: 5px 0;
     border-radius: 8px;
     box-sizing: border-box;
+    word-wrap: break-word;
 }
 
-.user {
+.user { /* Mensagem do usuário */
     align-self: flex-end;
-    background-color: #E0E0E0;
+    background-color: #917eff; 
 }
 
-.bot {
+.bot { /* Mensagem do sistema */
     align-self: flex-start;
-    background-color: #D0E0FF;
+    background-color: #E0E0E0;
 }
 
 .hidden {
@@ -259,7 +274,7 @@ body {
 #raio-image {
     position: absolute;
     top: 45%;
-    left: 58%;
+    left: 60%;
     transform: translate(-50%, -50%);
     width: 30vh;
     height: auto;
