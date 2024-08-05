@@ -1,25 +1,31 @@
 /* Estilos gerais */
-body { /* Corpo da página */
+body {
     margin: 0;
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-    height: 100vh;
-    min-height: 100vh; /* Garante que o fundo cubra toda a tela e além, se necessário */
     background: linear-gradient(to bottom, #ffffff 65%, #727272 190%);
-    background-size: cover; /* Garante que o fundo cubra toda a área visível */
+    background-size: cover;
     background-repeat: no-repeat;
-    background-position: center; /* Centraliza o fundo */
+    background-position: center;
     display: flex;
     flex-direction: column;
+    height: 100vh; /* Garantir que o body ocupe a altura da tela */
+    overflow: hidden; /* Impede o scroll no body */
 }
 
-.container { /* Organizar o espaçamento */
+html {
+    height: 100%; /* Garante que o html ocupe 100% da altura da tela */
+}
+
+.container {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
+    box-sizing: border-box;
+    flex: 1;
 }
 
-.sidebar { /* Container lateral */
+.sidebar {
     background: linear-gradient(to bottom, #dddddd 65%, #727272 100%);
     border: 1px solid #7B5AFF;
     border-top-right-radius: 16px;
@@ -29,151 +35,104 @@ body { /* Corpo da página */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
     height: 100%;
-    overflow: hidden; /* Garante que nada ultrapasse o limite da sidebar */
+    overflow-y: auto;
 }
 
-.sidebar h1 { /* Título PsicoSimula */
+.sidebar h1 {
     color: #120F43;
     font-size: 24px;
     text-align: center;
     border-bottom: 1px solid #7B5AFF;
     padding-bottom: 10%;
-    width: 100%;
     font-weight: bold;
+    width: 100%;
 }
 
-.menu-item { /* Item do menu com ícone */
+.menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+.menu-item, .menu-item2 {
     display: flex;
     align-items: center;
     margin: 10px 0;
 }
 
-.menu-item2 { /* Item do menu com ícone */
+.menu-item2 {
     display: flex;
     align-items: center;
-    margin: 15px 0 0 10px;
+    margin: 10px 0;
+    margin-top: 15px;
+    padding-left: 15px;
 }
 
-.menu-item img { /* Estilo da imagem do ícone */
+.menu-item img, .menu-item2 img {
     width: 24px;
     height: 24px;
     margin-right: 10px;
 }
 
-.menu-item2 img { /* Estilo da imagem do ícone */
+.menu-item2 img {
     width: 16px;
     height: 16px;
     margin-right: 15px;
 }
 
-.menu h2 { /* Informações */
+.menu h2, .menu2 h2 {
     color: #120F43;
     font-size: 18px;
     margin: 0;
 }
 
-.menu2 h2 { /* Criar Novo Caso */
-    color: #120F43;
-    font-size: 18px;
-    margin: 0;
-}
-
-.menu-link { /* Link do menu */
+.menu-link {
     text-decoration: none;
     color: #120F43;
     cursor: pointer;
 }
 
-.menu-link:hover {  /* Efeito de hover no link do menu */
-    color: #553fd6; 
+.menu-link:hover {
+    color: #553fd6;
 }
 
-.about { /* Seção Sobre */
-    background: linear-gradient(190deg, #7B5AFF 30%, #4A25E1 70%);
-    color: white;
-    padding: 60px 20px 30px 20px;
-    height: auto;
-    border-radius: 16px;
-    text-align: center;
-    position: relative;
-    max-width: 100%;
-    box-sizing: border-box;
-    margin: 0 auto;
-}
-
-.about .circle { /* Estilo para o círculo */
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: linear-gradient(190deg, white 50%, #CCCCCC 100%);
-    border: 5px solid #7B5AFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.about .circle img { /* Imagem no círculo */
-    max-width: 80%;
-    max-height: 80%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-}
-
-.about h3 { /* Título da seção Sobre */
-    margin: 0 0 10px 0;
-    font-size: 20px;
-}
-
-.about p { /* Texto da seção Sobre */
-    margin: 25px 0 0 0;
-    font-size: 14px;
-}
-
-.main-content { /* Espaço de escrever o texto */
-    flex: 1;
+.main-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background-color: transparent;
     padding: 20px;
     box-sizing: border-box;
+    flex: 1;
 }
 
-.main-content h2 {  /* Título Casos Hipotéticos */
+.main-content h2 {
     color: #1B2559;
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: auto;
+    margin-bottom: 20px;
 }
 
-.input-container { /* Container do input e botão */
+.input-container {
+    width: 100%;
+    max-width: 680px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     margin-top: 5px;
-    width: 100%;
 }
 
-.input-container textarea { /* Campo de texto */
+.input-container textarea {
     width: 100%;
-    max-width: 100%;
     padding: 10px;
-    border: 2px solid #CCCCCC;
+    border: 1px solid #5131ce;
     border-radius: 10px;
     font-size: 16px;
     resize: none;
     box-sizing: border-box;
-    border: 1px solid #5131ce;
 }
 
 .button-container {
@@ -181,10 +140,11 @@ body { /* Corpo da página */
     justify-content: center;
     width: 100%;
     max-width: 680px;
-    padding: 10px 0 0 0;
+    padding: 10px 0;
+    background: linear-gradient(to bottom, #ffffff 65%, #727272 190%); /* Fundo branco para o botão */
 }
 
-.button-container button { /* Botão Simular */
+.button-container button {
     background: linear-gradient(190deg, #7B5AFF, #4A25E1);
     color: white;
     border: none;
@@ -193,7 +153,9 @@ body { /* Corpo da página */
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    position: relative;
+    width: auto;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .button-container button:disabled {
@@ -205,32 +167,34 @@ body { /* Corpo da página */
     background-color: #553fd6;
 }
 
-.button-container button:hover { /* Efeito ao passar o mouse no botão */
+.button-container button:hover {
     background: linear-gradient(190deg, #917eff, #553fd6);
     outline: 2px solid #FFF;
 }
 
-.button-container button:active { /* Efeito ao clicar no botão */
+.button-container button:active {
     background: linear-gradient(190deg, #553fd6, #281880);
 }
 
-.chat-container { /* Container para mensagens de chat */
+.chat-container {
     width: 100%;
+    max-width: 680px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 680px;
     position: relative;
+    flex-grow: 1;
+    margin-bottom: 60px; /* Garantir espaço para o botão */
 }
 
-#chat-box { /* Caixa de mensagens */
+#chat-box {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    max-height: 400px;
+    max-height: calc(100vh - 120px); /* Ajustado para permitir o scroll */
+    min-height: 200px;
     overflow-y: auto;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -240,15 +204,15 @@ body { /* Corpo da página */
     box-sizing: border-box;
 }
 
-.result-image { /*imagem do chat-box*/
+.result-image {
     width: 20px;
     height: 20px;
     position: relative;
     top: -10px;
-    left: calc(50% - 20px);
+    left: calc(50% - 10px);
 }
 
-.message { /* Estilo geral para mensagens */
+.message {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
@@ -257,12 +221,12 @@ body { /* Corpo da página */
     word-wrap: break-word;
 }
 
-.user { /* Mensagem do usuário */
+.user {
     align-self: flex-end;
-    background-color: #917eff; 
+    background-color: #917eff;
 }
 
-.bot { /* Mensagem do sistema */
+.bot {
     align-self: flex-start;
     background-color: #E0E0E0;
 }
@@ -278,88 +242,107 @@ body { /* Corpo da página */
     transform: translate(-50%, -50%);
     width: 30vh;
     height: auto;
+    box-sizing: border-box;
+    z-index: -1;
+}
+
+.about {
+    background: linear-gradient(190deg, #7B5AFF 30%, #4A25E1 70%);
+    color: white;
+    padding: 60px 20px;
+    border-radius: 16px;
+    text-align: center;
+    position: relative;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+}
+
+.about .circle {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(190deg, white 50%, #CCCCCC 100%);
+    border: 5px solid #7B5AFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.about .circle img {
+    max-width: 80%;
+    max-height: 80%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.about h3 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+
+.about p {
+    margin: 25px 0 0 0;
+    font-size: 14px;
 }
 
 /* Responsividade */
 @media (max-width: 600px) {
     .container {
         flex-direction: column;
+        height: 100%; /* Garante que o container ocupe 100% da altura da tela */
     }
 
     .sidebar {
         width: 100%;
-        margin-bottom: 20px;
-        padding: 10px; /* Ajusta o padding em telas menores */
+        padding: 10px;
+        margin-top: 0;
     }
 
     .main-content {
         padding: 10px;
     }
 
-    .input-container textarea,
-    .button-container {
+    .input-container textarea {
         width: 100%;
-        max-width: 100%;
+        box-sizing: border-box; /* Garante que padding e border não aumentem o tamanho total */
     }
 
-    .chat-container {
-        max-width: 100%;
+    .button-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        position: static; /* Removido sticky para comportamento normal */
+    }
+
+    .button-container button {
+        width: 100%; /* Faz com que o botão se ajuste à largura do container */
+    }
+
+    #chat-box {
+        max-height: calc(100vh - 150px); /* Ajuste para dar mais espaço na tela móvel */
     }
 
     #raio-image {
-        width: 20vh; /* Ajusta o tamanho da imagem em telas menores */
+        width: 20vh;
     }
 }
 
 @media (max-width: 768px) {
     .about {
-        padding: 40px 10px; /* Ajusta o padding da seção Sobre */
-        text-align: center; /* Centraliza o conteúdo */
+        padding: 40px 10px;
+        text-align: center;
     }
 
     .about .circle {
-        width: 60px; /* Ajusta o tamanho do círculo */
+        width: 60px;
         height: 60px;
-        top: -30px; /* Ajusta a posição do círculo */
-    }
-
-    .about .circle img {
-        width: 40px; /* Ajusta o tamanho da imagem no círculo */
-    }
-
-    .about h3 {
-        font-size: 18px; /* Ajusta o tamanho da fonte do título */
-    }
-
-    .about p {
-        font-size: 12px; /* Ajusta o tamanho da fonte do texto */
-    }
-}
-
-@media (max-width: 480px) {
-    .about {
-        padding: 30px 5px; /* Ajusta o padding da seção Sobre */
-    }
-
-    .about .circle {
-        width: 50px; /* Ajusta o tamanho do círculo */
-        height: 50px;
-        top: -25px; /* Ajusta a posição do círculo */
-    }
-
-    .about .circle img {
-        width: 35px; /* Ajusta o tamanho da imagem no círculo */
-    }
-
-    .about h3 {
-        font-size: 16px; /* Ajusta o tamanho da fonte do título */
-    }
-
-    .about p {
-        font-size: 10px; /* Ajusta o tamanho da fonte do texto */
-    }
-
-    .main-content h2 {
-        font-size: 18px; /* Reduzir ainda mais o tamanho da fonte em telas muito pequenas */
+        top: -30px;
     }
 }
