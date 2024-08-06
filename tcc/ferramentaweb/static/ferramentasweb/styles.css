@@ -10,6 +10,7 @@ body { /* Corpo da página */
     background-position: center; /* Centraliza o fundo */
     display: flex;
     flex-direction: column;
+    overflow-y: auto; /* Permitir rolagem vertical */
 }
 
 .container { /* Organizar o espaçamento */
@@ -17,6 +18,8 @@ body { /* Corpo da página */
     flex-direction: row;
     width: 100%;
     height: 100%;
+    overflow: auto; /* Esconder overflow lateral */
+
 }
 
 .sidebar { /* Container lateral */
@@ -31,7 +34,7 @@ body { /* Corpo da página */
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    overflow: hidden; /* Garante que nada ultrapasse o limite da sidebar */
+
 }
 
 .sidebar h1 { /* Título PsicoSimula */
@@ -116,7 +119,7 @@ body { /* Corpo da página */
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+
 }
 
 .about .circle img { /* Imagem no círculo */
@@ -174,6 +177,8 @@ body { /* Corpo da página */
     resize: none;
     box-sizing: border-box;
     border: 1px solid #5131ce;
+    margin-top: auto; /* Adicionado para empurrar o conteúdo para baixo */
+
 }
 
 .button-container {
@@ -182,6 +187,8 @@ body { /* Corpo da página */
     width: 100%;
     max-width: 680px;
     padding: 10px 0 0 0;
+    margin-top: auto; /* Adicionado para empurrar o conteúdo para baixo */
+
 }
 
 .button-container button { /* Botão Simular */
@@ -221,6 +228,9 @@ body { /* Corpo da página */
     align-items: center;
     max-width: 680px;
     position: relative;
+    flex: 1; /* Adicionado para ocupar o espaço disponível */
+    overflow: hidden; /* Esconder overflow vertical */
+
 }
 
 #chat-box { /* Caixa de mensagens */
@@ -229,14 +239,15 @@ body { /* Corpo da página */
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    max-height: 400px;
+    max-height: 75vh;
     overflow-y: auto;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
     background-color: white;
     padding: 20px;
     margin-top: 20px;
     box-sizing: border-box;
+    margin-top: auto; /* Adicionado para empurrar o conteúdo para baixo */
 }
 
 .result-image { /* Imagem do chat-box */
@@ -289,6 +300,7 @@ body { /* Corpo da página */
     .sidebar {
         width: 100%;
         margin-bottom: 20px;
+        height: auto; /* Permitir altura automática em telas menores */
         padding: 10px;
     }
 
@@ -315,6 +327,8 @@ body { /* Corpo da página */
 @media (max-width: 480px) {
     .about {
         padding: 30px 5px;
+        height: auto; /* Permitir altura automática em telas menores */
+
     }
 
     .about .circle {
