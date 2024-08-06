@@ -1,31 +1,25 @@
 /* Estilos gerais */
-body {
+body { /* Corpo da página */
     margin: 0;
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+    height: 100vh;
+    min-height: 100vh; /* Garante que o fundo cubra toda a tela e além, se necessário */
     background: linear-gradient(to bottom, #ffffff 65%, #727272 190%);
-    background-size: cover;
+    background-size: cover; /* Garante que o fundo cubra toda a área visível */
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center; /* Centraliza o fundo */
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Garantir que o body ocupe a altura da tela */
-    overflow: hidden; /* Impede o scroll no body */
 }
 
-html {
-    height: 100%; /* Garante que o html ocupe 100% da altura da tela */
-}
-
-.container {
+.container { /* Organizar o espaçamento */
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
-    box-sizing: border-box;
-    flex: 1;
 }
 
-.sidebar {
+.sidebar { /* Container lateral */
     background: linear-gradient(to bottom, #dddddd 65%, #727272 100%);
     border: 1px solid #7B5AFF;
     border-top-right-radius: 16px;
@@ -35,230 +29,81 @@ html {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
     height: 100%;
-    overflow-y: auto;
+    overflow: hidden; /* Garante que nada ultrapasse o limite da sidebar */
 }
 
-.sidebar h1 {
+.sidebar h1 { /* Título PsicoSimula */
     color: #120F43;
     font-size: 24px;
     text-align: center;
     border-bottom: 1px solid #7B5AFF;
     padding-bottom: 10%;
+    width: 100%;
     font-weight: bold;
-    width: 100%;
 }
 
-.menu {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-}
-
-.menu-item, .menu-item2 {
+.menu-item { /* Item do menu com ícone */
     display: flex;
     align-items: center;
     margin: 10px 0;
 }
 
-.menu-item2 {
+.menu-item2 { /* Item do menu com ícone */
     display: flex;
     align-items: center;
-    margin: 10px 0;
-    margin-top: 15px;
-    padding-left: 15px;
+    margin: 15px 0 0 10px;
 }
 
-.menu-item img, .menu-item2 img {
+.menu-item img { /* Estilo da imagem do ícone */
     width: 24px;
     height: 24px;
     margin-right: 10px;
 }
 
-.menu-item2 img {
+.menu-item2 img { /* Estilo da imagem do ícone */
     width: 16px;
     height: 16px;
     margin-right: 15px;
 }
 
-.menu h2, .menu2 h2 {
+.menu h2 { /* Informações */
     color: #120F43;
     font-size: 18px;
     margin: 0;
 }
 
-.menu-link {
+.menu2 h2 { /* Criar Novo Caso */
+    color: #120F43;
+    font-size: 18px;
+    margin: 0;
+}
+
+.menu-link { /* Link do menu */
     text-decoration: none;
     color: #120F43;
     cursor: pointer;
 }
 
-.menu-link:hover {
-    color: #553fd6;
+.menu-link:hover {  /* Efeito de hover no link do menu */
+    color: #553fd6; 
 }
 
-.main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    flex: 1;
-}
-
-.main-content h2 {
-    color: #1B2559;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.input-container {
-    width: 100%;
-    max-width: 680px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 5px;
-}
-
-.input-container textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #5131ce;
-    border-radius: 10px;
-    font-size: 16px;
-    resize: none;
-    box-sizing: border-box;
-}
-
-.button-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 680px;
-    padding: 10px 0;
-    background: linear-gradient(to bottom, #ffffff 65%, #727272 190%); /* Fundo branco para o botão */
-}
-
-.button-container button {
-    background: linear-gradient(190deg, #7B5AFF, #4A25E1);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: auto;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.button-container button:disabled {
-    background: #CCCCCC;
-    cursor: not-allowed;
-}
-
-.button-container button:not(:disabled):hover {
-    background-color: #553fd6;
-}
-
-.button-container button:hover {
-    background: linear-gradient(190deg, #917eff, #553fd6);
-    outline: 2px solid #FFF;
-}
-
-.button-container button:active {
-    background: linear-gradient(190deg, #553fd6, #281880);
-}
-
-.chat-container {
-    width: 100%;
-    max-width: 680px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    flex-grow: 1;
-    margin-bottom: 60px; /* Garantir espaço para o botão */
-}
-
-#chat-box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: 100%;
-    max-height: calc(100vh - 120px); /* Ajustado para permitir o scroll */
-    min-height: 200px;
-    overflow-y: auto;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    background-color: white;
-    padding: 20px;
-    margin-top: 20px;
-    box-sizing: border-box;
-}
-
-.result-image {
-    width: 20px;
-    height: 20px;
-    position: relative;
-    top: -10px;
-    left: calc(50% - 10px);
-}
-
-.message {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 8px;
-    box-sizing: border-box;
-    word-wrap: break-word;
-}
-
-.user {
-    align-self: flex-end;
-    background-color: #917eff;
-}
-
-.bot {
-    align-self: flex-start;
-    background-color: #E0E0E0;
-}
-
-.hidden {
-    display: none;
-}
-
-#raio-image {
-    position: absolute;
-    top: 45%;
-    left: 60%;
-    transform: translate(-50%, -50%);
-    width: 30vh;
-    height: auto;
-    box-sizing: border-box;
-    z-index: -1;
-}
-
-.about {
+.about { /* Seção Sobre */
     background: linear-gradient(190deg, #7B5AFF 30%, #4A25E1 70%);
     color: white;
-    padding: 60px 20px;
+    padding: 60px 20px 30px 20px;
+    height: auto;
     border-radius: 16px;
     text-align: center;
     position: relative;
     max-width: 100%;
     box-sizing: border-box;
-    margin-top: auto;
+    margin: 0 auto;
 }
 
-.about .circle {
+.about .circle { /* Estilo para o círculo */
     position: absolute;
     top: -40px;
     left: 50%;
@@ -274,7 +119,7 @@ html {
     overflow: hidden;
 }
 
-.about .circle img {
+.about .circle img { /* Imagem no círculo */
     max-width: 80%;
     max-height: 80%;
     width: auto;
@@ -282,51 +127,184 @@ html {
     object-fit: contain;
 }
 
-.about h3 {
+.about h3 { /* Título da seção Sobre */
     margin: 0 0 10px 0;
     font-size: 20px;
 }
 
-.about p {
+.about p { /* Texto da seção Sobre */
     margin: 25px 0 0 0;
     font-size: 14px;
 }
 
+.main-content { /* Espaço de escrever o texto */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.main-content h2 {  /* Título Casos Hipotéticos */
+    color: #1B2559;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: auto;
+}
+
+.input-container { /* Container do input e botão */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.input-container textarea { /* Campo de texto */
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    border: 2px solid #CCCCCC;
+    border-radius: 10px;
+    font-size: 16px;
+    resize: none;
+    box-sizing: border-box;
+    border: 1px solid #5131ce;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 680px;
+    padding: 10px 0 0 0;
+}
+
+.button-container button { /* Botão Simular */
+    background: linear-gradient(190deg, #7B5AFF, #4A25E1);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.button-container button:disabled {
+    background: #CCCCCC;
+    cursor: not-allowed;
+}
+
+.button-container button:not(:disabled):hover {
+    background-color: #553fd6;
+}
+
+.button-container button:hover { /* Efeito ao passar o mouse no botão */
+    background: linear-gradient(190deg, #917eff, #553fd6);
+    outline: 2px solid #FFF;
+}
+
+.button-container button:active { /* Efeito ao clicar no botão */
+    background: linear-gradient(190deg, #553fd6, #281880);
+}
+
+.chat-container { /* Container para mensagens de chat */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 680px;
+    position: relative;
+}
+
+#chat-box { /* Caixa de mensagens */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    box-sizing: border-box;
+}
+
+.result-image { /* Imagem do chat-box */
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: -10px;
+    left: calc(50% - 10px);
+}
+
+.message { /* Estilo geral para mensagens */
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    word-wrap: break-word;
+}
+
+.user { /* Mensagem do usuário */
+    align-self: flex-end;
+    background-color: #917eff; 
+}
+
+.bot { /* Mensagem do sistema */
+    align-self: flex-start;
+    background-color: #E0E0E0;
+}
+
+.hidden {
+    display: none;
+}
+
+#raio-image {
+    position: absolute;
+    top: 45%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    width: 30vh;
+    height: auto;
+    z-index: -1;
+}
+
 /* Responsividade */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .container {
         flex-direction: column;
-        height: 100%; /* Garante que o container ocupe 100% da altura da tela */
     }
 
     .sidebar {
         width: 100%;
+        margin-bottom: 20px;
         padding: 10px;
-        margin-top: 0;
     }
 
     .main-content {
         padding: 10px;
     }
 
-    .input-container textarea {
+    .input-container textarea,
+    .button-container,
+    .chat-container {
         width: 100%;
-        box-sizing: border-box; /* Garante que padding e border não aumentem o tamanho total */
-    }
-
-    .button-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        position: static; /* Removido sticky para comportamento normal */
-    }
-
-    .button-container button {
-        width: 100%; /* Faz com que o botão se ajuste à largura do container */
+        max-width: 100%;
     }
 
     #chat-box {
-        max-height: calc(100vh - 150px); /* Ajuste para dar mais espaço na tela móvel */
+        max-height: 300px;
     }
 
     #raio-image {
@@ -334,15 +312,34 @@ html {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .about {
-        padding: 40px 10px;
-        text-align: center;
+        padding: 30px 5px;
     }
 
     .about .circle {
-        width: 60px;
-        height: 60px;
-        top: -30px;
+        width: 50px;
+        height: 50px;
+        top: -25px;
+    }
+
+    .input-container textarea,
+    .button-container,
+    .chat-container {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .input-container textarea {
+        font-size: 14px;
+    }
+
+    .button-container button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    #chat-box {
+        max-height: 250px;
     }
 }
