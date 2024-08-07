@@ -103,8 +103,7 @@
             function processMessage(message) {
                 // Simulação de chamada à API
                 setTimeout(() => {
-                    const responseMessage = `Resposta gerada para: "${message}"`;
-                    addMessageToChat('bot', responseMessage);
+                    addMessageToChat('bot');
                 }, 1000);
             }
         });
