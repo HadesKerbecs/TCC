@@ -58,12 +58,12 @@
             const sendButton = document.getElementById('send-button');
             const refreshLink = document.getElementById('refresh-link');
             const raioImage = document.getElementById('raio-image');
-
+        
             refreshLink.addEventListener('click', function(event) {
                 event.preventDefault(); 
                 location.reload(); 
             });
-
+        
             userInput.addEventListener('input', function() {
                 if (userInput.value.trim() !== '') {
                     sendButton.disabled = false;
@@ -71,7 +71,7 @@
                     sendButton.disabled = true;
                 }
             });
-
+        
             function sendMessage() {
                 const userMessage = userInput.value.trim();
                 if (userMessage !== '') {
@@ -82,16 +82,16 @@
                     chatBox.classList.remove('hidden'); // Mostra o chatbox
                 }
             }
-
+        
             sendButton.addEventListener('click', sendMessage);
-
+        
             userInput.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter') {
                     event.preventDefault(); // Previne a quebra de linha
                     sendMessage();
                 }
             });
-
+        
             function addMessageToChat(sender, message) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', sender);
@@ -99,14 +99,39 @@
                 chatBox.appendChild(messageElement);
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
-
+        
             function processMessage(message) {
+<<<<<<< HEAD
+                fetch('/ferramentaweb/gerar_caso', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                    body: JSON.stringify({
+                        'user_input': message
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.response) {
+                        addMessageToChat('bot', data.response);
+                    } else if (data.error) {
+                        addMessageToChat('bot', "Erro: " + data.error);
+                    }
+                })
+                .catch(error => {
+                    addMessageToChat('bot', "Erro na conexão com o servidor.");
+                }); // Removi o ponto e vírgula extra
+=======
                 // Simulação de chamada à API
                 setTimeout(() => {
                     addMessageToChat('bot');
                 }, 1000);
+>>>>>>> 6c59e14a26664c07179bfe1866a947ad36769fd7
             }
         });
+        
     </script>
 </body>
 </html>
