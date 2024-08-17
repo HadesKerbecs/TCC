@@ -91,44 +91,19 @@
                     sendMessage();
                 }
             });
-        
             function addMessageToChat(sender, message) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', sender);
                 messageElement.textContent = message;
-                chatBox.appendChild(messageElement);
-                chatBox.scrollTop = chatBox.scrollHeight;
+                chatBox.insertBefore(messageElement, chatBox.firstChild); // Insere a nova mensagem no início
             }
+            
         
             function processMessage(message) {
-<<<<<<< HEAD
-                fetch('/ferramentaweb/gerar_caso', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                    },
-                    body: JSON.stringify({
-                        'user_input': message
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.response) {
-                        addMessageToChat('bot', data.response);
-                    } else if (data.error) {
-                        addMessageToChat('bot', "Erro: " + data.error);
-                    }
-                })
-                .catch(error => {
-                    addMessageToChat('bot', "Erro na conexão com o servidor.");
-                }); // Removi o ponto e vírgula extra
-=======
                 // Simulação de chamada à API
                 setTimeout(() => {
                     addMessageToChat('bot');
                 }, 1000);
->>>>>>> 6c59e14a26664c07179bfe1866a947ad36769fd7
             }
         });
         
