@@ -113,7 +113,7 @@
                     if (data.response) {
                         addMessageToChat('bot', data.response);
                     } else if (data.error) {
-                        addMessageToChat('bot', "Ocorreu um erro: " + data.error);
+                        addMessageToChat('bot', data.error);
                     }
                 } catch (error) {
                     addMessageToChat('bot', "Erro ao se conectar com o servidor.");
