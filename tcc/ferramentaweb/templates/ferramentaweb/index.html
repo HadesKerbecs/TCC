@@ -91,6 +91,7 @@
                     sendMessage();
                 }
             });
+
             function addMessageToChat(sender, message) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', sender);
@@ -98,15 +99,27 @@
                 chatBox.insertBefore(messageElement, chatBox.firstChild); // Insere a nova mensagem no início
             }
             
-        
-            function processMessage(message) {
-                // Simulação de chamada à API
-                setTimeout(() => {
-                    addMessageToChat('bot');
-                }, 1000);
+            async function processMessage(message) {
+                try {
+                    const response = await fetch("{% url 'gerar_caso' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ user_input: message })
+                    });
+                    const data = await response.json();
+                    if (data.response) {
+                        addMessageToChat('bot', data.response);
+                    } else if (data.error) {
+                        addMessageToChat('bot', "Ocorreu um erro: " + data.error);
+                    }
+                } catch (error) {
+                    addMessageToChat('bot', "Erro ao se conectar com o servidor.");
+                }
             }
         });
-        
     </script>
 </body>
 </html>
