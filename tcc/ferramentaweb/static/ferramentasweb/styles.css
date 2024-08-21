@@ -4,7 +4,7 @@ body {
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
     height: 100vh;
     min-height: 100vh; 
-    background: linear-gradient(to bottom, #ffffff 65%, #727272 190%);
+    background: linear-gradient(to bottom, #ffffff 65%, #a5a5a5 190%);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center; 
@@ -22,7 +22,7 @@ body {
 }
 
 .sidebar {
-    background: linear-gradient(to bottom, #dddddd 65%, #727272 100%);
+    background: linear-gradient(to bottom, #eeeded 65%, #c2c2c2 100%);
     border: 1px solid #7B5AFF;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
@@ -31,9 +31,10 @@ body {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
     height: 100%;
 }
+
 
 .sidebar h1 {
     color: #120F43;
@@ -45,34 +46,17 @@ body {
     font-weight: bold;
 }
 
-.menu-item {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-}
-
 .menu-item2 {
     display: flex;
     align-items: center;
-    margin: 15px 0 0 10px;
-}
-
-.menu-item img {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
+    justify-content: center; /* Garante que o conteúdo da div seja centralizado */
+    align-self: center; /* Centraliza o botão horizontalmente na sidebar */
+    margin-top: 0; /* Garante que ele fique na parte superior */
 }
 
 .menu-item2 img {
     width: 16px;
     height: 16px;
-    margin-right: 15px;
-}
-
-.menu h2 {
-    color: #120F43;
-    font-size: 18px;
-    margin: 0;
 }
 
 .menu2 h2 {
@@ -101,7 +85,7 @@ body {
     position: relative;
     max-width: 100%;
     box-sizing: border-box;
-    margin: 0 auto;
+    margin-top: auto; /* Posiciona o "Sobre" na parte inferior */
 }
 
 .about .circle {
@@ -142,7 +126,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: transparent;
     padding: 20px;
     box-sizing: border-box;
@@ -180,11 +164,32 @@ body {
 
 .button-container {
     display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 680px;
+    justify-content: flex-start; /* Alinha o botão à esquerda */
     padding: 10px 0 0 0;
-    margin-top: auto;
+}
+
+.refresh-button {
+    background: none; /* Remove a linha */
+    color: white; /* Define a cor do texto como branco */
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.refresh-button a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.icon-white {
+    filter: brightness(0) invert(1); /* Deixa a imagem branca */
+    margin-right: 8px; /* Espaçamento entre a imagem e o texto */
+    width: 16px;
+    height: 16px;
 }
 
 .button-container button {
@@ -204,10 +209,6 @@ body {
     cursor: not-allowed;
 }
 
-.button-container button:not(:disabled):hover {
-    background-color: #553fd6;
-}
-
 .button-container button:hover {
     background: linear-gradient(190deg, #917eff, #553fd6);
     outline: 2px solid #FFF;
@@ -222,7 +223,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 680px;
+    max-width: 1400px;
     position: relative;
     flex: 1;
     overflow: hidden;
@@ -232,7 +233,7 @@ body {
 
 #chat-box {
     display: flex;
-    flex-direction: column-reverse; /* Altera a ordem das mensagens */
+    flex-direction: column; /* Altera para coluna normal */
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
@@ -244,6 +245,55 @@ body {
     padding: 20px;
     box-sizing: border-box;
     margin-bottom: 20px; /* Ajuste para manter o espaçamento */
+}
+
+.textarea-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+}
+
+#user-input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    border: 2px solid #CCCCCC;
+    border-radius: 10px;
+    font-size: 16px;
+    resize: none;
+    box-sizing: border-box;
+    border: 1px solid #b1a3ff;
+    margin-top: auto;
+    padding-right: 110px; /* Espaço para o botão */
+}
+
+#send-button {
+    position: absolute;
+    bottom: 14px;
+    right: 10px;
+    background: linear-gradient(190deg, #7B5AFF, #4A25E1);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 1; /* Garante que o botão fique acima do textarea */
+}
+
+#send-button:disabled {
+    background: #CCCCCC;
+    cursor: not-allowed;
+}
+
+#send-button:hover {
+    background: linear-gradient(190deg, #917eff, #553fd6);
+    outline: 2px solid #FFF;
+}
+
+#send-button:active {
+    background: linear-gradient(190deg, #553fd6, #281880);
 }
 
 
@@ -262,6 +312,7 @@ body {
     border-radius: 8px;
     box-sizing: border-box;
     word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 .user {
@@ -282,12 +333,13 @@ body {
     position: absolute;
     top: 45%;
     left: 60%;
-    transform: translate(-50%, -50%);
+    transform: translate(-70%, -50%);
     width: 30vh;
     height: auto;
     z-index: -1;
-    opacity: 0.5;
+    opacity: 0.10;
 }
+
 
 /* Responsividade */
 @media (max-width: 768px) {
@@ -309,7 +361,7 @@ body {
     .input-container textarea,
     .button-container,
     .chat-container {
-        width: 100%;
+        width: 95%;
         max-width: 100%;
     }
 

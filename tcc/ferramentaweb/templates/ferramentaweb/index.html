@@ -12,16 +12,14 @@
     <div class="container">
         <div class="sidebar">
             <h1>PsicoSimula</h1>
-            <div class="menu">
-                <div class="menu-item">
-                    <img src="{% static 'ferramentasweb/images/Vector2.png' %}" alt="Ícone Informações">
-                    <h2>Informações</h2>
-                </div>
-                <div class="menu2">
-                    <div class="menu-item2">
-                        <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Informações">
-                        <h2><a href="#" class="menu-link" id="refresh-link">Gerar Novo Caso</a></h2>
-                    </div>
+            <div class="menu-item2">
+                <div class="button-container">
+                    <button class="refresh-button">
+                        <a href="#" id="refresh-link">
+                            <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Informações" class="icon-white">
+                            Gerar Novo Caso
+                        </a>
+                    </button>
                 </div>
             </div>
             <div class="about">
@@ -34,7 +32,7 @@
         </div>
         <div class="main-content">
             <h2>Casos Hipotéticos</h2>
-            <img id="raio-image" src="{% static 'ferramentasweb/images/Raio.png' %}" alt="Ícone Informações">
+            <img id="raio-image" src="{% static 'ferramentasweb/images/psicosimula.png' %}" alt="Ícone Informações">
             <div class="chat-container">
                 <div id="chat-box" class="hidden">
                     <div>
@@ -43,8 +41,8 @@
                     <!-- Mensagens da conversa serão adicionadas aqui -->
                 </div>
                 <div class="input-container">
-                    <textarea id="user-input" placeholder="Informe o caso clínico"></textarea>
-                    <div class="button-container">
+                    <div class="textarea-wrapper">
+                        <textarea id="user-input" placeholder="Informe o caso clínico"></textarea>
                         <button id="send-button" disabled>Simular</button>
                     </div>
                 </div>
@@ -57,13 +55,12 @@
             const userInput = document.getElementById('user-input');
             const sendButton = document.getElementById('send-button');
             const refreshLink = document.getElementById('refresh-link');
-            const raioImage = document.getElementById('raio-image');
-        
+
             refreshLink.addEventListener('click', function(event) {
                 event.preventDefault(); 
                 location.reload(); 
             });
-        
+
             userInput.addEventListener('input', function() {
                 if (userInput.value.trim() !== '') {
                     sendButton.disabled = false;
@@ -71,7 +68,16 @@
                     sendButton.disabled = true;
                 }
             });
-        
+
+            sendButton.addEventListener('click', sendMessage);
+
+            userInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Previne a quebra de linha
+                    sendMessage();
+                }
+            });
+
             function sendMessage() {
                 const userMessage = userInput.value.trim();
                 if (userMessage !== '') {
@@ -82,26 +88,18 @@
                     chatBox.classList.remove('hidden'); // Mostra o chatbox
                 }
             }
-        
-            sendButton.addEventListener('click', sendMessage);
-        
-            userInput.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Previne a quebra de linha
-                    sendMessage();
-                }
-            });
 
             function addMessageToChat(sender, message) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', sender);
                 messageElement.textContent = message;
-                chatBox.insertBefore(messageElement, chatBox.firstChild); // Insere a nova mensagem no início
+                chatBox.appendChild(messageElement); // Adiciona a mensagem ao final do chat
+                chatBox.scrollTop = chatBox.scrollHeight; // Rola para o final do chat
             }
-            
+
             async function processMessage(message) {
                 try {
-                    const response = await fetch("{% url 'gerar_caso' %}", {
+                    const response = await fetch("{% url 'gerar_caso_stream' %}", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -109,14 +107,47 @@
                         },
                         body: JSON.stringify({ user_input: message })
                     });
-                    const data = await response.json();
-                    if (data.response) {
-                        addMessageToChat('bot', data.response);
-                    } else if (data.error) {
-                        addMessageToChat('bot', "Ocorreu um erro: " + data.error);
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let accumulatedText = '';
+                    let botMessageElement = null;
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+
+                        const chunk = decoder.decode(value, { stream: true });
+                        const parsedChunks = chunk.split('\n').filter(chunk => chunk.trim() !== '');
+
+                        for (const parsedChunk of parsedChunks) {
+                            try {
+                                const jsonChunk = JSON.parse(parsedChunk);
+                                if (jsonChunk.response) {
+                                    accumulatedText = jsonChunk.response;
+
+                                    if (!botMessageElement) {
+                                        botMessageElement = document.createElement('div');
+                                        botMessageElement.classList.add('message', 'bot');
+                                        chatBox.appendChild(botMessageElement);
+                                    }
+
+                                    botMessageElement.textContent = accumulatedText; // Atualiza o conteúdo sem adicionar novas linhas
+                                    chatBox.scrollTop = chatBox.scrollHeight; // Rola para o final do chat
+                                } else if (jsonChunk.error) {
+                                    addMessageToChat('bot', jsonChunk.error);
+                                }
+                            } catch (error) {
+                                addMessageToChat('bot', "Erro ao processar a resposta do servidor, você quis dizer algo?.");
+                            }
+                        }
                     }
                 } catch (error) {
-                    addMessageToChat('bot', "Erro ao se conectar com o servidor.");
+                    addMessageToChat('bot', "Erro ao se conectar com o servidor: " + error.message);
                 }
             }
         });
