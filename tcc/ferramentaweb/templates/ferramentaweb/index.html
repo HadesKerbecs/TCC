@@ -7,24 +7,34 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'ferramentasweb/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'ferramentasweb/images/logo3.png' %}" type="image/png">
 </head>
 <body>
     <div class="container">
         <div class="sidebar">
-            <h1>PsicoSimula</h1>
+            <img src="{% static 'ferramentasweb/images/logo1.png' %}" alt="Logo PsicoSimula" class="logo-title">
+            <h1></h1>
             <div class="menu-item2">
                 <div class="button-container">
-                    <button class="refresh-button">
+                    <button class="button refresh-button" >
                         <a href="#" id="refresh-link">
-                            <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Informações" class="icon-white">
+                            <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Gerar Caso" class="icon-white">
                             Gerar Novo Caso
                         </a>
+                    </button>
+                    <button class="button" id="button-historico">
+                        <img src="{% static 'ferramentasweb/images/Historico.png' %}" alt="Ícone Historico" class="icon-white">
+                        Histórico
+                    </button>
+                    <button class="button" id="button-compartilhar">
+                        <img src="{% static 'ferramentasweb/images/Download.png' %}" alt="ícone Compartilhar" class="icon-white">
+                        Compartilhar
                     </button>
                 </div>
             </div>
             <div class="about">
                 <div class="circle">
-                    <img src="{% static 'ferramentasweb/images/psicosimula.png' %}" alt="Ícone" />
+                    <img src="{% static 'ferramentasweb/images/logo4.png' %}" alt="Ícone" />
                 </div>
                 <h3>Sobre</h3>
                 <p>Explore e gere casos clínicos hipotéticos para estudo em psicopatologia com o poder da inteligência artificial generativa. Encontre respostas e recursos que você precisa.</p>
@@ -49,31 +59,59 @@
             </div>
         </div>
     </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const chatBox = document.getElementById('chat-box');
             const userInput = document.getElementById('user-input');
             const sendButton = document.getElementById('send-button');
             const refreshLink = document.getElementById('refresh-link');
+            const buttonCompartilhar = document.getElementById('button-compartilhar');
+
+            // Função para compartilhar o conteúdo da conversa
+            function compartilharConteudoConsulta() {
+                const mensagens = chatBox.querySelectorAll('.message');
+                let consultaConteudo = '';
+
+                mensagens.forEach(mensagem => {
+                    consultaConteudo += mensagem.textContent + '\n'; // Concatena o conteúdo das mensagens
+                });
+
+                if (consultaConteudo.trim() === "") {
+                    alert('Nenhuma consulta disponível para compartilhar.');
+                    return;
+                }
+
+                // Compartilha o conteúdo concatenado
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Consulta do PsicoSimula',
+                        text: consultaConteudo.trim(),
+                    })
+                    .then(() => console.log('Consulta compartilhada com sucesso'))
+                    .catch((error) => console.error('Erro ao compartilhar:', error));
+                } else {
+                    alert('O compartilhamento não é suportado neste dispositivo.');
+                }
+            }
+
+            // Adiciona o evento ao botão de compartilhar
+            buttonCompartilhar.addEventListener('click', compartilharConteudoConsulta);
 
             refreshLink.addEventListener('click', function(event) {
-                event.preventDefault(); 
-                location.reload(); 
+                event.preventDefault();
+                location.reload();
             });
 
             userInput.addEventListener('input', function() {
-                if (userInput.value.trim() !== '') {
-                    sendButton.disabled = false;
-                } else {
-                    sendButton.disabled = true;
-                }
+                sendButton.disabled = userInput.value.trim() === '';
             });
 
             sendButton.addEventListener('click', sendMessage);
 
             userInput.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter') {
-                    event.preventDefault(); // Previne a quebra de linha
+                    event.preventDefault();
                     sendMessage();
                 }
             });
@@ -85,7 +123,7 @@
                     processMessage(userMessage);
                     userInput.value = '';
                     sendButton.disabled = true;
-                    chatBox.classList.remove('hidden'); // Mostra o chatbox
+                    chatBox.classList.remove('hidden');
                 }
             }
 
@@ -93,8 +131,8 @@
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', sender);
                 messageElement.textContent = message;
-                chatBox.appendChild(messageElement); // Adiciona a mensagem ao final do chat
-                chatBox.scrollTop = chatBox.scrollHeight; // Rola para o final do chat
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
             }
 
             async function processMessage(message) {
@@ -108,9 +146,7 @@
                         body: JSON.stringify({ user_input: message })
                     });
 
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
+                    if (!response.ok) throw new Error('Network response was not ok');
 
                     const reader = response.body.getReader();
                     const decoder = new TextDecoder();
@@ -124,7 +160,7 @@
                         const chunk = decoder.decode(value, { stream: true });
                         const parsedChunks = chunk.split('\n').filter(chunk => chunk.trim() !== '');
 
-                        for (const parsedChunk of parsedChunks) {
+                        parsedChunks.forEach(parsedChunk => {
                             try {
                                 const jsonChunk = JSON.parse(parsedChunk);
                                 if (jsonChunk.response) {
@@ -136,21 +172,21 @@
                                         chatBox.appendChild(botMessageElement);
                                     }
 
-                                    botMessageElement.textContent = accumulatedText; // Atualiza o conteúdo sem adicionar novas linhas
-                                    chatBox.scrollTop = chatBox.scrollHeight; // Rola para o final do chat
+                                    botMessageElement.textContent = accumulatedText;
+                                    chatBox.scrollTop = chatBox.scrollHeight;
                                 } else if (jsonChunk.error) {
                                     addMessageToChat('bot', jsonChunk.error);
                                 }
                             } catch (error) {
-                                addMessageToChat('bot', "Erro ao processar a resposta do servidor, você quis dizer algo?.");
+                                addMessageToChat('bot', "Erro ao processar a resposta do servidor.");
                             }
-                        }
+                        });
                     }
                 } catch (error) {
                     addMessageToChat('bot', "Erro ao se conectar com o servidor: " + error.message);
                 }
             }
         });
-    </script>
+    </script>        
 </body>
 </html>
