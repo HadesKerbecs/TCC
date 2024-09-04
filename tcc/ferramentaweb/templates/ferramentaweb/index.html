@@ -16,18 +16,18 @@
             <h1></h1>
             <div class="menu-item2">
                 <div class="button-container">
-                    <button class="button refresh-button" >
+                    <button class="button refresh-button">
                         <a href="#" id="refresh-link">
                             <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Gerar Caso" class="icon-white">
                             Gerar Novo Caso
                         </a>
                     </button>
                     <button class="button" id="button-historico">
-                        <img src="{% static 'ferramentasweb/images/Historico.png' %}" alt="Ícone Historico" class="icon-white">
+                        <img src="{% static 'ferramentasweb/images/Historico.png' %}" alt="Ícone Histórico" class="icon-white">
                         Histórico
                     </button>
                     <button class="button" id="button-compartilhar">
-                        <img src="{% static 'ferramentasweb/images/Download.png' %}" alt="ícone Compartilhar" class="icon-white">
+                        <img src="{% static 'ferramentasweb/images/Download.png' %}" alt="Ícone Compartilhar" class="icon-white">
                         Compartilhar
                     </button>
                 </div>
@@ -46,7 +46,7 @@
             <div class="chat-container">
                 <div id="chat-box" class="hidden">
                     <div>
-                        <img src="{% static 'ferramentasweb/images/Brilho.png' %}" alt="ícone Resultado" class="result-image"/>
+                        <img src="{% static 'ferramentasweb/images/Brilho.png' %}" alt="Ícone Resultado" class="result-image"/>
                     </div>
                     <!-- Mensagens da conversa serão adicionadas aqui -->
                 </div>
@@ -59,7 +59,15 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Contêiner para o histórico -->
+    <div id="history-box" style="display: none;">
+        <div id="history-content"></div>
+    </div>
+
+    <!-- Campo hidden para armazenar o ID do usuário -->
+    <input type="hidden" name="user_id" value="{{ user_id }}">
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const chatBox = document.getElementById('chat-box');
@@ -67,21 +75,24 @@
             const sendButton = document.getElementById('send-button');
             const refreshLink = document.getElementById('refresh-link');
             const buttonCompartilhar = document.getElementById('button-compartilhar');
-
+            const buttonHistorico = document.getElementById('button-historico');
+            const historyBox = document.getElementById('history-box');
+            const historyContent = document.getElementById('history-content');
+        
             // Função para compartilhar o conteúdo da conversa
             function compartilharConteudoConsulta() {
                 const mensagens = chatBox.querySelectorAll('.message');
                 let consultaConteudo = '';
-
+        
                 mensagens.forEach(mensagem => {
                     consultaConteudo += mensagem.textContent + '\n'; // Concatena o conteúdo das mensagens
                 });
-
+        
                 if (consultaConteudo.trim() === "") {
                     alert('Nenhuma consulta disponível para compartilhar.');
                     return;
                 }
-
+        
                 // Compartilha o conteúdo concatenado
                 if (navigator.share) {
                     navigator.share({
@@ -94,28 +105,28 @@
                     alert('O compartilhamento não é suportado neste dispositivo.');
                 }
             }
-
+        
             // Adiciona o evento ao botão de compartilhar
             buttonCompartilhar.addEventListener('click', compartilharConteudoConsulta);
-
+        
             refreshLink.addEventListener('click', function(event) {
                 event.preventDefault();
                 location.reload();
             });
-
+        
             userInput.addEventListener('input', function() {
                 sendButton.disabled = userInput.value.trim() === '';
             });
-
+        
             sendButton.addEventListener('click', sendMessage);
-
+        
             userInput.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter') {
                     event.preventDefault();
                     sendMessage();
                 }
             });
-
+        
             function sendMessage() {
                 const userMessage = userInput.value.trim();
                 if (userMessage !== '') {
@@ -126,7 +137,7 @@
                     chatBox.classList.remove('hidden');
                 }
             }
-
+        
             function addMessageToChat(sender, message) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', sender);
@@ -134,7 +145,7 @@
                 chatBox.appendChild(messageElement);
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
-
+        
             async function processMessage(message) {
                 try {
                     const response = await fetch("{% url 'gerar_caso_stream' %}", {
@@ -145,33 +156,33 @@
                         },
                         body: JSON.stringify({ user_input: message })
                     });
-
+            
                     if (!response.ok) throw new Error('Network response was not ok');
-
+            
                     const reader = response.body.getReader();
                     const decoder = new TextDecoder();
                     let accumulatedText = '';
                     let botMessageElement = null;
-
+            
                     while (true) {
                         const { done, value } = await reader.read();
                         if (done) break;
-
+            
                         const chunk = decoder.decode(value, { stream: true });
                         const parsedChunks = chunk.split('\n').filter(chunk => chunk.trim() !== '');
-
+            
                         parsedChunks.forEach(parsedChunk => {
                             try {
                                 const jsonChunk = JSON.parse(parsedChunk);
                                 if (jsonChunk.response) {
                                     accumulatedText = jsonChunk.response;
-
+            
                                     if (!botMessageElement) {
                                         botMessageElement = document.createElement('div');
                                         botMessageElement.classList.add('message', 'bot');
                                         chatBox.appendChild(botMessageElement);
                                     }
-
+            
                                     botMessageElement.textContent = accumulatedText;
                                     chatBox.scrollTop = chatBox.scrollHeight;
                                 } else if (jsonChunk.error) {
@@ -186,7 +197,37 @@
                     addMessageToChat('bot', "Erro ao se conectar com o servidor: " + error.message);
                 }
             }
+        
+            buttonHistorico.addEventListener('click', function() {
+                const userId = document.querySelector('input[name="user_id"]').value;
+                fetch(`/get-history/?user_id=${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Dados recebidos do histórico:', data); // Verifique no console
+        
+                        // Atualize o conteúdo do histórico
+                        if (data.length > 0) {
+                            historyContent.innerHTML = data.map(item => {
+                                // Formate cada item do histórico
+                                let formattedMessage = '';
+                                if (item.role === 'system') {
+                                    formattedMessage = `<strong>System:</strong> ${item.content}`;
+                                } else if (item.role === 'user') {
+                                    formattedMessage = `<strong>Você:</strong> ${item.content}`;
+                                } else if (item.role === 'assistant') {
+                                    formattedMessage = `<strong>Assistente:</strong> ${item.content}`;
+                                }
+                                return `<p>${formattedMessage}</p>`;
+                            }).join('');
+                            historyBox.style.display = 'block';
+                        } else {
+                            historyContent.innerHTML = '<p>Não há histórico disponível.</p>';
+                            historyBox.style.display = 'block';
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar o histórico:', error));
+            });
         });
-    </script>        
+    </script>
 </body>
 </html>

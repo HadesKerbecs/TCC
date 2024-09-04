@@ -376,6 +376,22 @@ body {
     opacity: 0.10;
 }
 
+#history-box {
+    display: none; /* Inicialmente escondido */
+    border: 1px solid #ccc; /* Borda para delimitar o box */
+    background-color: #f9f9f9; /* Fundo claro para destacar */
+    padding: 10px; /* Espaçamento interno */
+    max-height: 300px; /* Limita a altura máxima */
+    overflow-y: auto; /* Adiciona barra de rolagem se necessário */
+    margin-top: 20px; /* Espaço entre o chat e o histórico */
+}
+
+#history-content p {
+    margin: 5px 0; /* Espaçamento entre as mensagens */
+    font-size: 14px; /* Tamanho da fonte */
+    color: #333; /* Cor do texto */
+}
+
 
 /* Responsividade */
 @media (max-width: 768px) {
