@@ -7,5 +7,5 @@ urlpatterns = [
     path('get-history/', views.get_history, name='get_history'),
     path('gerar-caso-stream/', views.gerar_caso_stream, name='gerar_caso_stream'),
     path('process-message/', views.process_message, name='process_message'),
-
+    path('personalizar-caso/', views.personalizar_caso, name='personalizar_caso'),
 ]

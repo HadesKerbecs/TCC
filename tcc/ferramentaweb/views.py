@@ -40,7 +40,7 @@ def gerar_caso_stream(request):
             def stream_response():
                 response = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
-                    messages=chat_history,
+                    messages=chat_history,  # Envia todo o histórico da conversa
                     max_tokens=1000,
                     temperature=0.7,
                     stream=True
@@ -69,7 +69,6 @@ def gerar_caso_stream(request):
                 yield json.dumps({"response": accumulated_text}) + "\n"
 
             return StreamingHttpResponse(stream_response(), content_type='application/json')
-
         except Exception as e:
             return StreamingHttpResponse(
                 json.dumps({'error': str(e)}), 
@@ -77,22 +76,27 @@ def gerar_caso_stream(request):
             )
     else:
         return JsonResponse({'error': 'Método não permitido.'}, status=405)
+
     
 def process_message(request):
     if request.method == 'POST':
-        user_id = request.POST.get('user_id', '')
-        message = request.POST.get('message')
+        user_id = request.POST.get('user_id', '').strip()
+        message = request.POST.get('message', '').strip()
 
-        if user_id is None or user_id.strip() == "":
+        if not user_id:
             return JsonResponse({'error': 'User ID é obrigatório.'}, status=400)
+        if not message:
+            return JsonResponse({'error': 'Mensagem é obrigatória.'}, status=400)
 
-        # Salvar mensagem no histórico
+        # Salvar a mensagem no histórico da base de dados
         ConversationHistory.objects.create(user_id=user_id, message=message)
 
         # Processar a mensagem e gerar uma resposta
-        response = process_user_message(message)  # Supondo que você tem uma função para processar a mensagem
+        response = process_user_message(message)  # Certifique-se que a função process_user_message existe
 
         return JsonResponse({'response': response})
+    else:
+        return JsonResponse({'error': 'Método não permitido.'}, status=405)
 
 
 def get_history(request):
@@ -107,3 +111,17 @@ def get_history(request):
     print(f"Histórico da sessão: {chat_history}")  # Adicione isto para depuração
 
     return JsonResponse(chat_history, safe=False)
+
+def personalizar_caso(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        idade = data.get('idade')
+        sexo = data.get('sexo')
+        historico_medico = data.get('historico_medico')
+        contexto_social = data.get('contexto_social')
+        
+        # Lógica para processar a personalização
+        # ...
+
+        return JsonResponse({'status': 'success'}, status=200)
+    return JsonResponse({'status': 'failed'}, status=400)

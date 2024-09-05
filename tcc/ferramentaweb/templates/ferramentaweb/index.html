@@ -30,6 +30,10 @@
                         <img src="{% static 'ferramentasweb/images/Download.png' %}" alt="Ícone Compartilhar" class="icon-white">
                         Compartilhar
                     </button>
+                    <button class="button" id="button-personalizar">
+                        <img src="{% static 'ferramentasweb/images/personalizar.png' %}" alt="Ícone Personalizar" class="icon-white">
+                        Personalizar
+                    </button>
                 </div>
             </div>
             <div class="about">
@@ -43,6 +47,33 @@
         <div class="main-content">
             <h2>Casos Hipotéticos</h2>
             <img id="raio-image" src="{% static 'ferramentasweb/images/psicosimula.png' %}" alt="Ícone Informações">
+            <!-- Modal para personalização -->
+            <div id="customize-modal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>Personalize o Caso Clínico</h2>
+                    <form id="customize-form">
+                        <label for="idade">Idade:</label>
+                        <input type="number" id="idade" name="idade" min="0" step="1">
+            
+                        <label for="sexo">Sexo:</label>
+                        <select id="sexo" name="sexo">
+                            <option value="">Selecione</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="outro">Outro</option>
+                        </select>
+            
+                        <label for="historico-medico">Histórico Médico:</label>
+                        <textarea id="historico-medico" name="historico-medico"></textarea>
+            
+                        <label for="contexto-social">Contexto Social:</label>
+                        <textarea id="contexto-social" name="contexto-social"></textarea>
+            
+                        <button type="submit">Aplicar</button>
+                    </form>
+                </div>
+            </div>
             <div class="chat-container">
                 <div id="chat-box" class="hidden">
                     <div>
@@ -58,11 +89,11 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Contêiner para o histórico -->
-    <div id="history-box" style="display: none;">
-        <div id="history-content"></div>
+        <!-- Contêiner para o histórico, agora dentro da container -->
+        <div id="history-box" class="hidden">
+            <button class="close-btn">&times;</button>
+            <div id="history-content"></div>
+        </div>
     </div>
 
     <!-- Campo hidden para armazenar o ID do usuário -->
@@ -78,7 +109,12 @@
             const buttonHistorico = document.getElementById('button-historico');
             const historyBox = document.getElementById('history-box');
             const historyContent = document.getElementById('history-content');
-        
+            const closeBtn = document.querySelector('#history-box .close-btn');
+            const buttonPersonalizar = document.getElementById('button-personalizar');
+            const customizeModal = document.getElementById('customize-modal');
+            const closeCustomizeBtn = document.querySelector('#customize-modal .close-btn');
+            const customizeForm = document.getElementById('customize-form');
+            
             // Função para compartilhar o conteúdo da conversa
             function compartilharConteudoConsulta() {
                 const mensagens = chatBox.querySelectorAll('.message');
@@ -109,24 +145,7 @@
             // Adiciona o evento ao botão de compartilhar
             buttonCompartilhar.addEventListener('click', compartilharConteudoConsulta);
         
-            refreshLink.addEventListener('click', function(event) {
-                event.preventDefault();
-                location.reload();
-            });
-        
-            userInput.addEventListener('input', function() {
-                sendButton.disabled = userInput.value.trim() === '';
-            });
-        
-            sendButton.addEventListener('click', sendMessage);
-        
-            userInput.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    sendMessage();
-                }
-            });
-        
+            // Função para enviar a mensagem
             function sendMessage() {
                 const userMessage = userInput.value.trim();
                 if (userMessage !== '') {
@@ -138,6 +157,23 @@
                 }
             }
         
+            // Adiciona o evento ao botão de enviar
+            sendButton.addEventListener('click', sendMessage);
+        
+            // Habilita o botão de enviar ao digitar no textarea
+            userInput.addEventListener('input', function() {
+                sendButton.disabled = userInput.value.trim() === '';
+            });
+        
+            // Envia a mensagem ao pressionar Enter
+            userInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+        
+            // Adiciona mensagem ao chat
             function addMessageToChat(sender, message) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', sender);
@@ -146,6 +182,7 @@
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         
+            // Processa a mensagem do usuário
             async function processMessage(message) {
                 try {
                     const response = await fetch("{% url 'gerar_caso_stream' %}", {
@@ -156,33 +193,33 @@
                         },
                         body: JSON.stringify({ user_input: message })
                     });
-            
+        
                     if (!response.ok) throw new Error('Network response was not ok');
-            
+        
                     const reader = response.body.getReader();
                     const decoder = new TextDecoder();
                     let accumulatedText = '';
                     let botMessageElement = null;
-            
+        
                     while (true) {
                         const { done, value } = await reader.read();
                         if (done) break;
-            
+        
                         const chunk = decoder.decode(value, { stream: true });
                         const parsedChunks = chunk.split('\n').filter(chunk => chunk.trim() !== '');
-            
+        
                         parsedChunks.forEach(parsedChunk => {
                             try {
                                 const jsonChunk = JSON.parse(parsedChunk);
                                 if (jsonChunk.response) {
                                     accumulatedText = jsonChunk.response;
-            
+        
                                     if (!botMessageElement) {
                                         botMessageElement = document.createElement('div');
                                         botMessageElement.classList.add('message', 'bot');
                                         chatBox.appendChild(botMessageElement);
                                     }
-            
+        
                                     botMessageElement.textContent = accumulatedText;
                                     chatBox.scrollTop = chatBox.scrollHeight;
                                 } else if (jsonChunk.error) {
@@ -198,6 +235,7 @@
                 }
             }
         
+            // Evento para exibir o histórico ao clicar no botão "Histórico"
             buttonHistorico.addEventListener('click', function() {
                 const userId = document.querySelector('input[name="user_id"]').value;
                 fetch(`/get-history/?user_id=${userId}`)
@@ -217,17 +255,88 @@
                                 } else if (item.role === 'assistant') {
                                     formattedMessage = `<strong>Assistente:</strong> ${item.content}`;
                                 }
-                                return `<p>${formattedMessage}</p>`;
+                                return `<div>${formattedMessage}</div>`;
                             }).join('');
-                            historyBox.style.display = 'block';
                         } else {
-                            historyContent.innerHTML = '<p>Não há histórico disponível.</p>';
-                            historyBox.style.display = 'block';
+                            historyContent.innerHTML = '<p>Sem histórico disponível.</p>';
                         }
+                        
+                        // Exibir o histórico
+                        historyBox.style.display = 'block';
                     })
-                    .catch(error => console.error('Erro ao buscar o histórico:', error));
+                    .catch(error => {
+                        console.error('Erro ao obter histórico:', error);
+                    });
+            });
+        
+            // Fechar o histórico ao clicar no botão de fechar
+            closeBtn.addEventListener('click', function() {
+                historyBox.style.display = 'none';
+            });
+        
+            // Fechar o histórico ao clicar fora dele
+            historyBox.addEventListener('click', function(event) {
+                if (event.target === historyBox) {
+                    historyBox.style.display = 'none';
+                }
+            });
+        
+            // Função para abrir o modal de personalização
+            buttonPersonalizar.addEventListener('click', function() {
+                customizeModal.classList.remove('hidden');
+            });
+        
+            // Função para fechar o modal de personalização
+            closeCustomizeBtn.addEventListener('click', function() {
+                customizeModal.classList.add('hidden');
+            });
+        
+            // Fechar o modal ao clicar fora dele
+            customizeModal.addEventListener('click', function(event) {
+                if (event.target === customizeModal) {
+                    customizeModal.classList.add('hidden');
+                }
+            });
+        
+            // Função para enviar os dados de personalização
+            customizeForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                // Coletar dados do formulário
+                const idade = document.getElementById('idade').value;
+                const sexo = document.getElementById('sexo').value;
+                const historicoMedico = document.getElementById('historico-medico').value;
+                const contextoSocial = document.getElementById('contexto-social').value;
+        
+                // Enviar dados para o backend (exemplo de POST request)
+                fetch('/personalizar-caso/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        idade,
+                        sexo,
+                        historico_medico: historicoMedico,
+                        contexto_social: contextoSocial
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Dados de personalização enviados:', data);
+                    customizeModal.classList.add('hidden');
+                })
+                .catch(error => console.error('Erro ao enviar dados de personalização:', error));
+            });
+        
+            // Adiciona o evento ao botão de atualizar (refresh)
+            refreshLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                location.reload();
             });
         });
-    </script>
+        
+    </script>    
 </body>
 </html>

@@ -15,6 +15,7 @@ body {
 
 .container {
     display: flex;
+    position: relative;
     flex-direction: row;
     width: 100%;
     height: 100%;
@@ -68,12 +69,6 @@ body {
     height: 16px;
 }
 
-.menu2 h2 {
-    color: #120F43;
-    font-size: 18px;
-    margin: 0;
-}
-
 .menu-link {
     text-decoration: none;
     color: #120F43;
@@ -83,7 +78,6 @@ body {
 .menu-link:hover {
     color: #553fd6;
 }
-
 
 .about {
     background: linear-gradient(190deg, #554bc4 30%, #332c86 70%); 
@@ -228,7 +222,7 @@ body {
 }
 
 .button-container button {
-    background: linear-gradient(190deg, #acacac, #585858);
+    background: #CCCCCC;
     color: white;
     border: none;
     border-radius: 50px;
@@ -237,11 +231,6 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     position: relative;
-}
-
-.button-container button:disabled {
-    background: #CCCCCC;
-    cursor: not-allowed;
 }
 
 .button-container button:hover {
@@ -261,13 +250,13 @@ body {
     max-width: 1400px;
     position: relative;
     flex: 1;
-    overflow: hidden;
     gap: 10px;
     justify-content: flex-end;
 }
 
 #chat-box {
     display: flex;
+    position: relative;
     flex-direction: column; /* Altera para coluna normal */
     align-items: flex-start;
     justify-content: flex-start;
@@ -301,6 +290,7 @@ body {
     margin-top: auto;
     padding-right: 110px; /* Espaço para o botão */
 }
+
 #send-button {
     position: absolute;
     bottom: 14px;
@@ -357,7 +347,7 @@ body {
 
 .bot {
     align-self: flex-start;
-    background-color: #585858;
+    background-color: #CCCCCC;
     color: #ffffff
 }
 
@@ -376,23 +366,84 @@ body {
     opacity: 0.10;
 }
 
+/* Container do histórico que sobrepõe o chat-box */
 #history-box {
-    display: none; /* Inicialmente escondido */
-    border: 1px solid #ccc; /* Borda para delimitar o box */
-    background-color: #f9f9f9; /* Fundo claro para destacar */
-    padding: 10px; /* Espaçamento interno */
-    max-height: 300px; /* Limita a altura máxima */
-    overflow-y: auto; /* Adiciona barra de rolagem se necessário */
-    margin-top: 20px; /* Espaço entre o chat e o histórico */
+    display: none; /* Começa oculto */
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-46%, -50%);
+    width: 100%; /* Ajuste conforme necessário */
+    max-width: 1350px; /* Limita a largura máxima */
+    height: 60%; /* Ajuste conforme necessário */
+    background-color: rgba(255, 255, 255, 0.9); /* Fundo semi-transparente */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar */
+    z-index: 1000; /* Certifica que ele ficará sobre o chat-box */
+    border-radius: 10px;
+    overflow-y: auto; /* Permite rolagem se o conteúdo for maior que a caixa */
+    padding: 20px;
 }
 
-#history-content p {
-    margin: 5px 0; /* Espaçamento entre as mensagens */
-    font-size: 14px; /* Tamanho da fonte */
-    color: #333; /* Cor do texto */
+/* Conteúdo do histórico */
+#history-content {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #333;
+    align-items: center;
 }
 
+/* Botão de fechar o histórico */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #333;
+}
 
+/* Adiciona um efeito de hover no botão de fechar */
+.close-btn:hover {
+    color: #ff0000;
+}
+
+/* Estilos para o modal */
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+}
+
+.hidden {
+    display: none;
+}
 /* Responsividade */
 @media (max-width: 768px) {
     .container {
@@ -423,6 +474,18 @@ body {
 
     #raio-image {
         width: 20vh;
+    }
+
+    #history-box {
+        width: 90%; /* Maior largura em dispositivos móveis */
+        height: 70%; /* Aumenta a altura em dispositivos móveis */
+        padding: 15px; /* Ajusta o padding para telas menores */
+    }
+
+    .close-btn {
+        font-size: 18px; /* Diminui o tamanho do botão de fechar em telas menores */
+        top: 8px;
+        right: 10px;
     }
 }
 
@@ -456,5 +519,17 @@ body {
 
     #chat-box {
         max-height: 250px;
+    }
+
+    #history-box {
+        width: 95%; /* Quase toda a largura da tela em dispositivos muito pequenos */
+        height: 80%; /* Aumenta a altura para usar mais da tela */
+        padding: 10px; /* Reduz o padding para telas muito pequenas */
+    }
+
+    .close-btn {
+        font-size: 16px; /* Ajuste adicional para o botão de fechar */
+        top: 5px;
+        right: 8px;
     }
 }
