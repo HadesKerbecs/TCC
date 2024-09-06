@@ -4,7 +4,7 @@ body {
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
     height: 100vh;
     min-height: 100vh; 
-    background: linear-gradient(to bottom, #f9f9f9 65%, #b3b3b3 190%);
+    background: linear-gradient(to bottom, #ffffff 65%, #aaaaaa 190%);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center; 
@@ -22,7 +22,44 @@ body {
     overflow: auto;
 }
 
+.mdc-fab {
+    background-color: #CCCCCC;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    display: flex;
+    text-transform: none;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Ajuste o valor conforme necessário */
+    align-items: center;
+    justify-content:flex-start;
+}
+
+.mdc-fab:hover {
+    background-color: #585858;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    outline: 2px solid #FFF;
+}
+
+.mdc-fab:active {
+    background-color: #333;
+}
+
+.mdc-fab .mdc-fab__icon {
+    margin-right: 8px;
+    font-size: 15px;
+}
+
+.mdc-fab .mdc-fab__label {
+    font-size: 14px;
+}
+
 .sidebar {
+    position: relative;
     background: linear-gradient(to bottom, #eeeded 65%, #c2c2c2 100%);
     border: 1px solid #7B5AFF;
     border-top-right-radius: 16px;
@@ -34,8 +71,8 @@ body {
     flex-direction: column;
     align-items: center;
     height: 100%;
+    box-shadow: 10px 4px 20px rgba(0, 0, 0, 0.1); /* Sombra para criar o efeito 3D */
 }
-
 
 .sidebar h1 {
     display: flex;
@@ -79,6 +116,47 @@ body {
     color: #553fd6;
 }
 
+#customize-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Espaçamento entre os campos */
+}
+  
+#customize-form md-filled-text-field, md-outlined-select {
+    width: 100%; /* Deixa os campos com largura completa */
+}
+  
+#customize-form textarea {
+    width: 100%;
+    height: 100px; /* Altura definida para o campo de textarea */
+    resize: none;
+}
+  
+.mdc-button {
+    background-color: #CCCCCC;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    display: flex;
+    text-transform: none;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Ajuste o valor conforme necessário */
+    align-items: center;
+    justify-content:flex-start;
+}
+  
+.mdc-button:hover {
+    background-color: #424242; /* Efeito hover no botão */
+}
+  
+.mdc-button:active {
+    background-color: #303030; /* Efeito active no botão */
+}
+  
 .about {
     background: linear-gradient(190deg, #554bc4 30%, #332c86 70%); 
     color: white;
@@ -157,12 +235,11 @@ body {
     width: 100%;
     max-width: 100%;
     padding: 10px;
-    border: 2px solid #CCCCCC;
+    border: 1px solid #4037a0;
     border-radius: 10px;
     font-size: 16px;
     resize: none;
     box-sizing: border-box;
-    border: 1px solid #4037a0;
     margin-top: auto;
 }
 
@@ -170,44 +247,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* Alinha o botão à esquerda */
-    gap: 10px 0 0 0;
-}
-
-.button {
-    width: 200px;
-    height: 40px;
-    background: linear-gradient(190deg, #acacac, #585858);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    margin: 20px 0 0 0;
-    align-items: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    padding: 10px 20px;
-}
-
-.button:hover {
-    background: linear-gradient(190deg, #554bc4, #332c86);
-    outline: 2px solid #FFF;
-}
-
-
-.button:active {
-    background: linear-gradient(190deg, #332c86, #1a145a);
-}
-
-.button:disabled {
-    background: #CCCCCC;
-    cursor: not-allowed;
-}
-
-.button a {
-    color: white;
-    text-decoration: none;
+    gap: 10px; /* Define um espaçamento de 10px entre os botões */
 }
 
 .refresh-button {
@@ -219,27 +259,6 @@ body {
     margin-right: 8px; /* Espaçamento entre a imagem e o texto */
     width: 16px;
     height: 16px;
-}
-
-.button-container button {
-    background: #CCCCCC;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    position: relative;
-}
-
-.button-container button:hover {
-    background: linear-gradient(190deg, #554bc4, #332c86);
-    outline: 2px solid #FFF;
-}
-
-.button-container button:active {
-    background: linear-gradient(190deg, #332c86, #1a145a);
 }
 
 .chat-container {
@@ -281,19 +300,18 @@ body {
     width: 100%;
     max-width: 100%;
     padding: 10px;
-    border: 2px solid #CCCCCC;
+    border: 1px solid #b1a3ff;
     border-radius: 10px;
     font-size: 16px;
     resize: none;
     box-sizing: border-box;
-    border: 1px solid #b1a3ff;
     margin-top: auto;
     padding-right: 110px; /* Espaço para o botão */
 }
 
 #send-button {
     position: absolute;
-    bottom: 14px;
+    bottom: 16px;
     right: 10px;
     background: linear-gradient(190deg, #554bc4, #332c86);
     color: white;
@@ -312,14 +330,14 @@ body {
 }
 
 #send-button:hover {
-    background: linear-gradient(190deg, #554bc4, #332c86);
+    background-color: #585858;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     outline: 2px solid #FFF;
 }
 
 #send-button:active {
-    background: linear-gradient(190deg, #332c86, #1a145a);
+    background-color: #333;
 }
-
 
 .result-image {
     width: 20px;
@@ -444,6 +462,7 @@ body {
 .hidden {
     display: none;
 }
+
 /* Responsividade */
 @media (max-width: 768px) {
     .container {
@@ -512,7 +531,7 @@ body {
         font-size: 14px;
     }
 
-    .button-container button {
+    .button-container .mdc-button {
         font-size: 14px;
         padding: 8px 16px;
     }

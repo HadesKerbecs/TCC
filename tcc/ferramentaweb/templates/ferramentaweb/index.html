@@ -6,7 +6,14 @@
     <title>PsicoSimula</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'ferramentasweb/styles.css' %}">
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="https://unpkg.com/@material/web@1.0.0/dist/md-filled-text-field/md-filled-text-field.css" rel="stylesheet">
+    <link href="https://unpkg.com/@material/web@1.0.0/dist/md-outlined-select/md-outlined-select.css" rel="stylesheet">
+
+    <link href="https://material.io/static/css/material-components-web.min.css" rel="stylesheet">
     <link rel="icon" href="{% static 'ferramentasweb/images/logo3.png' %}" type="image/png">
 </head>
 <body>
@@ -16,23 +23,36 @@
             <h1></h1>
             <div class="menu-item2">
                 <div class="button-container">
-                    <button class="button refresh-button">
-                        <a href="#" id="refresh-link">
+                    <!-- Botão Gerar Novo Caso -->
+                    <button id="refresh-button" class="mdc-fab mdc-fab--extended refresh-button">
+                        <span class="mdc-fab__icon">
                             <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Gerar Caso" class="icon-white">
-                            Gerar Novo Caso
-                        </a>
+                        </span>
+                        <span class="mdc-fab__label">Gerar Novo Caso</span>
                     </button>
-                    <button class="button" id="button-historico">
-                        <img src="{% static 'ferramentasweb/images/Historico.png' %}" alt="Ícone Histórico" class="icon-white">
-                        Histórico
+
+                    <!-- Botão Histórico -->
+                    <button class="mdc-fab mdc-fab--extended" id="button-historico">
+                        <span class="mdc-fab__icon">
+                            <img src="{% static 'ferramentasweb/images/Historico.png' %}" alt="Ícone Histórico" class="icon-white">
+                        </span>
+                        <span class="mdc-fab__label">Histórico</span>
                     </button>
-                    <button class="button" id="button-compartilhar">
-                        <img src="{% static 'ferramentasweb/images/Download.png' %}" alt="Ícone Compartilhar" class="icon-white">
-                        Compartilhar
+
+                    <!-- Botão Compartilhar -->
+                    <button class="mdc-fab mdc-fab--extended" id="button-compartilhar">
+                        <span class="mdc-fab__icon">
+                            <img src="{% static 'ferramentasweb/images/Download.png' %}" alt="Ícone Compartilhar" class="icon-white">
+                        </span>
+                        <span class="mdc-fab__label">Compartilhar</span>
                     </button>
-                    <button class="button" id="button-personalizar">
-                        <img src="{% static 'ferramentasweb/images/personalizar.png' %}" alt="Ícone Personalizar" class="icon-white">
-                        Personalizar
+
+                    <!-- Botão Personalizar -->
+                    <button class="mdc-fab mdc-fab--extended" id="button-personalizar">
+                        <span class="mdc-fab__icon">
+                            <img src="{% static 'ferramentasweb/images/personalizar.png' %}" alt="Ícone Personalizar" class="icon-white">
+                        </span>
+                        <span class="mdc-fab__label">Personalizar</span>
                     </button>
                 </div>
             </div>
@@ -47,64 +67,76 @@
         <div class="main-content">
             <h2>Casos Hipotéticos</h2>
             <img id="raio-image" src="{% static 'ferramentasweb/images/psicosimula.png' %}" alt="Ícone Informações">
+            
             <!-- Modal para personalização -->
             <div id="customize-modal" class="modal hidden">
                 <div class="modal-content">
                     <span class="close-btn">&times;</span>
                     <h2>Personalize o Caso Clínico</h2>
                     <form id="customize-form">
-                        <label for="idade">Idade:</label>
-                        <input type="number" id="idade" name="idade" min="0" step="1">
-            
-                        <label for="sexo">Sexo:</label>
-                        <select id="sexo" name="sexo">
-                            <option value="">Selecione</option>
-                            <option value="masculino">Masculino</option>
-                            <option value="feminino">Feminino</option>
-                            <option value="outro">Outro</option>
-                        </select>
-            
-                        <label for="historico-medico">Histórico Médico:</label>
-                        <textarea id="historico-medico" name="historico-medico"></textarea>
-            
-                        <label for="contexto-social">Contexto Social:</label>
-                        <textarea id="contexto-social" name="contexto-social"></textarea>
-            
-                        <button type="submit">Aplicar</button>
-                    </form>
+                        <md-filled-text-field label="Idade" id="idade" name="idade" type="number" min="0" step="1"></md-filled-text-field>
+
+                        <mwc-select label="Sexo">
+                            <mwc-list-item value="Masculino">Masculino</mwc-list-item>
+                            <mwc-list-item value="Feminino">Feminino</mwc-list-item>
+                            <mwc-list-item value="Outro">Outro</mwc-list-item>
+                        </mwc-select>
+                      
+                        <md-filled-text-field label="Histórico Médico">
+                          <textarea id="historico-medico" name="historico-medico"></textarea>
+                        </md-filled-text-field>
+                      
+                        <md-filled-text-field label="Contexto Social">
+                          <textarea id="contexto-social" name="contexto-social"></textarea>
+                        </md-filled-text-field>
+                      
+                        <button type="submit" class="mdc-button mdc-button--raised">
+                          <span class="mdc-button__label">Aplicar</span>
+                        </button>
+                      </form>
                 </div>
             </div>
+            
             <div class="chat-container">
                 <div id="chat-box" class="hidden">
                     <div>
                         <img src="{% static 'ferramentasweb/images/Brilho.png' %}" alt="Ícone Resultado" class="result-image"/>
                     </div>
-                    <!-- Mensagens da conversa serão adicionadas aqui -->
                 </div>
                 <div class="input-container">
                     <div class="textarea-wrapper">
                         <textarea id="user-input" placeholder="Informe o caso clínico"></textarea>
-                        <button id="send-button" disabled>Simular</button>
+                        <button id="send-button" class="mdc-fab mdc-fab--extended" disabled>
+                            <span class="mdc-fab__icon material-icons">send</span>
+                            <span class="mdc-fab__label">Simular</span>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Contêiner para o histórico, agora dentro da container -->
+
         <div id="history-box" class="hidden">
             <button class="close-btn">&times;</button>
             <div id="history-content"></div>
         </div>
     </div>
 
+    <input type="hidden" name="user_id" value="{{ user_id }}">
+
     <!-- Campo hidden para armazenar o ID do usuário -->
     <input type="hidden" name="user_id" value="{{ user_id }}">
+    <script type="module" src="https://unpkg.com/@material/web@1.0.0/dist/md-filled-text-field/md-filled-text-field.js"></script>
+    <script type="module" src="https://unpkg.com/@material/web@1.0.0/dist/md-outlined-select/md-outlined-select.js"></script>
+    <script type="module" src="https://unpkg.com/@material/mwc-button@latest/mwc-button.js"></script>
+    <script type="module" src="https://unpkg.com/@material/mwc-select@latest/mwc-select.js"></script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const chatBox = document.getElementById('chat-box');
             const userInput = document.getElementById('user-input');
             const sendButton = document.getElementById('send-button');
-            const refreshLink = document.getElementById('refresh-link');
+            const refreshButton = document.getElementById('refresh-button'); // Atualizado para 'refresh-button'
             const buttonCompartilhar = document.getElementById('button-compartilhar');
             const buttonHistorico = document.getElementById('button-historico');
             const historyBox = document.getElementById('history-box');
@@ -331,12 +363,11 @@
             });
         
             // Adiciona o evento ao botão de atualizar (refresh)
-            refreshLink.addEventListener('click', function(event) {
+            refreshButton.addEventListener('click', function(event) {
                 event.preventDefault();
-                location.reload();
+                location.reload(); // Recarrega a página
             });
         });
-        
-    </script>    
+    </script>
 </body>
 </html>
