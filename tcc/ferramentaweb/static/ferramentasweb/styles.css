@@ -47,6 +47,7 @@ body {
 
 .mdc-fab:active {
     background-color: #333;
+    transform: scale(0.98);
 }
 
 .mdc-fab .mdc-fab__icon {
@@ -119,7 +120,6 @@ body {
 #customize-form form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espaçamento entre os campos */
 }
   
 #customize-form md-filled-text-field, md-outlined-select {
@@ -282,12 +282,16 @@ body {
     width: 100%;
     max-height: 75vh;
     overflow-y: auto;
-    border-radius: 20px;
+    border-radius: 15px;
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
     background-color: white;
     padding: 20px;
     box-sizing: border-box;
     margin-bottom: 20px; /* Ajuste para manter o espaçamento */
+}
+
+#chat-box.hidden {
+    display: none; /* Oculta o chat-box quando necessário */
 }
 
 .textarea-wrapper {
@@ -301,7 +305,7 @@ body {
     max-width: 100%;
     padding: 10px;
     border: 1px solid #b1a3ff;
-    border-radius: 10px;
+    border-radius: 15px;
     font-size: 16px;
     resize: none;
     box-sizing: border-box;
@@ -313,7 +317,7 @@ body {
     position: absolute;
     bottom: 16px;
     right: 10px;
-    background: linear-gradient(190deg, #554bc4, #332c86);
+    background: #585858;
     color: white;
     border: none;
     border-radius: 50px;
@@ -330,13 +334,14 @@ body {
 }
 
 #send-button:hover {
-    background-color: #585858;
+    background-color: #444444;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     outline: 2px solid #FFF;
 }
 
 #send-button:active {
     background-color: #333;
+    transform: scale(0.98);
 }
 
 .result-image {
@@ -365,7 +370,7 @@ body {
 
 .bot {
     align-self: flex-start;
-    background-color: #CCCCCC;
+    background-color: #585858;
     color: #ffffff
 }
 
@@ -387,20 +392,22 @@ body {
 /* Container do histórico que sobrepõe o chat-box */
 #history-box {
     display: none; /* Começa oculto */
-    position: absolute;
-    top: 50%;
-    left: 55%;
-    transform: translate(-46%, -50%);
-    width: 100%; /* Ajuste conforme necessário */
-    max-width: 1350px; /* Limita a largura máxima */
-    height: 60%; /* Ajuste conforme necessário */
+    position: absolute; /* Fixado em relação à viewport */
+    top: 50%; /* Centralizado verticalmente */
+    left: calc(250px + 50%); /* Considera a largura da sidebar para centralizar */
+    transform: translate(-60%, -50%); /* Ajuste para centralizar */
+    width: calc(100% - 300px); /* Largura ajustada para evitar a sidebar */
+    max-width: 1300px; /* Largura máxima para limitar em telas maiores */
+    height: 60%; /* Altura ajustável */
     background-color: rgba(255, 255, 255, 0.9); /* Fundo semi-transparente */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar */
     z-index: 1000; /* Certifica que ele ficará sobre o chat-box */
     border-radius: 10px;
-    overflow-y: auto; /* Permite rolagem se o conteúdo for maior que a caixa */
+    overflow-y: auto; /* Permite rolagem se o conteúdo for grande */
     padding: 20px;
+    box-sizing: border-box;
 }
+
 
 /* Conteúdo do histórico */
 #history-content {
@@ -429,9 +436,23 @@ body {
 
 /* Estilo para o formulário específico */
 #customize-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 100px); /* Considera o tamanho da sidebar */
+    transform: translate(-50%, -50%);
+    width: 90%; /* Ajuste conforme necessário para telas menores */
+    max-width: 600px; /* Ajuste conforme necessário */
+    background-color: #fff; /* Cor de fundo do formulário */
+    padding: 20px; /* Espaçamento interno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra ao redor do formulário */
+    border-radius: 15px; /* Bordas arredondadas */
+    z-index: 1000; /* Garante que o formulário fique acima de outros elementos */
+    box-sizing: border-box; /* Certifica-se de que o padding não afete a largura total */
+}
+
+#personalizarcaso {
+    margin: 0 0 20px 0;
+    text-align: center;
 }
 
 #customize-form label {
@@ -443,11 +464,12 @@ body {
 #customize-form input[type="number"],
 #customize-form select,
 #customize-form textarea {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    margin-bottom: 15px; /* Espaçamento entre os campos */
 }
 
 #customize-form select {
@@ -461,7 +483,7 @@ body {
 #customize-form input[type="number"]:focus,
 #customize-form select:focus,
 #customize-form textarea:focus {
-    border-color: #007bff;
+    border-color: #b1a3ff;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
 }
@@ -476,20 +498,21 @@ body {
     padding: 8px 12px;
     border: none;
     border-radius: 50px;
-    background-color: #585858;
+    background-color: #CCCCCC;
     color: #fff;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
-    align-self: flex-start; /* Alinha o botão ao início do formulário */
+    align-self: flex-end; /* Alinha o botão ao início do formulário */
 }
 
 #customize-form button:hover {
-    background-color: #333;
+    background-color: #585858;
     outline: 2px solid #FFF;
 }
 
 #customize-form button:active {
+    background-color: #333;
     transform: scale(0.98);
 }
 
@@ -497,34 +520,14 @@ body {
     display: none;
 }
 
-
-/* Responsividade */
+/* Ajustes para telas menores */
 @media (max-width: 1024px) {
-    .about {
-        width: 100%; /* Certifica-se de que o container ocupe toda a tela */
-        max-width: 100%;
-        padding: 20px 15px; /* Ajusta o padding para telas menores */
-        box-sizing: border-box;
-    }
-
-    .about h1 {
-        font-size: 18px; /* Diminui levemente o tamanho da fonte */
-        padding: 0 10px; /* Adiciona espaço lateral ao título */
-        text-align: center;
-    }
-
-    .about p {
-        font-size: 14px; /* Diminui o tamanho do parágrafo para caber melhor */
-        padding: 0 10px;
-    }
-
-    .about .circle {
-        width: 50px; /* Ajusta o tamanho do círculo */
-        height: 50px;
-        top: -30px;
+    #history-box {
+        width: calc(100% - 250px); /* Reduz a largura em telas menores */
     }
 }
 
+/* Responsividade */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -539,7 +542,7 @@ body {
         padding: 10px;
     }
 
-    .button-container{
+    .button-container {
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -602,9 +605,15 @@ body {
     }
 
     #history-box {
-        width: 90%; /* Maior largura em dispositivos móveis */
-        height: 70%; /* Aumenta a altura em dispositivos móveis */
-        padding: 15px; /* Ajusta o padding para telas menores */
+        left: 50%; /* Desconsidera a sidebar, já que ela pode ser oculta em telas pequenas */
+        width: 90%; /* Ocupar 90% da tela em dispositivos menores */
+        height: 70%; /* Aumentar a altura para caber mais conteúdo */
+    }
+
+    #customize-form {
+        width: 95vw; /* Ocupa quase toda a largura da tela */
+        height: auto; /* Ajusta a altura conforme o conteúdo */
+        max-height: 85vh; /* Limita a altura para não ultrapassar a tela */
     }
 
     .close-btn {
@@ -660,9 +669,20 @@ body {
     }
 
     #history-box {
-        width: 95%; /* Quase toda a largura da tela */
-        height: 80%; /* Usa mais altura da tela */
-        padding: 10px; /* Reduz o padding */
+        width: 100%; /* Ocupar 100% da tela em telas muito pequenas */
+        height: 80%; /* Maior altura em telas muito pequenas */
+        top: 50%; /* Reajuste para centralização adequada */
+        transform: translate(-50%, -50%); /* Mantém centralizado */
+        padding: 15px; /* Reduz o padding para caber melhor em telas pequenas */
+    }
+
+    #customize-form {
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 95vw; /* Ocupa quase toda a largura da tela */
+        height: auto; /* Ajusta a altura conforme o conteúdo */
+        max-height: 85vh; /* Limita a altura para não ultrapassar a tela */
+        padding: 10px; /* Reduz o padding para caber melhor na tela */
     }
 
     .close-btn {
@@ -671,4 +691,3 @@ body {
         right: 8px;
     }
 }
-

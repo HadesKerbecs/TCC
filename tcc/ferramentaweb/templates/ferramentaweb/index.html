@@ -71,9 +71,9 @@
             <!-- Modal para personalização -->
             <div id="customize-modal" class="modal hidden">
                 <div class="modal-content">
-                    <span class="close-btn">&times;</span>
-                    <h2>Personalize o Caso Clínico</h2>
                     <form id="customize-form">
+                        <span class="close-btn">&times;</span>
+                        <h2 id="personalizarcaso">Personalize o Caso Clínico</h2>
                         <!-- Campo de Idade padrão -->
                         <label for="idade">Idade</label>
                         <input id="idade" name="idade" type="number" min="0" step="1" placeholder="Idade">
@@ -102,7 +102,7 @@
                     </form>
                 </div>
             </div>
-            
+    
             <div class="chat-container">
                 <div id="chat-box" class="hidden">
                     <div>
@@ -141,24 +141,39 @@
             const chatBox = document.getElementById('chat-box');
             const userInput = document.getElementById('user-input');
             const sendButton = document.getElementById('send-button');
-            const refreshButton = document.getElementById('refresh-button'); // Atualizado para 'refresh-button'
+            const refreshButton = document.getElementById('refresh-button');
             const buttonCompartilhar = document.getElementById('button-compartilhar');
             const buttonHistorico = document.getElementById('button-historico');
             const historyBox = document.getElementById('history-box');
             const historyContent = document.getElementById('history-content');
-            const closeBtn = document.querySelector('#history-box .close-btn');
+            const closeHistoryBtn = document.querySelector('#history-box .close-btn');
             const buttonPersonalizar = document.getElementById('button-personalizar');
             const customizeModal = document.getElementById('customize-modal');
             const closeCustomizeBtn = document.querySelector('#customize-modal .close-btn');
             const customizeForm = document.getElementById('customize-form');
-            
+        
+            // Função para mostrar um modal e ocultar o chat-box
+            function showModal(modal) {
+                historyBox.style.display = 'none';
+                customizeModal.style.display = 'none';
+                chatBox.classList.add('hidden');
+                modal.style.display = 'block';
+            }
+        
+            // Função para fechar todos os modais e mostrar o chat-box
+            function closeAllModals() {
+                historyBox.style.display = 'none';
+                customizeModal.style.display = 'none';
+                chatBox.classList.remove('hidden'); // Mostra o chat-box
+            }
+        
             // Função para compartilhar o conteúdo da conversa
             function compartilharConteudoConsulta() {
                 const mensagens = chatBox.querySelectorAll('.message');
                 let consultaConteudo = '';
         
                 mensagens.forEach(mensagem => {
-                    consultaConteudo += mensagem.textContent + '\n'; // Concatena o conteúdo das mensagens
+                    consultaConteudo += mensagem.textContent + '\n';
                 });
         
                 if (consultaConteudo.trim() === "") {
@@ -166,7 +181,6 @@
                     return;
                 }
         
-                // Compartilha o conteúdo concatenado
                 if (navigator.share) {
                     navigator.share({
                         title: 'Consulta do PsicoSimula',
@@ -190,12 +204,14 @@
                     processMessage(userMessage);
                     userInput.value = '';
                     sendButton.disabled = true;
-                    chatBox.classList.remove('hidden');
                 }
             }
         
             // Adiciona o evento ao botão de enviar
-            sendButton.addEventListener('click', sendMessage);
+            sendButton.addEventListener('click', function() {
+                closeAllModals(); // Fecha todos os modais antes de enviar a mensagem
+                sendMessage();
+            });
         
             // Habilita o botão de enviar ao digitar no textarea
             userInput.addEventListener('input', function() {
@@ -206,6 +222,7 @@
             userInput.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter') {
                     event.preventDefault();
+                    closeAllModals();
                     sendMessage();
                 }
             });
@@ -274,16 +291,15 @@
         
             // Evento para exibir o histórico ao clicar no botão "Histórico"
             buttonHistorico.addEventListener('click', function() {
+                showModal(historyBox);
                 const userId = document.querySelector('input[name="user_id"]').value;
                 fetch(`/get-history/?user_id=${userId}`)
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Dados recebidos do histórico:', data); // Verifique no console
+                        console.log('Dados recebidos do histórico:', data);
         
-                        // Atualize o conteúdo do histórico
                         if (data.length > 0) {
                             historyContent.innerHTML = data.map(item => {
-                                // Formate cada item do histórico
                                 let formattedMessage = '';
                                 if (item.role === 'system') {
                                     formattedMessage = `<strong>System:</strong> ${item.content}`;
@@ -297,9 +313,6 @@
                         } else {
                             historyContent.innerHTML = '<p>Sem histórico disponível.</p>';
                         }
-                        
-                        // Exibir o histórico
-                        historyBox.style.display = 'block';
                     })
                     .catch(error => {
                         console.error('Erro ao obter histórico:', error);
@@ -307,31 +320,31 @@
             });
         
             // Fechar o histórico ao clicar no botão de fechar
-            closeBtn.addEventListener('click', function() {
-                historyBox.style.display = 'none';
+            closeHistoryBtn.addEventListener('click', function() {
+                closeAllModals();
             });
         
             // Fechar o histórico ao clicar fora dele
             historyBox.addEventListener('click', function(event) {
                 if (event.target === historyBox) {
-                    historyBox.style.display = 'none';
+                    closeAllModals();
                 }
             });
         
             // Função para abrir o modal de personalização
             buttonPersonalizar.addEventListener('click', function() {
-                customizeModal.classList.remove('hidden');
+                showModal(customizeModal);
             });
         
-            // Função para fechar o modal de personalização
+            // Fechar o modal de personalização ao clicar no botão de fechar
             closeCustomizeBtn.addEventListener('click', function() {
-                customizeModal.classList.add('hidden');
+                closeAllModals();
             });
         
-            // Fechar o modal ao clicar fora dele
+            // Fechar o modal de personalização ao clicar fora dele
             customizeModal.addEventListener('click', function(event) {
                 if (event.target === customizeModal) {
-                    customizeModal.classList.add('hidden');
+                    closeAllModals();
                 }
             });
         
@@ -339,13 +352,11 @@
             customizeForm.addEventListener('submit', function(event) {
                 event.preventDefault();
                 
-                // Coletar dados do formulário
                 const idade = document.getElementById('idade').value;
                 const sexo = document.getElementById('sexo').value;
                 const historicoMedico = document.getElementById('historico-medico').value;
                 const contextoSocial = document.getElementById('contexto-social').value;
         
-                // Enviar dados para o backend (exemplo de POST request)
                 fetch('/personalizar-caso/', {
                     method: 'POST',
                     headers: {
@@ -353,26 +364,41 @@
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
                     body: JSON.stringify({
-                        idade,
-                        sexo,
+                        idade: idade,
+                        sexo: sexo,
                         historico_medico: historicoMedico,
                         contexto_social: contextoSocial
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Dados de personalização enviados:', data);
-                    customizeModal.classList.add('hidden');
+                    console.log('Dados enviados com sucesso:', data);
+                    addMessageToChat('user', 'Dados de personalização enviados com sucesso.');
+                    closeAllModals();
                 })
-                .catch(error => console.error('Erro ao enviar dados de personalização:', error));
+                .catch(error => {
+                    console.error('Erro ao enviar dados de personalização:', error);
+                });
             });
         
-            // Adiciona o evento ao botão de atualizar (refresh)
-            refreshButton.addEventListener('click', function(event) {
-                event.preventDefault();
-                location.reload(); // Recarrega a página
+            // Função para resetar o chat-box
+            function resetChatBox() {
+                const chatBox = document.getElementById('chat-box');
+                if (chatBox) {
+                    const image = chatBox.querySelector('.result-image');
+                    const messages = chatBox.querySelectorAll('.message');
+                    
+                    // Remove apenas as mensagens, mas mantém a imagem
+                    messages.forEach(message => message.remove());
+                }
+            }
+        
+            // Adiciona o evento ao botão de refresh
+            refreshButton.addEventListener('click', function() {
+                closeAllModals(); // Fecha todos os modais
+                resetChatBox(); // Limpa o conteúdo do chat-box
             });
-        });
+        });         
     </script>
 </body>
 </html>
