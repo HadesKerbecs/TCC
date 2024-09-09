@@ -28,7 +28,7 @@ body {
     border: none;
     border-radius: 50px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 500px;
     padding: 10px 20px;
     display: flex;
     text-transform: none;
@@ -107,7 +107,7 @@ body {
 }
 
 .menu-link {
-    text-decoration: none;
+    text-decoration: none; 
     color: #120F43;
     cursor: pointer;
 }
@@ -119,7 +119,7 @@ body {
 #customize-form form {
     display: flex;
     flex-direction: column;
-    gap: 16px; /* Espaçamento entre os campos */
+    gap: 15px; /* Espaçamento entre os campos */
 }
   
 #customize-form md-filled-text-field, md-outlined-select {
@@ -138,7 +138,7 @@ body {
     border: none;
     border-radius: 50px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 500px;
     padding: 10px 20px;
     display: flex;
     text-transform: none;
@@ -146,7 +146,7 @@ body {
     transition: background-color 0.3s, box-shadow 0.3s;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Ajuste o valor conforme necessário */
     align-items: center;
-    justify-content:flex-start;
+    justify-content: flex-start;
 }
   
 .mdc-button:hover {
@@ -247,7 +247,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* Alinha o botão à esquerda */
-    gap: 10px; /* Define um espaçamento de 10px entre os botões */
+    gap: 15px; /* Define um espaçamento de 10px entre os botões */
 }
 
 .refresh-button {
@@ -427,43 +427,104 @@ body {
     color: #ff0000;
 }
 
-/* Estilos para o modal */
-.modal {
+/* Estilo para o formulário específico */
+#customize-form {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    width: 80%;
-    max-width: 500px;
-    position: relative;
-}
-
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 20px;
+#customize-form label {
+    font-weight: bold;
     color: #333;
+    margin-bottom: 5px;
+}
+
+#customize-form input[type="number"],
+#customize-form select,
+#customize-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#customize-form select {
+    box-sizing: border-box; /* Garantir que o padding não afete a largura total */
+    background-color: #fff; /* Cor de fundo para combinar com o textarea */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+}
+
+#customize-form input[type="number"]:focus,
+#customize-form select:focus,
+#customize-form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+#customize-form textarea {
+    resize: none;
+    min-height: 100px;
+}
+
+/* Estilo para o botão do formulário */
+#customize-form button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 50px;
+    background-color: #585858;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    align-self: flex-start; /* Alinha o botão ao início do formulário */
+}
+
+#customize-form button:hover {
+    background-color: #333;
+    outline: 2px solid #FFF;
+}
+
+#customize-form button:active {
+    transform: scale(0.98);
 }
 
 .hidden {
     display: none;
 }
 
+
 /* Responsividade */
+@media (max-width: 1024px) {
+    .about {
+        width: 100%; /* Certifica-se de que o container ocupe toda a tela */
+        max-width: 100%;
+        padding: 20px 15px; /* Ajusta o padding para telas menores */
+        box-sizing: border-box;
+    }
+
+    .about h1 {
+        font-size: 18px; /* Diminui levemente o tamanho da fonte */
+        padding: 0 10px; /* Adiciona espaço lateral ao título */
+        text-align: center;
+    }
+
+    .about p {
+        font-size: 14px; /* Diminui o tamanho do parágrafo para caber melhor */
+        padding: 0 10px;
+    }
+
+    .about .circle {
+        width: 50px; /* Ajusta o tamanho do círculo */
+        height: 50px;
+        top: -30px;
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -471,8 +532,6 @@ body {
 
     .sidebar {
         width: 100%;
-        margin-bottom: 20px;
-        height: auto;
         padding: 10px;
     }
 
@@ -480,8 +539,55 @@ body {
         padding: 10px;
     }
 
+    .button-container{
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%; /* Certificar-se que os botões ocupem toda a largura disponível */
+        max-width: 100%; /* Limitar para garantir que todos fiquem iguais em telas pequenas */
+        min-width: unset; /* Permitir que o tamanho mínimo se ajuste nas telas pequenas */
+        padding: 12px 20px; /* Ajustar o padding para que fique adequado em telas menores */
+    }
+
+    .about .circle {
+        width: 40px;
+        height: 40px;
+        top: -25px;
+    }
+
+    .about .circle img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .about {
+        width: 100%; /* Garante que o container ocupe toda a largura disponível */
+        padding: 15px 10px;
+        max-width: 100%;
+        font-size: 12px;
+        margin-top: 20px;
+        box-sizing: border-box;
+    }
+
+    .about h1 {
+        font-size: 16px; /* Diminui ainda mais o tamanho da fonte */
+        padding: 0 5px;
+    }
+
+    .about h3 {
+        font-size: 16px;
+    }
+
+    .about p {
+        font-size: 12px;
+        margin-top: 15px;
+    }
+
+    #button-personalizar {
+        margin-bottom: 20px; /* Garante um espaço entre o botão e a seção "about" */
+    }
+
     .input-container textarea,
-    .button-container,
     .chat-container {
         width: 95%;
         max-width: 100%;
@@ -510,45 +616,59 @@ body {
 
 @media (max-width: 480px) {
     .about {
-        padding: 30px 5px;
-        height: auto;
+        width: 100%; /* Garante que o container ocupe no máximo 100% da tela */
+        max-width: 100%; /* Evita que ultrapasse */
+        padding: 20px 10px; /* Reduz o padding lateral */
+        box-sizing: border-box; /* Inclui o padding na largura total */
+    }
+
+    .about h1, .about p {
+        font-size: 14px; /* Diminui o tamanho da fonte para caber na tela */
+        text-align: center; /* Centraliza o texto */
+        padding: 0 5px; /* Um leve padding para evitar colar nas bordas */
     }
 
     .about .circle {
-        width: 50px;
-        height: 50px;
-        top: -25px;
+        width: 30px; /* Ajusta o tamanho do círculo */
+        height: 30px;
+        top: -20px;
+    }
+
+    .about img, .about .circle {
+        max-width: 100%; /* Garante que imagens ou ícones não ultrapassem a largura */
+        height: auto;
     }
 
     .input-container textarea,
     .button-container,
     .chat-container {
-        width: 100%;
-        max-width: 100%;
+        width: 100%; /* Garante que os containers ocupem toda a largura disponível */
+        max-width: 100%; /* Remove limitações de largura */
     }
 
     .input-container textarea {
-        font-size: 14px;
+        font-size: 14px; /* Ajusta o tamanho da fonte */
     }
 
     .button-container .mdc-button {
-        font-size: 14px;
-        padding: 8px 16px;
+        font-size: 14px; /* Diminui o tamanho da fonte dos botões */
+        padding: 8px 16px; /* Ajusta o padding para telas menores */
     }
 
     #chat-box {
-        max-height: 250px;
+        max-height: 250px; /* Diminui a altura máxima do chat-box */
     }
 
     #history-box {
-        width: 95%; /* Quase toda a largura da tela em dispositivos muito pequenos */
-        height: 80%; /* Aumenta a altura para usar mais da tela */
-        padding: 10px; /* Reduz o padding para telas muito pequenas */
+        width: 95%; /* Quase toda a largura da tela */
+        height: 80%; /* Usa mais altura da tela */
+        padding: 10px; /* Reduz o padding */
     }
 
     .close-btn {
-        font-size: 16px; /* Ajuste adicional para o botão de fechar */
+        font-size: 16px; /* Ajusta o tamanho do botão de fechar */
         top: 5px;
         right: 8px;
     }
 }
+

@@ -74,26 +74,32 @@
                     <span class="close-btn">&times;</span>
                     <h2>Personalize o Caso Clínico</h2>
                     <form id="customize-form">
-                        <md-filled-text-field label="Idade" id="idade" name="idade" type="number" min="0" step="1"></md-filled-text-field>
-
-                        <mwc-select label="Sexo">
-                            <mwc-list-item value="Masculino">Masculino</mwc-list-item>
-                            <mwc-list-item value="Feminino">Feminino</mwc-list-item>
-                            <mwc-list-item value="Outro">Outro</mwc-list-item>
-                        </mwc-select>
-                      
-                        <md-filled-text-field label="Histórico Médico">
-                          <textarea id="historico-medico" name="historico-medico"></textarea>
-                        </md-filled-text-field>
-                      
-                        <md-filled-text-field label="Contexto Social">
-                          <textarea id="contexto-social" name="contexto-social"></textarea>
-                        </md-filled-text-field>
-                      
+                        <!-- Campo de Idade padrão -->
+                        <label for="idade">Idade</label>
+                        <input id="idade" name="idade" type="number" min="0" step="1" placeholder="Idade">
+            
+                        <!-- Campo de Sexo padrão -->
+                        <label for="sexo">Sexo</label>
+                        <select id="sexo" name="sexo">
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+            
+                        <!-- Campos de Histórico Médico e Contexto Social -->
+                        <label for="historico-medico">Histórico Médico</label>
+                        <textarea id="historico-medico" name="historico-medico" placeholder="Histórico Médico"></textarea>
+            
+                        <label for="contexto-social">Contexto Social</label>
+                        <textarea id="contexto-social" name="contexto-social" placeholder="Contexto Social"></textarea>
+            
                         <button type="submit" class="mdc-button mdc-button--raised">
-                          <span class="mdc-button__label">Aplicar</span>
+                            <span class="mdc-fab__icon">
+                                <img src="{% static 'ferramentasweb/images/add.png' %}" alt="Ícone Aplicar" class="icon-white">
+                            </span>
+                            <span class="mdc-fab__icon">Aplicar</span>
                         </button>
-                      </form>
+                    </form>
                 </div>
             </div>
             
@@ -125,12 +131,11 @@
 
     <!-- Campo hidden para armazenar o ID do usuário -->
     <input type="hidden" name="user_id" value="{{ user_id }}">
-    <script type="module" src="https://unpkg.com/@material/web@1.0.0/dist/md-filled-text-field/md-filled-text-field.js"></script>
-    <script type="module" src="https://unpkg.com/@material/web@1.0.0/dist/md-outlined-select/md-outlined-select.js"></script>
+    <script type="module" src="https://unpkg.com/@material/web@1.0.0/textfield/filled-text-field.js"></script>
+    <script type="module" src="https://unpkg.com/@material/web@1.0.0/select/outlined-select.js"></script>
     <script type="module" src="https://unpkg.com/@material/mwc-button@latest/mwc-button.js"></script>
     <script type="module" src="https://unpkg.com/@material/mwc-select@latest/mwc-select.js"></script>
-
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const chatBox = document.getElementById('chat-box');
