@@ -27,9 +27,9 @@ body {
     color: #ffffff;
     border: none;
     border-radius: 50px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500px;
-    padding: 10px 20px;
+    padding: 12px 20px;
     display: flex;
     text-transform: none;
     cursor: pointer;
@@ -52,11 +52,11 @@ body {
 
 .mdc-fab .mdc-fab__icon {
     margin-right: 8px;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .mdc-fab .mdc-fab__label {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .sidebar {
@@ -137,7 +137,7 @@ body {
     color: #ffffff;
     border: none;
     border-radius: 50px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500px;
     padding: 10px 20px;
     display: flex;
@@ -147,6 +147,7 @@ body {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Ajuste o valor conforme necessário */
     align-items: center;
     justify-content: flex-start;
+    margin-top: 15px; 
 }
   
 .mdc-button:hover {
@@ -200,7 +201,7 @@ body {
 
 .about p {
     margin: 25px 0 0 0;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .main-content {
@@ -408,13 +409,46 @@ body {
     box-sizing: border-box;
 }
 
-
 /* Conteúdo do histórico */
 #history-content {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.5;
     color: #333;
     align-items: center;
+}
+
+/* Mensagem do sistema */
+.message-system {
+    background-color: #f1f1f1; /* Cor de fundo mais clara */
+    border-left: 5px solid #3f51b5; /* Borda esquerda para destaque */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+/* Mensagem do usuário */
+.message-user {
+    background-color: #e3f2fd; /* Cor de fundo mais clara */
+    border-left: 5px solid #2196f3; /* Borda esquerda para destaque */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+/* Mensagem do assistente */
+.message-assistant {
+    background-color: #fce4ec; /* Cor de fundo mais clara */
+    border-left: 5px solid #e91e63; /* Borda esquerda para destaque */
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+/* Mensagem genérica */
+.message {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
 }
 
 /* Botão de fechar o histórico */
@@ -448,6 +482,9 @@ body {
     border-radius: 15px; /* Bordas arredondadas */
     z-index: 1000; /* Garante que o formulário fique acima de outros elementos */
     box-sizing: border-box; /* Certifica-se de que o padding não afete a largura total */
+    font-weight: bold;
+    color: #1B2559;
+    margin-top: 15px;
 }
 
 #personalizarcaso {
@@ -455,37 +492,44 @@ body {
     text-align: center;
 }
 
-#customize-form label {
+#customize-form .form-group {
+    flex: 1; /* Faz com que os campos ocupem espaço igual */
     font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
 }
 
-#customize-form input[type="number"],
-#customize-form select,
-#customize-form textarea {
-    width: 95%;
+#customize-form .form-row {
+    display: flex;
+    justify-content: space-between; /* Espaça os campos uniformemente */
+    font-weight: bold;
+    gap: 10px; /* Espaçamento entre os campos */
+    margin-bottom: 15px; /* Espaçamento entre linhas */
+    color: #1B2559;
+}
+
+#customize-form .form-group label {
+    display: block;
+    font-weight: bold;
+    color: #1B2559;
+    margin-bottom: 5px;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+}
+
+#customize-form .form-group input[type="number"] {
+    width: 80%; /* Garante que o campo preencha o contêiner pai */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
-    margin-bottom: 15px; /* Espaçamento entre os campos */
 }
 
-#customize-form select {
-    box-sizing: border-box; /* Garantir que o padding não afete a largura total */
-    background-color: #fff; /* Cor de fundo para combinar com o textarea */
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px 16px;
-}
-
-#customize-form input[type="number"]:focus,
-#customize-form select:focus,
-#customize-form textarea:focus {
-    border-color: #b1a3ff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+#customize-form .form-group select,
+#customize-form textarea {
+    width: 95%; /* Garante que o campo preencha o contêiner pai */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
 }
 
 #customize-form textarea {
@@ -500,7 +544,7 @@ body {
     border-radius: 50px;
     background-color: #CCCCCC;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     align-self: flex-end; /* Alinha o botão ao início do formulário */
@@ -518,6 +562,46 @@ body {
 
 .hidden {
     display: none;
+}
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens se movam para a linha seguinte se não houver espaço suficiente */
+}
+
+.radio-item {
+    display: flex;
+    align-items: center; /* Alinha o texto e o botão de rádio verticalmente */
+    margin-right: 20px; /* Espaçamento entre os botões de rádio */
+}
+
+.radio-item input[type="radio"] {
+    appearance: none; /* Remove o estilo padrão do botão de rádio */
+    width: 20px; /* Tamanho do botão de rádio */
+    height: 20px; /* Tamanho do botão de rádio */
+    border-radius: 50%; /* Torna o botão de rádio redondo */
+    border: 2px solid #333; /* Borda do botão de rádio */
+    outline: none; /* Remove o contorno padrão do navegador */
+    cursor: pointer; /* Adiciona um cursor pointer ao passar sobre o botão de rádio */
+    margin-right: 10px; /* Espaçamento entre o botão de rádio e o texto */
+    position: relative; /* Necessário para o estilo do círculo interno */
+}
+
+.radio-item input[type="radio"]:checked::before {
+    content: ''; /* Adiciona um conteúdo vazio */
+    position: absolute; /* Posiciona o conteúdo vazio */
+    top: 50%; /* Alinha verticalmente no centro */
+    left: 50%; /* Alinha horizontalmente no centro */
+    width: 12px; /* Tamanho do círculo interno */
+    height: 12px; /* Tamanho do círculo interno */
+    background-color: #333; /* Cor do círculo interno */
+    border-radius: 50%; /* Torna o círculo interno redondo */
+    transform: translate(-50%, -50%); /* Centraliza o círculo interno */
+}
+
+.radio-item label {
+    font-size: 16px; /* Ajuste o tamanho da fonte conforme necessário */
+    color: #333; /* Cor do texto do label */
 }
 
 /* Ajustes para telas menores */

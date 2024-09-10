@@ -67,24 +67,31 @@
         <div class="main-content">
             <h2>Casos Hipotéticos</h2>
             <img id="raio-image" src="{% static 'ferramentasweb/images/psicosimula.png' %}" alt="Ícone Informações">
-            
             <!-- Modal para personalização -->
             <div id="customize-modal" class="modal hidden">
                 <div class="modal-content">
                     <form id="customize-form">
                         <span class="close-btn">&times;</span>
                         <h2 id="personalizarcaso">Personalize o Caso Clínico</h2>
-                        <!-- Campo de Idade padrão -->
-                        <label for="idade">Idade</label>
-                        <input id="idade" name="idade" type="number" min="0" step="1" placeholder="Idade">
+                        
+                        <!-- Container para Idade e Sexo lado a lado -->
+                        <div class="form-row">
+                            <!-- Campo de Idade -->
+                            <div class="form-group">
+                                <label for="idade">Idade</label>
+                                <input id="idade" name="idade" type="number" min="0" step="1" placeholder="Idade">
+                            </div>
             
-                        <!-- Campo de Sexo padrão -->
-                        <label for="sexo">Sexo</label>
-                        <select id="sexo" name="sexo">
-                            <option value="Masculino">Masculino</option>
-                            <option value="Feminino">Feminino</option>
-                            <option value="Outro">Outro</option>
-                        </select>
+                            <!-- Campo de Sexo -->
+                            <div class="form-group">
+                                <label for="sexo">Sexo</label>
+                                <select id="sexo" name="sexo">
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Feminino">Feminino</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
             
                         <!-- Campos de Histórico Médico e Contexto Social -->
                         <label for="historico-medico">Histórico Médico</label>
@@ -92,7 +99,28 @@
             
                         <label for="contexto-social">Contexto Social</label>
                         <textarea id="contexto-social" name="contexto-social" placeholder="Contexto Social"></textarea>
-            
+                        <!-- Radio buttons para Nível de Complexidade -->
+                        <div class="form-group">
+                            <label class="mdc-typography--subtitle1">Nível de Complexidade</label>
+                            
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="nivel-basico" name="nivel-complexidade" value="basico" />
+                                    <label for="nivel-basico">Básico</label>
+                                </div>
+                                
+                                <div class="radio-item">
+                                    <input type="radio" id="nivel-intermediario" name="nivel-complexidade" value="intermediario" />
+                                    <label for="nivel-intermediario">Intermediário</label>
+                                </div>
+                                
+                                <div class="radio-item">
+                                    <input type="radio" id="nivel-avancado" name="nivel-complexidade" value="avancado" />
+                                    <label for="nivel-avancado">Avançado</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <button type="submit" class="mdc-button mdc-button--raised">
                             <span class="mdc-fab__icon">
                                 <img src="{% static 'ferramentasweb/images/add.png' %}" alt="Ícone Aplicar" class="icon-white">
@@ -302,10 +330,13 @@
                             historyContent.innerHTML = data.map(item => {
                                 let formattedMessage = '';
                                 if (item.role === 'system') {
+                                    messageClass = 'message-system';
                                     formattedMessage = `<strong>System:</strong> ${item.content}`;
                                 } else if (item.role === 'user') {
+                                    messageClass = 'message-user';
                                     formattedMessage = `<strong>Você:</strong> ${item.content}`;
                                 } else if (item.role === 'assistant') {
+                                    messageClass = 'message-assistant';
                                     formattedMessage = `<strong>Assistente:</strong> ${item.content}`;
                                 }
                                 return `<div>${formattedMessage}</div>`;
