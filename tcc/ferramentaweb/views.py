@@ -1,7 +1,7 @@
 import json, uuid, openai
 from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
-from .models import ConversationHistory
+from .models import Historico_Conversa
 
 openai.api_key = ''  # Substitua com sua chave da API
 
@@ -78,7 +78,7 @@ def gerar_caso_stream(request):
         return JsonResponse({'error': 'Método não permitido.'}, status=405)
 
     
-def process_message(request):
+def processar_mensagem(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id', '').strip()
         message = request.POST.get('message', '').strip()
@@ -89,7 +89,7 @@ def process_message(request):
             return JsonResponse({'error': 'Mensagem é obrigatória.'}, status=400)
 
         # Salvar a mensagem no histórico da base de dados
-        ConversationHistory.objects.create(user_id=user_id, message=message)
+        Historico_Conversa.objects.create(user_id=user_id, message=message)
 
         # Processar a mensagem e gerar uma resposta
         response = process_user_message(message)  # Certifique-se que a função process_user_message existe
@@ -99,7 +99,7 @@ def process_message(request):
         return JsonResponse({'error': 'Método não permitido.'}, status=405)
 
 
-def get_history(request):
+def pegar_historico(request):
     user_id = request.GET.get('user_id', '')
     print(f"Recebido user_id: {user_id}")  # Adicione isto para depuração
 
