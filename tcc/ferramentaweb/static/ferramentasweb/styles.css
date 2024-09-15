@@ -403,6 +403,22 @@ body {
     align-items: center;
 }
 
+.historico-data {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.data-separada {
+    border-bottom: 1px solid #7B5AFF;
+    margin: 20px 0;
+}
+
+.historico-mensagem {
+    margin-bottom: 10px;
+}
+
 .message-system {
     background-color: #f1f1f1;
     border-left: 5px solid #3f51b5;
@@ -520,7 +536,7 @@ body {
     padding: 8px 12px;
     border: none;
     border-radius: 50px;
-    background-color: #CCCCCC;
+    background-color: #a9a9a9;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
@@ -530,11 +546,10 @@ body {
 
 #customizar-formulario button:hover {
     background-color: #585858;
-    outline: 2px solid #FFF;
 }
 
 #customizar-formulario button:active {
-    background-color: #333;
+    background-color: #a9a9a9;
     transform: scale(0.98);
 }
 
@@ -585,78 +600,47 @@ body {
     color: #333;
 }
 
-/* Ajustes para telas com largura mínima de 1366px */
-@media screen and (min-width: 1366px) {
-
-    .container {
-        flex-direction: row;
-    }
-
-    .barra-lateral {
-        width: 250px;
-    }
-
-    #historico-box {
-        left: calc(250px + 50%);
-        width: calc(100% - 250px);
-    }
-
-    #customizar-formulario {
-        width: 60%;
-        max-width: 800px;
-        left: calc(50% + 80px);
-    }
-
-    .chat-container {
-        max-width: 1200px;
-    }
-
-    #chat-box {
-        max-height: 70vh;
-    }
+@media screen and (min-width: 1920px) {
 
     .container-sobre {
-        padding: 40px 20px;
-    }
-
-    .input-container textarea {
-        max-width: 90%;
-    }
-
-    .button-container {
-        gap: 20px;
-    }
-
-    .mdc-button, .mdc-fab {
-        font-size: 18px;
-        padding: 12px 24px;
-    }
-
-    .menu-item img {
-        width: 20px;
-        height: 20px;
-    }
-
-    .main-content h2 {
-        font-size: 28px;
-    }
-
-    #icone-central {
-        width: 25vh;
+        padding: 100px 50px;
+        max-width: 80%;
+        margin-top: 50px;
     }
 
     .container-sobre .circulo-sobre {
-        width: 80px;
-        height: 80px;
+        width: 150px;
+        height: 150px;
     }
 
-    #customizar-formulario .grupo-formulario input[type="number"],
-    #customizar-formulario .grupo-formulario select,
-    #customizar-formulario textarea {
-        width: 90%;
+    .container-sobre .circulo-sobre img {
+        width: 100%;
+        height: auto;
+    }
+
+    .barra-lateral .logo-title {
+        width: 300px;
+        height: auto;
+    }
+
+    .mdc-button, .mdc-fab {
+        font-size: 20px;
+        padding: 20px 40px;
+    }
+
+    .chat-container {
+        max-width: 1800px;
+    }
+
+    #chat-box {
+        max-height: 85vh;
+    }
+
+    #icone-central {
+        width: 50vh;
+        height: 50vh;
     }
 }
-
 
 @media (max-width: 1200px) {
     .container {

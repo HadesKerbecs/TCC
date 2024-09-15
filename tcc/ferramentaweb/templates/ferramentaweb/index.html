@@ -327,7 +327,10 @@
                         console.log('Dados recebidos do histórico:', data);
         
                         if (data.length > 0) {
-                            informacoesHistorico.innerHTML = data.map(item => {
+                            let ultimaData = '';
+                            informacoesHistorico.innerHTML = data.map((item, index ) => {
+                                const dataAtual = item.date;
+
                                 let formattedMessage = '';
                                 if (item.role === 'system') {
                                     messageClass = 'message-system';
@@ -339,7 +342,17 @@
                                     messageClass = 'message-assistant';
                                     formattedMessage = `<strong>Assistente:</strong> ${item.content}`;
                                 }
-                                return `<div>${formattedMessage}</div>`;
+
+                                let dataSeparada = '';
+                                if(dataAtual != ultimaData) {
+                                    if(index !== 0) {
+                                        dataSeparada = `<hr class="data-separada" />`;
+                                    }
+                                    ultimaData = dataAtual;
+                                    dataSeparada += `<h4 class="historico-data">${new Date(dataAtual).toLocaleDateString()}</h4>`;
+                                }
+
+                                return `${dataSeparada}<div class="historico-mensagem">${formattedMessage}</div>`;
                             }).join('');
                         } else {
                             informacoesHistorico.innerHTML = '<p>Sem histórico disponível.</p>';
