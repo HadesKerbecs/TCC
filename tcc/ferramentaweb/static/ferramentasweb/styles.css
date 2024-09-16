@@ -27,7 +27,6 @@ body {
     border: none;
     border-radius: 50px;
     font-size: 16px;
-    font-weight: 500px;
     padding: 12px 20px;
     display: flex;
     text-transform: none;
@@ -64,13 +63,15 @@ body {
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
     padding: 20px;
-    width: 300px;
+    width: 35%;
+    overflow-y: auto;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
-    box-shadow: 10px 4px 20px rgba(0, 0, 0, 0.1); /* Sombra para criar o efeito 3D */
+    height: 100vh;
+    box-shadow: 10px 4px 20px rgba(0, 0, 0, 0.1);
+    justify-content: space-between;
 }
 
 .barra-lateral h1 {
@@ -159,8 +160,9 @@ body {
 .container-sobre {
     background: linear-gradient(190deg, #554bc4 30%, #332c86 70%); 
     color: white;
-    padding: 60px 20px 30px 20px;
+    padding: 50px 1px;
     height: auto;
+    width: 90%;
     border-radius: 20px;
     text-align: center;
     position: relative;
@@ -182,6 +184,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 auto;
 }
 
 .container-sobre .circulo-sobre img {
@@ -215,9 +218,6 @@ body {
 
 .main-content h2 {
     color: #1B2559;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: auto;
 }
 
 .input-container {
@@ -230,7 +230,7 @@ body {
     gap: 10px 0;
 }
 
-.input-container textarea {
+.input-container textarea { /**/
     width: 100%;
     max-width: 100%;
     padding: 10px;
@@ -247,6 +247,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     gap: 15px;
+    margin-bottom: 20px;
 }
 
 .button-novocaso {
@@ -383,10 +384,13 @@ body {
     position: absolute;
     top: 50%;
     left: calc(250px + 50%);
-    transform: translate(-60%, -50%);
+    transform: translate(-50%, -50%);
     width: calc(100% - 300px);
     max-width: 1300px;
     height: 60%;
+    width: 50%;
+    max-height: 90vh;
+    margin: 0 auto;
     background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
@@ -465,12 +469,16 @@ body {
 }
 
 #customizar-formulario {
+    flex-direction: column;
+    align-items: center; 
     position: absolute;
     top: 50%;
-    left: calc(50% + 100px);
+    left: 68%;
     transform: translate(-50%, -50%);
-    width: 90%;
+    width: 80%;
     max-width: 600px;
+    max-height: 90vh;
+    margin: 0 auto;
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -479,7 +487,7 @@ body {
     box-sizing: border-box;
     font-weight: bold;
     color: #1B2559;
-    margin-top: 15px;
+    overflow-y: auto;
 }
 
 #personalizarcaso {
@@ -503,10 +511,7 @@ body {
 
 #customizar-formulario .grupo-formulario label {
     display: block;
-    font-weight: bold;
-    color: #1B2559;
     margin-bottom: 5px;
-    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
 }
 
 #customizar-formulario .grupo-formulario input[type="number"] {
@@ -529,19 +534,19 @@ body {
 
 #customizar-formulario textarea {
     resize: none;
-    min-height: 100px;
+    width: 95%;
+    height: 100px;
 }
 
 #customizar-formulario button {
-    padding: 8px 12px;
+    background-color: #a9a9a9;
+    color: white;
     border: none;
     border-radius: 50px;
-    background-color: #a9a9a9;
-    color: #fff;
     font-size: 16px;
+    padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    align-self: flex-end;
+    transition: background-color 0.3s ease;
 }
 
 #customizar-formulario button:hover {
@@ -600,117 +605,100 @@ body {
     color: #333;
 }
 
-@media screen and (min-width: 1920px) {
-
+@media screen and (min-width: 1440px) {
     .container-sobre {
-        padding: 100px 50px;
-        max-width: 80%;
-        margin-top: 50px;
+        max-width: 1366px;
+        margin: 20px auto; 
+        padding: 40px;
     }
 
-    .container-sobre .circulo-sobre {
-        width: 150px;
-        height: 150px;
-    }
-
-    .container-sobre .circulo-sobre img {
-        width: 100%;
-        height: auto;
-    }
-
-    .barra-lateral .logo-title {
+    .circulo-sobre {
         width: 300px;
-        height: auto;
-    }
-
-    .mdc-button, .mdc-fab {
-        font-size: 20px;
-        padding: 20px 40px;
-    }
-
-    .chat-container {
-        max-width: 1800px;
-    }
-
-    #chat-box {
-        max-height: 85vh;
-    }
-
-    #icone-central {
-        width: 50vh;
-        height: 50vh;
-    }
-}
-
-@media (max-width: 1200px) {
-    .container {
-        flex-direction: column;
-        padding: 20px;
+        height: 300px;
     }
 
     .barra-lateral {
-        width: 80%; /* Menos espaço para a barra lateral */
-        padding: 10px;
+        width: 310px;
     }
 
-    .main-content {
-        padding: 15px;
-    }
-
-    .button-container {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 15px 30px;
-    }
-
-    .container-sobre {
-        width: 85%;
-        padding: 20px 15px;
-        max-width: 100%;
-        font-size: 14px;
-        margin-top: 30px;
-    }
-
-    .container-sobre h1 {
+    button {
         font-size: 18px;
+        padding: 15px 35px;
     }
-
-    .container-sobre p {
-        font-size: 14px;
-        margin-top: 20px;
-    }
-
-    .input-container textarea,
-    .chat-container {
-        width: 90%;
-        max-width: 100%;
-    }
-
-    #chat-box {
-        max-height: 400px; /* Um pouco mais de espaço em telas maiores */
-        justify-content: center;
-    }
-
-    #icone-central {
-        width: 25vh;
-    }
-
+    
     #historico-box {
-        width: 80%;
-        height: 60%;
+        width: 50%;
+        margin: 0 auto; 
+        position: fixed; 
+        top: 50%;
+        left: 57%;
+        transform: translate(-50%, -50%);
     }
 
     #customizar-formulario {
-        width: 85vw;
-        max-height: 80vh;
+        width: 50%;
+        margin: 0 auto; 
+        position: fixed; 
+        top: 50%;
+        left: 60%;
+        transform: translate(-50%, -50%);
     }
 
-    .button-fechar {
-        font-size: 20px;
+    .header, .footer {
+        padding: 30px;
     }
 }
+
+@media screen and (max-width: 800px) and (max-height: 616px) {
+    .container-sobre {
+        width: 90%;
+        padding: 35px;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .barra-lateral {
+        width: 35%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    #historico-box {
+        width: 50%;
+        max-height: 85vh;
+        overflow-y: auto;
+        margin: 0 auto;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #customizar-formulario {
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        margin: 0 auto;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    .logo-title {
+        font-size: 20px;
+    }
+
+    .header, .footer {
+        padding: 10px;
+    }
+}
+
 
 @media (max-width: 768px) {
     .container {
@@ -739,7 +727,7 @@ body {
     .container-sobre .circulo-sobre {
         width: 40px;
         height: 40px;
-        top: -25px;
+        top: -30px;
     }
 
     .container-sobre .circulo-sobre img {
@@ -751,7 +739,7 @@ body {
         width: 100%;
         padding: 15px 10px;
         max-width: 100%;
-        font-size: 12px;
+        font-size: 14px;
         margin-top: 20px;
         box-sizing: border-box;
     }
@@ -766,7 +754,7 @@ body {
     }
 
     .container-sobre p {
-        font-size: 12px;
+        font-size: 14px;
         margin-top: 15px;
     }
 
@@ -822,9 +810,9 @@ body {
     }
 
     .container-sobre .circulo-sobre {
-        width: 30px;
+        width: 50px;
         height: 30px;
-        top: -20px;
+        top: -25px;
     }
 
     .container-sobre img, .container-sobre .circulo-sobre {
