@@ -27,7 +27,7 @@ body {
     border: none;
     border-radius: 50px;
     font-size: 16px;
-    padding: 12px 20px;
+    padding: 8px 15px;
     display: flex;
     text-transform: none;
     cursor: pointer;
@@ -35,6 +35,7 @@ body {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
     align-items: center;
     justify-content:flex-start;
+    vertical-align: middle;
 }
 
 .mdc-fab:hover {
@@ -50,6 +51,7 @@ body {
 .mdc-fab .mdc-fab__icon {
     margin-right: 8px;
     font-size: 16px;
+    vertical-align: middle;
 }
 
 .mdc-fab .mdc-fab__label {
@@ -63,7 +65,7 @@ body {
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
     padding: 20px;
-    width: 35%;
+    width: 25%;
     overflow-y: auto;
     box-sizing: border-box;
     display: flex;
@@ -88,7 +90,7 @@ body {
 }
 
 .logo-title {
-    width: 150px; 
+    width: 120px; 
     height: auto; 
 }
 
@@ -115,52 +117,11 @@ body {
 .menu-link:hover {
     color: #553fd6;
 }
-
-#customizar-formulario form {
-    display: flex;
-    flex-direction: column;
-}
-  
-#customizar-formulario md-filled-text-field, md-outlined-select {
-    width: 100%;
-}
-  
-#customizar-formulario textarea {
-    width: 100%;
-    height: 100px;
-    resize: none;
-}
-  
-.mdc-button {
-    background-color: #CCCCCC;
-    color: #ffffff;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 500px;
-    padding: 10px 20px;
-    display: flex;
-    text-transform: none;
-    cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-    align-items: center;
-    justify-content: flex-start;
-    margin-top: 15px; 
-}
-  
-.mdc-button:hover {
-    background-color: #424242;
-}
-  
-.mdc-button:active {
-    background-color: #303030;
-}
   
 .container-sobre {
     background: linear-gradient(190deg, #554bc4 30%, #332c86 70%); 
     color: white;
-    padding: 50px 1px;
+    padding: 15px 1px;
     height: auto;
     width: 90%;
     border-radius: 20px;
@@ -168,16 +129,16 @@ body {
     position: relative;
     max-width: 100%;
     box-sizing: border-box;
-    margin-top: auto;
+    margin-top: 10px;
 }
 
 .container-sobre .circulo-sobre {
     position: absolute;
-    top: -40px;
+    top: -25px;
     left: 50%;
     transform: translateX(-50%);
-    width: 70px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: linear-gradient(190deg, white 50%, #CCCCCC 100%);
     border: 5px solid #554bc4;
@@ -196,13 +157,13 @@ body {
 }
 
 .container-sobre h3 {
-    margin: 0 0 10px 0;
-    font-size: 20px;
+    margin: 10px 0 15px 0;
+    font-size: 17px;
 }
 
 .container-sobre p {
     margin: 25px 0 0 0;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .main-content {
@@ -248,10 +209,6 @@ body {
     justify-content: flex-start;
     gap: 15px;
     margin-bottom: 20px;
-}
-
-.button-novocaso {
-    margin-top: 10px;
 }
 
 .icone-branco {
@@ -321,7 +278,7 @@ body {
     color: white;
     border: none;
     border-radius: 50px;
-    padding: 10px 20px;
+    padding: 10px 12px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -371,7 +328,7 @@ body {
 #icone-central {
     position: absolute;
     top: 45%;
-    left: 60%;
+    left: 65%;
     transform: translate(-70%, -50%);
     width: 30vh;
     height: auto;
@@ -383,7 +340,7 @@ body {
     display: none;
     position: absolute;
     top: 50%;
-    left: calc(250px + 50%);
+    left: calc(180px + 50%);
     transform: translate(-50%, -50%);
     width: calc(100% - 300px);
     max-width: 1300px;
@@ -473,14 +430,15 @@ body {
     align-items: center; 
     position: absolute;
     top: 50%;
-    left: 68%;
+    left: 62%;
     transform: translate(-50%, -50%);
     width: 80%;
     max-width: 600px;
-    max-height: 90vh;
+    max-height: 70vh;
     margin: 0 auto;
     background-color: #fff;
-    padding: 20px;
+    padding: 5px;
+    font-size: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 15px;
     z-index: 1000;
@@ -490,9 +448,13 @@ body {
     overflow-y: auto;
 }
 
-#personalizarcaso {
-    margin: 0 0 20px 0;
-    text-align: center;
+#customizar-formulario form {
+    display: flex;
+    flex-direction: column;
+}
+  
+#customizar-formulario md-filled-text-field, md-outlined-select {
+    width: 100%;
 }
 
 #customizar-formulario .grupo-formulario {
@@ -512,30 +474,31 @@ body {
 #customizar-formulario .grupo-formulario label {
     display: block;
     margin-bottom: 5px;
+    font-size: 12px;
 }
 
 #customizar-formulario .grupo-formulario input[type="number"] {
     width: 80%;
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 12px;
 }
 
 #customizar-formulario .grupo-formulario select,
 #customizar-formulario textarea {
     width: 95%;
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 12px;
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
 }
 
 #customizar-formulario textarea {
     resize: none;
     width: 95%;
-    height: 100px;
+    height: 80px;
 }
 
 #customizar-formulario button {
@@ -543,10 +506,12 @@ body {
     color: white;
     border: none;
     border-radius: 50px;
-    font-size: 16px;
-    padding: 10px 20px;
+    font-size: 12px;
+    padding: 5px 20px;
+    margin-top: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    vertical-align: middle;
 }
 
 #customizar-formulario button:hover {
@@ -556,6 +521,18 @@ body {
 #customizar-formulario button:active {
     background-color: #a9a9a9;
     transform: scale(0.98);
+}
+
+#iconedoaplicar {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+#personalizarcaso {
+    margin: 0 0 20px 0;
+    text-align: center;
 }
 
 .ocultar {
@@ -578,8 +555,8 @@ body {
 
 .radio-item input[type="radio"] {
     appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
     border: 2px solid #333;
     outline: none;
@@ -609,21 +586,34 @@ body {
     .container-sobre {
         max-width: 1366px;
         margin: 20px auto; 
-        padding: 40px;
+        padding: 40px 20px 20px 20px;
+        margin-top: auto;
     }
 
-    .circulo-sobre {
-        width: 300px;
-        height: 300px;
+    .container-sobre .circulo-sobre {
+        width: 60px;
+        height: 60px;
     }
-
+    
+    .container-sobre h3 {
+        margin: 0 0 10 0;
+        font-size: 20px;
+    }
+    
+    .container-sobre p {
+        font-size: 16px;
+    }
+    
     .barra-lateral {
         width: 310px;
     }
 
-    button {
-        font-size: 18px;
-        padding: 15px 35px;
+    .mdc-fab {
+        padding: 10px 20px;
+    }
+
+    #button-enviar {
+        padding: 10px 20px;
     }
     
     #historico-box {
@@ -640,8 +630,46 @@ body {
         margin: 0 auto; 
         position: fixed; 
         top: 50%;
-        left: 60%;
+        left: 58%;
         transform: translate(-50%, -50%);
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    #customizar-formulario .grupo-formulario select, #customizar-formulario textarea {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    #customizar-formulario .grupo-formulario label {
+        font-size: 16px;
+    }
+    
+    #customizar-formulario .grupo-formulario input[type="number"] {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    #customizar-formulario button {
+        font-size: 16px;
+        padding: 8px 20px;
+    }
+
+    #customizar-formulario textarea {
+        height: 100px;
+    }
+
+    .radio-item input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+
+    #icone-central {
+        left: 60%;
+    }
+
+    .logo-title {
+        width: 120px; 
     }
 
     .header, .footer {
@@ -651,16 +679,34 @@ body {
 
 @media screen and (max-width: 800px) and (max-height: 616px) {
     .container-sobre {
-        width: 90%;
-        padding: 35px;
-        margin: 0 auto;
-        box-sizing: border-box;
+        max-width: 1366px;
+        margin: 20px auto; 
+        padding: 40px 20px 20px 20px;
+        margin-top: auto;
+    }
+
+    .container-sobre .circulo-sobre {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .container-sobre h3 {
+        margin: 0 0 10 0;
+        font-size: 20px;
+    }
+    
+    .container-sobre p {
+        font-size: 16px;
     }
 
     .barra-lateral {
         width: 35%;
         height: auto;
         margin-bottom: 10px;
+    }
+
+    .mdc-fab {
+        padding: 10px 20px;
     }
 
     #historico-box {
@@ -681,17 +727,51 @@ body {
         margin: 0 auto;
         position: relative;
         top: 50%;
-        left: 50%;
+        left: 58%;
         transform: translate(-50%, -50%);
+        padding: 10px;
+        font-size: 16px;
     }
 
-    button {
-        font-size: 14px;
+    #customizar-formulario .grupo-formulario select, #customizar-formulario textarea {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    #customizar-formulario .grupo-formulario label {
+        font-size: 16px;
+    }
+    
+    #customizar-formulario .grupo-formulario input[type="number"] {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    #customizar-formulario button {
+        font-size: 16px;
+        padding: 8px 20px;
+        margin-top: 10px;
+    }
+
+    #customizar-formulario textarea {
+        height: 100px;
+    }
+
+    .radio-item input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+
+    #button-enviar {
         padding: 10px 20px;
     }
 
     .logo-title {
-        font-size: 20px;
+        width: 120px; 
+    }
+
+    #icone-central {
+        left: 60%;
     }
 
     .header, .footer {
