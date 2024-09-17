@@ -7,8 +7,8 @@ openai.api_key = ''  # Substitua com sua chave da API
 
 # Armazenar o histórico da conversa na sessão
 def index(request):
-    if 'chat_history' not in request.session:
-        request.session['chat_history'] = [
+    if 'chat_historico' not in request.session:
+        request.session['chat_historico'] = [
             {"role": "system", "content": "Você é um especialista em psicopatologia. Responda de forma útil e apropriada com base no contexto de psicopatologia."}
         ]
 
@@ -29,18 +29,34 @@ def gerar_caso_stream(request):
             user_input = data.get('user_input', '')
 
             # Recupera o histórico de conversa da sessão
-            chat_history = request.session.get('chat_history', [])
-            print(f"Histórico anterior: {chat_history}")
+            chat_historico = request.session.get('chat_historico', [])
+            print(f"Histórico anterior: {chat_historico}")
 
             # Adiciona a mensagem do usuário ao histórico
-            chat_history.append({"role": "user", "content": user_input})
-            print(f"Histórico atualizado: {chat_history}")
+            chat_historico.append({"role": "user", "content": user_input})
+            print(f"Histórico atualizado: {chat_historico}")
+
+            # Recupera a personalização da sessão, se houver
+            personalizacao = request.session.get('personalizacao', {})
+            if personalizacao:
+                # Adiciona a personalização ao histórico de mensagens (ou em outro lugar necessário)
+                nivel_complexidade = personalizacao.get('nivel_complexidade', None)
+                if nivel_complexidade:
+                    chat_historico.append({
+                        "role": "system", 
+                        "content": f"Personalização aplicada: {personalizacao}"
+                    })
+                else:
+                    chat_historico.append({
+                        "role":"system",
+                        "content": f"Personalização aplicada: {personalizacao}"
+                    })
 
             # Função de streaming para gerar a resposta
             def stream_response():
                 response = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
-                    messages=chat_history,  # Envia todo o histórico da conversa
+                    messages=chat_historico,  # Envia todo o histórico da conversa, incluindo personalizações
                     max_tokens=1000,
                     temperature=0.7,
                     stream=True
@@ -59,11 +75,11 @@ def gerar_caso_stream(request):
                         yield json.dumps({'error': chunk['error']['message']}) + "\n"
 
                 # Adiciona a resposta do modelo ao histórico
-                chat_history.append({"role": "assistant", "content": accumulated_text})
-                print(f"Histórico final: {chat_history}")
+                chat_historico.append({"role": "assistant", "content": accumulated_text})
+                print(f"Histórico final: {chat_historico}")
 
                 # Salva o histórico atualizado na sessão
-                request.session['chat_history'] = chat_history
+                request.session['chat_historico'] = chat_historico
                 request.session.modified = True
 
                 yield json.dumps({"response": accumulated_text}) + "\n"
@@ -77,7 +93,11 @@ def gerar_caso_stream(request):
     else:
         return JsonResponse({'error': 'Método não permitido.'}, status=405)
 
+def processo_user_menssagem(message):
+    response = f"Você disse: {message}"
     
+    return response
+
 def processar_mensagem(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id', '').strip()
@@ -92,7 +112,7 @@ def processar_mensagem(request):
         Historico_Conversa.objects.create(user_id=user_id, message=message)
 
         # Processar a mensagem e gerar uma resposta
-        response = process_user_message(message)  # Certifique-se que a função process_user_message existe
+        response = processo_user_menssagem(message)
 
         return JsonResponse({'response': response})
     else:
@@ -107,21 +127,65 @@ def pegar_historico(request):
         return JsonResponse({'error': 'ID do usuário não fornecido'}, status=400)
 
     # Obtemos o histórico da sessão
-    chat_history = request.session.get('chat_history', [])
-    print(f"Histórico da sessão: {chat_history}")  # Adicione isto para depuração
+    chat_historico = request.session.get('chat_historico', [])
+    print(f"Histórico da sessão: {chat_historico}")  # Adicione isto para depuração
 
-    return JsonResponse(chat_history, safe=False)
+    return JsonResponse(chat_historico, safe=False)
 
 def personalizar_caso(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        idade = data.get('idade')
-        sexo = data.get('sexo')
-        historico_medico = data.get('historico_medico')
-        contexto_social = data.get('contexto_social')
-        
-        # Lógica para processar a personalização
-        # ...
+        try:
+            # Verifique se o tipo de conteúdo é JSON
+            if request.content_type != 'application/json':
+                return JsonResponse({'error': 'Tipo de conteúdo inválido. Esperado application/json.'}, status=400)
+            
+            # Extrair os dados de personalização enviados pelo formulário
+            data = json.loads(request.body)
+            idade = data.get('idade')
+            sexo = data.get('sexo')
+            historico_medico = data.get('historico_medico')
+            contexto_social = data.get('contexto_social')
+            nivel_complexidade = data.get('nivel_complexidade')
 
-        return JsonResponse({'status': 'success'}, status=200)
-    return JsonResponse({'status': 'failed'}, status=400)
+            # Verificar se os campos obrigatórios foram enviados
+            if not all([idade, sexo, historico_medico, contexto_social, nivel_complexidade]):
+                return JsonResponse({'error': 'Todos os campos de personalização são obrigatórios.'}, status=400)
+
+            # Validar dados (exemplo: idade deve ser um número)
+            try:
+                idade = int(idade)
+            except ValueError:
+                return JsonResponse({'error': 'Idade deve ser um número válido.'}, status=400)
+
+            # Armazenar os dados de personalização na sessão
+            request.session['personalizacao'] = {
+                'idade': idade,
+                'sexo': sexo,
+                'historico_medico': historico_medico,
+                'contexto_social': contexto_social,
+                'nivel_complexidade': nivel_complexidade
+            }
+
+            return JsonResponse({'message': 'Personalização aplicada com sucesso.'})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Falha ao decodificar o JSON enviado.'}, status=400)
+
+    # Retornar erro se não for POST
+    return JsonResponse({'error': 'Método não permitido. Use POST.'}, status=405)
+
+def resetar_personalizacao(request):
+    if request.method == 'POST':
+        # Remove a personalização da sessão
+        if 'personalizacao' in request.session:
+            del request.session['personalizacao']
+            request.session.modified = True
+            return JsonResponse({'message': 'Personalização resetada com sucesso.'})
+        return JsonResponse({'message': 'Nenhuma personalização encontrada para resetar.'})
+    return JsonResponse({'error': 'Método não permitido.'}, status=405)
+
+def obter_dados_personalizacao(request):
+    if request.method == 'GET':
+        personalizacao = request.session.get('personalizacao', {})
+        return JsonResponse({'personalizacao': personalizacao})
+    return JsonResponse({'error': 'Método não permitido.'}, status=405)

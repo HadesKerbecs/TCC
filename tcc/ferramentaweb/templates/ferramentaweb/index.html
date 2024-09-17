@@ -127,6 +127,13 @@
                             </span>
                             <span class="mdc-fab__icon">Aplicar</span>
                         </button>
+
+                        <button type="submit" class="mdc-button mdc-button--raised button-resetar">
+                            <span class="mdc-fab__icon">
+                                <img src="{% static 'ferramentasweb/images/resetar.png' %}" alt="Ícone Resetar" class="icone-branco" id="íconedoresetar">
+                            </span>
+                            <span class="mdc-fab__icon" >Resetar</span>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -179,7 +186,81 @@
             const janelaPersonalizacao = document.getElementById('janela-de-personalizacao');
             const customizarButtonFechar = document.querySelector('#janela-de-personalizacao .button-fechar');
             const formularioCustomizar = document.getElementById('customizar-formulario');
+            const buttonResetar = document.querySelector('.button-resetar');
+
+            const idadeInput = document.getElementById('idade');
+            const sexoInput = document.getElementById('sexo');
+            const historicoMedicoInput = document.getElementById('historico-medico');
+            const contextoSocialInput = document.getElementById('contexto-social');
+            const nivelComplexidadeInputs = document.querySelectorAll('input[name="nivel-complexidade"]');
+
+
+            let personalizacaoDados = {};  // Para armazenar os dados de personalização
+            
+            // Função para preencher os campos com os dados da personalização
+            async function preencherCamposPersonalizacao() {
+                try {
+                    const response = await fetch("{% url 'personalizacao_dados' %}", {
+                        method: 'GET',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    });
+                    const data = await response.json();
         
+                    if (data.personalizacao) {
+                        idadeInput.value = data.personalizacao.idade || '';
+                        sexoInput.value = data.personalizacao.sexo || '';
+                        historicoMedicoInput.value = data.personalizacao.historico_medico || '';
+                        contextoSocialInput.value = data.personalizacao.contexto_social || '';
+        
+                        nivelComplexidadeInputs.forEach(input => {
+                            if (input.value === data.personalizacao.nivel_complexidade) {
+                                input.checked = true;
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert('Ocorreu um erro ao carregar os dados de personalização.');
+                }
+            }
+        
+            // Adiciona evento para abrir o modal e preencher os campos
+            buttonPersonalizar.addEventListener('click', function() {
+                preencherCamposPersonalizacao();
+            });
+            
+            
+            // Função para resetar os campos de personalização e remover a personalização da sessão
+            buttonResetar.addEventListener('click', async function() {
+                // Limpar os campos de personalização
+                document.getElementById('idade').value = '';
+                document.getElementById('sexo').value = '';
+                document.getElementById('historico-medico').value = '';
+                document.getElementById('contexto-social').value = '';
+                document.querySelector('input[name="nivel-complexidade"]:checked').checked = false;
+        
+                // Remover a personalização da sessão
+                try {
+                    const response = await fetch("{% url 'resetar_personalizacao' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    });
+        
+                    if (!response.ok) throw new Error('Erro ao resetar personalização');
+                    
+                    const result = await response.json();
+                    alert(result.message);  // Exibir uma mensagem de sucesso
+                } catch (error) {
+                    console.error(error);
+                    alert('Ocorreu um erro ao tentar resetar a personalização.');
+                }
+            });
+            
             // Função para mostrar um modal e ocultar o chat-box
             function exibirModal(modal) {
                 historicoBox.style.display = 'none';
@@ -265,43 +346,52 @@
             }
         
             // Processa a mensagem do usuário
-            async function processarMensagem(message) {
+            async function processarMensagem(message, personalizacao = null) {
                 try {
-                    const response = await fetch("{% url 'gerar_caso_stream' %}", {
+                    let endpoint = "{% url 'gerar_caso_stream' %}";
+                    let bodyData = { user_input: message };
+            
+                    // Se houver dados de personalização, inclui-os na requisição
+                    if (personalizacao) {
+                        endpoint = "{% url 'personalizar_caso' %}";
+                        bodyData = { ...personalizacao, user_input: message };
+                    }
+            
+                    const response = await fetch(endpoint, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRFToken': '{{ csrf_token }}'
                         },
-                        body: JSON.stringify({ user_input: message })
+                        body: JSON.stringify(bodyData)
                     });
-        
+            
                     if (!response.ok) throw new Error('Network response was not ok');
-        
+            
                     const reader = response.body.getReader();
                     const decoder = new TextDecoder();
                     let textoAcumulado = '';
                     let botMessageElement = null;
-        
+            
                     while (true) {
                         const { done, value } = await reader.read();
                         if (done) break;
-        
+            
                         const chunk = decoder.decode(value, { stream: true });
                         const parsedChunks = chunk.split('\n').filter(chunk => chunk.trim() !== '');
-        
+            
                         parsedChunks.forEach(parsedChunk => {
                             try {
                                 const jsonChunk = JSON.parse(parsedChunk);
                                 if (jsonChunk.response) {
                                     textoAcumulado = jsonChunk.response;
-        
+            
                                     if (!botMessageElement) {
                                         botMessageElement = document.createElement('div');
                                         botMessageElement.classList.add('message', 'bot');
                                         chatBox.appendChild(botMessageElement);
                                     }
-        
+            
                                     botMessageElement.textContent = textoAcumulado;
                                     chatBox.scrollTop = chatBox.scrollHeight;
                                 } else if (jsonChunk.error) {
@@ -392,39 +482,45 @@
                 }
             });
         
-            // Função para enviar os dados de personalização
-            formularioCustomizar.addEventListener('submit', function(event) {
+            /// Função para enviar os dados de personalização
+            formularioCustomizar.addEventListener('submit', async function(event) {
                 event.preventDefault();
-                
+            
                 const idade = document.getElementById('idade').value;
                 const sexo = document.getElementById('sexo').value;
                 const historicoMedico = document.getElementById('historico-medico').value;
                 const contextoSocial = document.getElementById('contexto-social').value;
-        
-                fetch('/personalizar-caso/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({
-                        idade: idade,
-                        sexo: sexo,
-                        historico_medico: historicoMedico,
-                        contexto_social: contextoSocial
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Dados enviados com sucesso:', data);
-                    adicionarMensagemChat('user', 'Dados de personalização enviados com sucesso.');
-                    fecharModals();
-                })
-                .catch(error => {
-                    console.error('Erro ao enviar dados de personalização:', error);
-                });
-            });
-        
+                const nivelComplexidade = document.querySelector('input[name="nivel-complexidade"]:checked').value;
+            
+                const personalizacao = {
+                    idade: idade,
+                    sexo: sexo,
+                    historico_medico: historicoMedico,
+                    contexto_social: contextoSocial,
+                    nivel_complexidade: nivelComplexidade
+                };
+            
+                try {
+                    const response = await fetch("{% url 'personalizar_caso' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify(personalizacao)
+                    });
+            
+                    if (!response.ok) throw new Error('Erro ao aplicar personalização');
+                    
+                    const result = await response.json();
+                    alert(result.message);  // Exibir uma mensagem de sucesso
+                    fecharModals();  // Fecha o modal de personalização
+                } catch (error) {
+                    console.error(error);
+                    alert('Ocorreu um erro ao tentar personalizar o caso clínico.');
+                }
+            });            
+
             // Função para resetar o chat-box
             function resetChatBox() {
                 const chatBox = document.getElementById('chat-box');
