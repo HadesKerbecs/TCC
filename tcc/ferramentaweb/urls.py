@@ -10,4 +10,5 @@ urlpatterns = [
     path('personalizar-caso/', views.personalizar_caso, name='personalizar_caso'),
     path('resetar_personalizacao/', views.resetar_personalizacao, name='resetar_personalizacao'),
     path('personalizacao_dados/', views.obter_dados_personalizacao, name='personalizacao_dados'),
+    path('salvar_historico/', views.salvar_historico, name='salvar_historico'),
 ]
