@@ -45,6 +45,10 @@ def gerar_caso_stream(request):
                         "content": f"Personalização aplicada: {personalizacao}"
                     })
 
+            if len(chat_historico) > 50:
+                chat_historico = chat_historico[10:]
+                print(f"Histórico truncado: {chat_historico}")
+
             # Função de streaming para gerar a resposta
             def stream_response():
                 response = openai.ChatCompletion.create(
@@ -77,6 +81,7 @@ def gerar_caso_stream(request):
 
                 # Salva o histórico no banco de dados
                 try:
+
                     Historico_Conversa.objects.create(
                         user_id=request.session['user_id'],
                         message=user_input,
@@ -152,11 +157,22 @@ def pegar_historico(request):
     user_id = request.GET.get('user_id')
     if not user_id:
         return JsonResponse([], safe=False)
-    
+
     try:
         historico = Historico_Conversa.objects.filter(user_id=user_id).order_by('timestamp')
-        dados = list(historico.values('message', 'response', 'timestamp', 'user_id'))
-        return JsonResponse(dados, safe=False)
+        
+        # Formatar os dados de maneira organizada
+        dados_formatados = []
+        for item in historico:
+            formatted_entry = {
+                'message': item.message.replace('\n', '<br>'),  # Substitui quebras de linha
+                'response': item.response.replace('\n', '<br>'),
+                'timestamp': item.timestamp.strftime('%d/%m/%Y %H:%M:%S'),  # Formatação do timestamp
+                'user_id': item.user_id  # Inclui o user_id, se necessário
+            }
+            dados_formatados.append(formatted_entry)
+
+        return JsonResponse(dados_formatados, safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 

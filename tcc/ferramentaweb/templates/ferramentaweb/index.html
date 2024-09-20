@@ -8,8 +8,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'ferramentasweb/styles.css' %}">
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    
     <link rel="icon" href="{% static 'ferramentasweb/images/logo3.png' %}" type="image/png">
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -19,35 +23,37 @@
             <div class="menu-item">
                 <div class="button-container">
                     <!-- Botão Gerar Novo Caso -->
-                    <button id="button-novocaso" class="mdc-fab mdc-fab--extended button-novocaso">
-                        <span class="mdc-fab__icon">
-                            <img src="{% static 'ferramentasweb/images/Vector3.png' %}" alt="Ícone Gerar Caso" class="icone-branco">
-                        </span>
-                        <span class="mdc-fab__label">Gerar Novo Caso</span>
+                    <button id="button-novocaso" type="button" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stack" viewBox="0 0 16 16">
+                                <path d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.6.6 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.6.6 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.6.6 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535z"/>
+                                <path d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.6.6 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0z"/>
+                            </svg>
+                        Gerar Novo Caso
                     </button>
 
                     <!-- Botão Histórico -->
-                    <button class="mdc-fab mdc-fab--extended" id="button-historico">
-                        <span class="mdc-fab__icon">
-                            <img src="{% static 'ferramentasweb/images/Historico.png' %}" alt="Ícone Histórico" class="icone-branco">
-                        </span>
-                        <span class="mdc-fab__label">Histórico</span>
+                    <button type="button" class="btn btn-primary" id="button-historico">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wechat" viewBox="0 0 16 16">
+                                <path d="M11.176 14.429c-2.665 0-4.826-1.8-4.826-4.018 0-2.22 2.159-4.02 4.824-4.02S16 8.191 16 10.411c0 1.21-.65 2.301-1.666 3.036a.32.32 0 0 0-.12.366l.218.81a.6.6 0 0 1 .029.117.166.166 0 0 1-.162.162.2.2 0 0 1-.092-.03l-1.057-.61a.5.5 0 0 0-.256-.074.5.5 0 0 0-.142.021 5.7 5.7 0 0 1-1.576.22M9.064 9.542a.647.647 0 1 0 .557-1 .645.645 0 0 0-.646.647.6.6 0 0 0 .09.353Zm3.232.001a.646.646 0 1 0 .546-1 .645.645 0 0 0-.644.644.63.63 0 0 0 .098.356"/>
+                                <path d="M0 6.826c0 1.455.781 2.765 2.001 3.656a.385.385 0 0 1 .143.439l-.161.6-.1.373a.5.5 0 0 0-.032.14.19.19 0 0 0 .193.193q.06 0 .111-.029l1.268-.733a.6.6 0 0 1 .308-.088q.088 0 .171.025a6.8 6.8 0 0 0 1.625.26 4.5 4.5 0 0 1-.177-1.251c0-2.936 2.785-5.02 5.824-5.02l.15.002C10.587 3.429 8.392 2 5.796 2 2.596 2 0 4.16 0 6.826m4.632-1.555a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0m3.875 0a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0"/>
+                              </svg>
+                        Histórico
                     </button>
 
                     <!-- Botão Compartilhar -->
-                    <button class="mdc-fab mdc-fab--extended" id="button-compartilhar">
-                        <span class="mdc-fab__icon">
-                            <img src="{% static 'ferramentasweb/images/Download.png' %}" alt="Ícone Compartilhar" class="icone-branco">
-                        </span>
-                        <span class="mdc-fab__label">Compartilhar</span>
+                    <button type="button" class="btn btn-primary" id="button-compartilhar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                                <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
+                            </svg>
+                        Compartilhar
                     </button>
 
                     <!-- Botão Personalizar -->
-                    <button class="mdc-fab mdc-fab--extended" id="button-personalizar">
-                        <span class="mdc-fab__icon">
-                            <img src="{% static 'ferramentasweb/images/personalizar.png' %}" alt="Ícone Personalizar" class="icone-branco">
-                        </span>
-                        <span class="mdc-fab__label">Personalizar</span>
+                    <button type="button" class="btn btn-primary" id="button-personalizar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                            </svg>
+                        Personalizar
                     </button>
                 </div>
             </div>
@@ -66,21 +72,25 @@
             <div id="janela-de-personalizacao" class="janela ocultar">
                 <div class="modal-content">
                     <form id="customizar-formulario">
-                        <span class="button-fechar">&times;</span>
+                        <span class="button-fechar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                            </svg></span>
                         <h2 id="personalizarcaso">Personalize o Caso Clínico</h2>
                         
                         <!-- Container para Idade e Sexo lado a lado -->
                         <div class="row-formulario">
                             <!-- Campo de Idade -->
-                            <div class="grupo-formulario">
-                                <label for="idade">Idade</label>
-                                <input id="idade" name="idade" type="number" min="0" step="1" placeholder="Idade">
+                            <div class="grupo-formulario col-md-6">
+                                <label for="idade" class="form-label">Idade</label>
+                                <input type="number" id="idade" name="idade" class="form-control" min="0" max="120" placeholder="Digite sua idade">
                             </div>
             
                             <!-- Campo de Sexo -->
-                            <div class="grupo-formulario">
-                                <label for="sexo">Sexo</label>
-                                <select id="sexo" name="sexo">
+                            <div class="grupo-formulario col-md-6">
+                                <label for="sexo" class="form-label">Sexo</label>
+                                <select id="sexo" name="sexo" class="form-select" aria-label="Selecione o Sexo">
+                                    <option value="" selected disabled>Selecione o Sexo</option>
                                     <option value="Masculino">Masculino</option>
                                     <option value="Feminino">Feminino</option>
                                     <option value="Outro">Outro</option>
@@ -96,39 +106,38 @@
                         <textarea id="contexto-social" name="contexto-social" placeholder="Contexto Social"></textarea>
                         <!-- Radio buttons para Nível de Complexidade -->
                         <div class="grupo-formulario">
-                            <label class="mdc-typography--subtitle1">Nível de Complexidade</label>
-                            
+                            <label>Nível de Complexidade</label>
                             <div class="radio-group">
-                                <div class="radio-item">
-                                    <input type="radio" id="nivel-basico" name="nivel-complexidade" value="basico" />
-                                    <label for="nivel-basico">Básico</label>
+                                <div class="form-check radio-item">
+                                    <input class="form-check-input" type="radio" name="nivel-complexidade" id="nivel-basico">
+                                    <label class="form-check-label" for="nivel-basico">Básico</label>
                                 </div>
-                                
-                                <div class="radio-item">
-                                    <input type="radio" id="nivel-intermediario" name="nivel-complexidade" value="intermediario" />
-                                    <label for="nivel-intermediario">Intermediário</label>
+                                <div class="form-check radio-item">
+                                    <input class="form-check-input" type="radio" name="nivel-complexidade" id="nivel-intermediario">
+                                    <label class="form-check-label" for="nivel-intermediario">Intermediário</label>
                                 </div>
-                                
-                                <div class="radio-item">
-                                    <input type="radio" id="nivel-avancado" name="nivel-complexidade" value="avancado" />
-                                    <label for="nivel-avancado">Avançado</label>
+                                <div class="form-check radio-item">
+                                    <input class="form-check-input" type="radio" name="nivel-complexidade" id="nivel-avancado">
+                                    <label class="form-check-label" for="nivel-avancado">Avançado</label>
                                 </div>
                             </div>
                         </div>
-
-                        <button type="submit" class="mdc-button mdc-button--raised">
-                            <span class="mdc-fab__icon">
-                                <img src="{% static 'ferramentasweb/images/add.png' %}" alt="Ícone Aplicar" class="icone-branco" id="iconedoaplicar">
-                            </span>
-                            <span class="mdc-fab__icon">Aplicar</span>
+                        <div class="buttons-container">
+                        <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
+                                    <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708"/>
+                                  </svg>
+                            Aplicar
                         </button>
 
-                        <button type="submit" class="mdc-button mdc-button--raised button-resetar">
-                            <span class="mdc-fab__icon">
-                                <img src="{% static 'ferramentasweb/images/resetar.png' %}" alt="Ícone Resetar" class="icone-branco" id="íconedoresetar">
-                            </span>
-                            <span class="mdc-fab__icon" >Resetar</span>
+                        <button type="submit" class="btn btn-primary button-resetar" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-x" viewBox="0 0 16 16" id="íconedoresetar">
+                                    <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m-.646-4.854.646.647.646-.647a.5.5 0 0 1 .708.708l-.647.646.647.646a.5.5 0 0 1-.708.708l-.646-.647-.646.647a.5.5 0 0 1-.708-.708l.647-.646-.647-.646a.5.5 0 0 1 .708-.708"/>
+                                </svg>
+                            Resetar
                         </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -142,29 +151,29 @@
                 <div class="input-container">
                     <div class="agrupar-textarea">
                         <textarea id="user-input" placeholder="Informe o caso clínico"></textarea>
-                        <button id="button-enviar" class="mdc-fab mdc-fab--extended" disabled>
-                            <span class="mdc-fab__icon material-icons">send</span>
-                            <span class="mdc-fab__label">Simular</span>
-                        </button>
-                    </div>
+                    </button>
+                    <button type="button" class="btn btn-primary" id="button-enviar" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                        </svg>
+                        Simular
+                    </button>
+                    </div>                    
                 </div>
             </div>
         </div>
 
         <div id="historico-box" class="ocultar">
-            <button class="button-fechar">&times;</button>
+            <button class="button-fechar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                </svg>
+            </button>
             <div id="informacoes-historico"></div>
         </div>
     </div>
 
     <input type="hidden" name="user_id" value="{{ user_id }}">
-
-    <!-- Campo ocultar para armazenar o ID do usuário -->
-    <input type="hidden" name="user_id" value="{{ user_id }}">
-    <script type="module" src="https://unpkg.com/@material/web@1.0.0/textfield/filled-text-field.js"></script>
-    <script type="module" src="https://unpkg.com/@material/web@1.0.0/select/outlined-select.js"></script>
-    <script type="module" src="https://unpkg.com/@material/mwc-button@latest/mwc-button.js"></script>
-    <script type="module" src="https://unpkg.com/@material/mwc-select@latest/mwc-select.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -189,6 +198,7 @@
             const contextoSocialInput = document.getElementById('contexto-social');
             const nivelComplexidadeInputs = document.querySelectorAll('input[name="nivel-complexidade"]');
 
+            let isProcessing = false; // Controla se há uma resposta em processamento
             let personalizacaoDados = {};  // Para armazenar os dados de personalização
             
             // Função para preencher os campos com os dados da personalização
@@ -301,12 +311,15 @@
         
             // Função para enviar a mensagem
             function enviarMensagem() {
+                if (isProcessing) return;
+
                 const userMessage = userInput.value.trim();
                 if (userMessage !== '') {
                     adicionarMensagemChat('user', userMessage);
                     processarMensagem(userMessage);
                     userInput.value = '';
                     buttonEnviar.disabled = true;
+                    isProcessing = true;
                 }
             }
         
@@ -315,15 +328,17 @@
                 fecharModals(); // Fecha todos os modais antes de enviar a mensagem
                 enviarMensagem();
             });
-        
+            
             // Habilita o botão de enviar ao digitar no textarea
             userInput.addEventListener('input', function() {
-                buttonEnviar.disabled = userInput.value.trim() === '';
+                if (!isProcessing) {
+                    buttonEnviar.disabled = userInput.value.trim() === '';
+                }
             });
         
             // Envia a mensagem ao pressionar Enter
             userInput.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
+                if (event.key === 'Enter' && !event.shiftKey) {
                     event.preventDefault();
                     fecharModals();
                     enviarMensagem();
@@ -385,7 +400,6 @@
                                         botMessageElement.classList.add('message', 'bot');
                                         chatBox.appendChild(botMessageElement);
                                     }
-            
                                     botMessageElement.textContent = textoAcumulado;
                                     chatBox.scrollTop = chatBox.scrollHeight;
                                 } else if (jsonChunk.error) {
@@ -396,43 +410,34 @@
                             }
                         });
                     }
+                    isProcessing = false;
+                    buttonEnviar.disabled = userInput.value.trim() === '';
                 } catch (error) {
                     adicionarMensagemChat('bot', "Erro ao se conectar com o servidor: " + error.message);
+                    isProcessing = false;
                 }
-            }
-        
-            // Evento para exibir o histórico ao clicar no botão "Histórico"
-            buttonHistorico.addEventListener('click', function() {
-                exibirModal(historicoBox);
+            }   
+            // Função para exibir o histórico de mensagens
+            function exibirHistorico() {
                 const userId = document.querySelector('input[name="user_id"]').value;
                 fetch(`/pegar_historico/?user_id=${userId}`)
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Dados recebidos do histórico:', data);  // Verifique os dados recebidos aqui
-            
+                        console.log('Dados recebidos do histórico:', data);
+
                         if (data.length > 0) {
                             let ultimaData = '';
                             informacoesHistorico.innerHTML = data.map((item, index) => {
-                                console.log('Item do histórico:', item);  // Verifique o conteúdo de cada item do histórico
-            
                                 const dataAtual = new Date(item.timestamp);
 
-                                // Formatar a data e o horário
-                                const dataFormatada = dataAtual.toLocaleDateString('pt-BR');
-                                const horaFormatada = dataAtual.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            
-                                // Garantir que a mensagem e a resposta existem
-                                let formattedMessage = '';
-                                let formattedResponse = '';
-            
-                                messageClass = 'message';
-                                formattedMessage = `<strong>Mensagem:</strong> ${item.message}`;
-                                
-                                // Verifique se o campo de resposta existe, se não, exibe 'Sem resposta'
-                                formattedResponse = item.response 
+                                const dataFormatada = item.timestamp.split(' ')[0];
+                                const horaFormatada = item.timestamp.split(' ')[1]; // Hora já formatada
+
+                                let formattedMessage = `<strong>Mensagem:</strong> ${item.message}`;
+                                let formattedResponse = item.response 
                                     ? `<strong>Resposta:</strong> ${item.response}`
                                     : '<strong>Resposta:</strong> Sem resposta disponível';
-            
+
                                 let dataSeparada = '';
                                 if (dataAtual !== ultimaData) {
                                     if (index !== 0) {
@@ -441,8 +446,7 @@
                                     ultimaData = dataFormatada;
                                     dataSeparada += `<h4 class="historico-data">${dataFormatada} - ${horaFormatada}</h4>`;
                                 }
-            
-                                // Exibir tanto a mensagem quanto a resposta
+
                                 return `${dataSeparada}
                                         <div class="historico-mensagem">${formattedMessage}</div>
                                         <div class="historico-resposta">${formattedResponse}</div>`;
@@ -454,8 +458,14 @@
                     .catch(error => {
                         console.error('Erro ao obter histórico:', error);
                     });
-            });            
-            
+            }
+
+            // Evento para exibir o histórico ao clicar no botão "Histórico"
+            buttonHistorico.addEventListener('click', function() {
+                exibirModal(historicoBox);
+                exibirHistorico();
+            });
+
             async function salvarHistorico(userId, message, response) {
                 try {
                     const result = await fetch('/salvar_historico/', {
@@ -489,6 +499,47 @@
                     fecharModals();
                 }
             });
+            
+            // Função para salvar histórico com limite de mensagens
+            async function salvarHistorico(userId, message, response) {
+                try {
+                    const result = await fetch('/salvar_historico/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ user_id: userId, message: message, response: response })
+                    });
+            
+                    const data = await result.json();
+                    if (data.status === 'success') {
+                        console.log('Histórico salvo com sucesso');
+                        // Após salvar, verificar o limite de mensagens no chat
+                        limitarMensagensNoChat();
+                    } else {
+                        console.error('Erro ao salvar histórico:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Erro ao realizar a requisição:', error);
+                }
+            }
+            
+            // Função para limitar o número de mensagens no chat
+            function limitarMensagensNoChat() {
+                const mensagens = chatBox.querySelectorAll('.message');
+            
+                // Verifica se há mais de 50 mensagens
+                if (mensagens.length > 50) {
+                    // Remover as 10 primeiras mensagens
+                    for (let i = 0; i < 10; i++) {
+                        if (mensagens[i]) {
+                            mensagens[i].remove();
+                        }
+                    }
+                    console.log('10 mensagens mais antigas foram removidas.');
+                }
+            }            
         
             // Função para abrir o modal de personalização
             buttonPersonalizar.addEventListener('click', function() {
