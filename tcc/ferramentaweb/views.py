@@ -167,7 +167,7 @@ def pegar_historico(request):
             formatted_entry = {
                 'message': item.message.replace('\n', '<br>'),  # Substitui quebras de linha
                 'response': item.response.replace('\n', '<br>'),
-                'timestamp': item.timestamp.strftime('%d/%m/%Y %H:%M:%S'),  # Formatação do timestamp
+                'timestamp': item.timestamp.strftime('%d/%m/%Y %H:%M'),  # Formatação do timestamp
                 'user_id': item.user_id  # Inclui o user_id, se necessário
             }
             dados_formatados.append(formatted_entry)
