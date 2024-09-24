@@ -109,15 +109,15 @@
                             <label>Nível de Complexidade</label>
                             <div class="radio-group">
                                 <div class="form-check radio-item">
-                                    <input class="form-check-input" type="radio" name="nivel-complexidade" id="nivel-basico">
+                                    <input class="form-check-input" type="radio" name="nivel-complexidade" id="nivel-basico" value="Básico">
                                     <label class="form-check-label" for="nivel-basico">Básico</label>
                                 </div>
                                 <div class="form-check radio-item">
-                                    <input class="form-check-input" type="radio" name="nivel-complexidade" id="nivel-intermediario">
+                                    <input class="form-check-input" type="radio" name="nivel-complexidade" id="nivel-intermediario" value="Intermediário">
                                     <label class="form-check-label" for="nivel-intermediario">Intermediário</label>
                                 </div>
                                 <div class="form-check radio-item">
-                                    <input class="form-check-input" type="radio" name="nivel-complexidade" id="nivel-avancado">
+                                    <input class="form-check-input" type="radio" name="nivel-complexidade" id="nivel-avancado" value="Avançado">
                                     <label class="form-check-label" for="nivel-avancado">Avançado</label>
                                 </div>
                             </div>
@@ -198,6 +198,7 @@
             const contextoSocialInput = document.getElementById('contexto-social');
             const nivelComplexidadeInputs = document.querySelectorAll('input[name="nivel-complexidade"]');
 
+
             let isProcessing = false; // Controla se há uma resposta em processamento
             let personalizacaoDados = {};  // Para armazenar os dados de personalização
             
@@ -211,13 +212,15 @@
                         }
                     });
                     const data = await response.json();
+                    console.log('Dados recebidos da personalização:', data); // Adicione este log
+
         
                     if (data.personalizacao) {
                         idadeInput.value = data.personalizacao.idade || '';
                         sexoInput.value = data.personalizacao.sexo || '';
                         historicoMedicoInput.value = data.personalizacao.historico_medico || '';
                         contextoSocialInput.value = data.personalizacao.contexto_social || '';
-        
+
                         nivelComplexidadeInputs.forEach(input => {
                             if (input.value === data.personalizacao.nivel_complexidade) {
                                 input.checked = true;
@@ -238,6 +241,7 @@
             
             // Função para resetar os campos de personalização e remover a personalização da sessão
             buttonResetar.addEventListener('click', async function() {
+                event.preventDefault();
                 // Limpar os campos de personalização
                 idadeInput.value = '';
                 sexoInput.value = '';
@@ -428,10 +432,11 @@
                         if (data.length > 0) {
                             let ultimaData = '';
                             informacoesHistorico.innerHTML = data.map((item, index) => {
+                                
                                 const dataAtual = new Date(item.timestamp);
 
-                                const dataFormatada = item.timestamp.split(' ')[0];
-                                const horaFormatada = item.timestamp.split(' ')[1]; // Hora já formatada
+                                const dataFormatada = dataAtual.toLocaleDateString();
+                                const horaFormatada = dataAtual.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
                                 let formattedMessage = `<strong>Mensagem:</strong> ${item.message}`;
                                 let formattedResponse = item.response 
@@ -499,6 +504,22 @@
                     fecharModals();
                 }
             });
+
+             // Função para limitar o número de mensagens no chat
+             function limitarMensagensNoChat() {
+                const mensagens = chatBox.querySelectorAll('.message');
+            
+                // Verifica se há mais de 50 mensagens
+                if (mensagens.length > 50) {
+                    // Remover as 10 primeiras mensagens
+                    for (let i = 0; i < 10; i++) {
+                        if (mensagens[i]) {
+                            mensagens[i].remove();
+                        }
+                    }
+                    console.log('10 mensagens mais antigas foram removidas.');
+                }
+            }            
             
             // Função para salvar histórico com limite de mensagens
             async function salvarHistorico(userId, message, response) {
@@ -524,22 +545,6 @@
                     console.error('Erro ao realizar a requisição:', error);
                 }
             }
-            
-            // Função para limitar o número de mensagens no chat
-            function limitarMensagensNoChat() {
-                const mensagens = chatBox.querySelectorAll('.message');
-            
-                // Verifica se há mais de 50 mensagens
-                if (mensagens.length > 50) {
-                    // Remover as 10 primeiras mensagens
-                    for (let i = 0; i < 10; i++) {
-                        if (mensagens[i]) {
-                            mensagens[i].remove();
-                        }
-                    }
-                    console.log('10 mensagens mais antigas foram removidas.');
-                }
-            }            
         
             // Função para abrir o modal de personalização
             buttonPersonalizar.addEventListener('click', function() {
@@ -567,6 +572,11 @@
                 const historicoMedico = document.getElementById('historico-medico').value;
                 const contextoSocial = document.getElementById('contexto-social').value;
                 const nivelComplexidade = document.querySelector('input[name="nivel-complexidade"]:checked').value;
+
+                if (!nivelComplexidadeElement) {
+                    alert('Por favor, selecione um nível de complexidade.'); // Ou outra ação apropriada
+                    return;  // Interrompe a execução se não houver seleção
+                }
             
                 const personalizacao = {
                     idade: idade,

@@ -29,21 +29,33 @@ def gerar_caso_stream(request):
 
             # Recupera o histórico de conversa da sessão
             chat_historico = request.session.get('chat_historico', [])
-            print(f"Histórico anterior: {chat_historico}")
 
             # Adiciona a mensagem do usuário ao histórico
             chat_historico.append({"role": "user", "content": user_input})
-            print(f"Histórico atualizado: {chat_historico}")
 
             # Recupera a personalização da sessão, se houver
             personalizacao = request.session.get('personalizacao', {})
-            if personalizacao:
-                nivel_complexidade = personalizacao.get('nivel_complexidade', None)
-                if nivel_complexidade:
+            nivel_complexidade = personalizacao.get('nivel_complexidade', None)
+
+            total_mensagens = Historico_Conversa.objects.filter(user_id=request.session['user_id']).count()
+            if total_mensagens >= 50:
+                # Deletar as 10 mensagens mais antigas
+                mensagens_mais_antigas = Historico_Conversa.objects.filter(user_id=request.session['user_id']).order_by('timestamp')[:10]
+                ids_para_deletar = mensagens_mais_antigas.values_list('id', flat=True)
+                Historico_Conversa.objects.filter(id__in=ids_para_deletar).delete()
+                print("As 10 mensagens mais antigas foram deletadas.")
+
+            if nivel_complexidade and personalizacao:
                     chat_historico.append({
                         "role": "system", 
-                        "content": f"Personalização aplicada: {personalizacao}"
+                        "content": f"O usuário tem {personalizacao['idade']} anos, sexo {personalizacao['sexo']},"
+                        f"histórico médico: {personalizacao['historico_medico']},"
+                        f"contexto social: {personalizacao['contexto_social']}."
+                        f"O nível de complexidade selecionado é {nivel_complexidade}. Por favor, responda de acordo."
                     })
+            else:
+                    print("Personalização não aplicada. Continuando sem personalização.")
+
 
             if len(chat_historico) > 50:
                 chat_historico = chat_historico[10:]
@@ -51,11 +63,24 @@ def gerar_caso_stream(request):
 
             # Função de streaming para gerar a resposta
             def stream_response():
+                if nivel_complexidade == 'Básico':
+                    temperature = 0.5
+                    max_tokens = 500
+                elif nivel_complexidade == 'Intermediário':
+                    temperature = 0.7
+                    max_tokens = 750
+                elif nivel_complexidade == 'Avançado':
+                    temperature = 0.9
+                    max_tokens = 1000
+                else:
+                    temperature = 0.7
+                    max_tokens = 750
+
                 response = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
                     messages=chat_historico,
-                    max_tokens=1000,
-                    temperature=0.7,
+                    max_tokens=max_tokens,
+                    temperature=temperature,
                     stream=True
                 )
 
@@ -81,13 +106,14 @@ def gerar_caso_stream(request):
 
                 # Salva o histórico no banco de dados
                 try:
-
                     Historico_Conversa.objects.create(
                         user_id=request.session['user_id'],
                         message=user_input,
                         response=accumulated_text,
-                        timestamp=timezone.now()
+                        timestamp=timezone.now(),
+                        nivel_complexidade=nivel_complexidade
                     )
+                    print(f"Nível de complexidade salvo no banco: {nivel_complexidade}")
                 except Exception as e:
                     print(f"Erro ao salvar histórico no banco de dados: {e}")
 
@@ -167,8 +193,8 @@ def pegar_historico(request):
             formatted_entry = {
                 'message': item.message.replace('\n', '<br>'),  # Substitui quebras de linha
                 'response': item.response.replace('\n', '<br>'),
-                'timestamp': item.timestamp.strftime('%d/%m/%Y %H:%M'),  # Formatação do timestamp
-                'user_id': item.user_id  # Inclui o user_id, se necessário
+                'timestamp': item.timestamp.isoformat(),  # Retorna o timestamp em formato ISO 8601
+                'user_id': item.user_id
             }
             dados_formatados.append(formatted_entry)
 
@@ -179,7 +205,6 @@ def pegar_historico(request):
 def personalizar_caso(request):
     if request.method == 'POST':
         try:
-            # Verifique se o tipo de conteúdo é JSON
             if request.content_type != 'application/json':
                 return JsonResponse({'error': 'Tipo de conteúdo inválido. Esperado application/json.'}, status=400)
             
