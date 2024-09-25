@@ -198,9 +198,23 @@
             const contextoSocialInput = document.getElementById('contexto-social');
             const nivelComplexidadeInputs = document.querySelectorAll('input[name="nivel-complexidade"]');
 
-
             let isProcessing = false; // Controla se há uma resposta em processamento
             let personalizacaoDados = {};  // Para armazenar os dados de personalização
+
+            // Função para mostrar um modal e ocultar o chat-box
+            function exibirModal(modal) {
+                historicoBox.style.display = 'none';
+                janelaPersonalizacao.style.display = 'none';
+                chatBox.classList.add('ocultar');
+                modal.style.display = 'block';
+            }
+        
+            // Função para fechar todos os modais e mostrar o chat-box
+            function fecharModals() {
+                historicoBox.style.display = 'none';
+                janelaPersonalizacao.style.display = 'none';
+                chatBox.classList.remove('ocultar'); // Mostra o chat-box
+            }
             
             // Função para preencher os campos com os dados da personalização
             async function preencherCamposPersonalizacao() {
@@ -212,8 +226,6 @@
                         }
                     });
                     const data = await response.json();
-                    console.log('Dados recebidos da personalização:', data); // Adicione este log
-
         
                     if (data.personalizacao) {
                         idadeInput.value = data.personalizacao.idade || '';
@@ -238,7 +250,51 @@
                 preencherCamposPersonalizacao();
                 exibirModal(janelaPersonalizacao);
             });
+
+            /// Função para enviar os dados de personalização
+            formularioCustomizar.addEventListener('submit', async function(event) {
+                event.preventDefault();
             
+                const idade = document.getElementById('idade').value;
+                const sexo = document.getElementById('sexo').value;
+                const historicoMedico = document.getElementById('historico-medico').value;
+                const contextoSocial = document.getElementById('contexto-social').value;
+                const nivelComplexidade = document.querySelector('input[name="nivel-complexidade"]:checked').value;
+
+                if (!nivelComplexidadeElement) {
+                    alert('Por favor, selecione um nível de complexidade.');
+                    return;
+                }
+            
+                const personalizacao = {
+                    idade: idade,
+                    sexo: sexo,
+                    historico_medico: historicoMedico,
+                    contexto_social: contextoSocial,
+                    nivel_complexidade: nivelComplexidade
+                };
+            
+                try {
+                    const response = await fetch("{% url 'personalizar_caso' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify(personalizacao)
+                    });
+            
+                    if (!response.ok) throw new Error('Erro ao aplicar personalização');
+                    
+                    const result = await response.json();
+                    alert(result.message);  // Exibir uma mensagem de sucesso
+                    fecharModals();  // Fecha o modal de personalização
+                } catch (error) {
+                    console.error(error);
+                    alert('Ocorreu um erro ao tentar personalizar o caso clínico.');
+                }
+            });            
+
             // Função para resetar os campos de personalização e remover a personalização da sessão
             buttonResetar.addEventListener('click', async function() {
                 event.preventDefault();
@@ -268,21 +324,6 @@
                     alert('Ocorreu um erro ao tentar resetar a personalização.');
                 }
             });
-            
-            // Função para mostrar um modal e ocultar o chat-box
-            function exibirModal(modal) {
-                historicoBox.style.display = 'none';
-                janelaPersonalizacao.style.display = 'none';
-                chatBox.classList.add('ocultar');
-                modal.style.display = 'block';
-            }
-        
-            // Função para fechar todos os modais e mostrar o chat-box
-            function fecharModals() {
-                historicoBox.style.display = 'none';
-                janelaPersonalizacao.style.display = 'none';
-                chatBox.classList.remove('ocultar'); // Mostra o chat-box
-            }
         
             // Função para compartilhar o conteúdo da conversa
             function compartilharConteudoConsulta() {
@@ -329,7 +370,7 @@
         
             // Adiciona o evento ao botão de enviar
             buttonEnviar.addEventListener('click', function() {
-                fecharModals(); // Fecha todos os modais antes de enviar a mensagem
+                fecharModals();
                 enviarMensagem();
             });
             
@@ -421,6 +462,7 @@
                     isProcessing = false;
                 }
             }   
+            
             // Função para exibir o histórico de mensagens
             function exibirHistorico() {
                 const userId = document.querySelector('input[name="user_id"]').value;
@@ -546,11 +588,6 @@
                 }
             }
         
-            // Função para abrir o modal de personalização
-            buttonPersonalizar.addEventListener('click', function() {
-                exibirModal(janelaPersonalizacao);
-            });
-        
             // Fechar o modal de personalização ao clicar no botão de fechar
             customizarButtonFechar.addEventListener('click', function() {
                 fecharModals();
@@ -563,50 +600,6 @@
                 }
             });
         
-            /// Função para enviar os dados de personalização
-            formularioCustomizar.addEventListener('submit', async function(event) {
-                event.preventDefault();
-            
-                const idade = document.getElementById('idade').value;
-                const sexo = document.getElementById('sexo').value;
-                const historicoMedico = document.getElementById('historico-medico').value;
-                const contextoSocial = document.getElementById('contexto-social').value;
-                const nivelComplexidade = document.querySelector('input[name="nivel-complexidade"]:checked').value;
-
-                if (!nivelComplexidadeElement) {
-                    alert('Por favor, selecione um nível de complexidade.'); // Ou outra ação apropriada
-                    return;  // Interrompe a execução se não houver seleção
-                }
-            
-                const personalizacao = {
-                    idade: idade,
-                    sexo: sexo,
-                    historico_medico: historicoMedico,
-                    contexto_social: contextoSocial,
-                    nivel_complexidade: nivelComplexidade
-                };
-            
-                try {
-                    const response = await fetch("{% url 'personalizar_caso' %}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: JSON.stringify(personalizacao)
-                    });
-            
-                    if (!response.ok) throw new Error('Erro ao aplicar personalização');
-                    
-                    const result = await response.json();
-                    alert(result.message);  // Exibir uma mensagem de sucesso
-                    fecharModals();  // Fecha o modal de personalização
-                } catch (error) {
-                    console.error(error);
-                    alert('Ocorreu um erro ao tentar personalizar o caso clínico.');
-                }
-            });            
-
             // Função para resetar o chat-box
             function resetChatBox() {
                 const chatBox = document.getElementById('chat-box');
