@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
     path('', views.index, name='index'),
     path('pegar_historico/', views.pegar_historico, name='pegar_historico'),

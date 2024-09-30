@@ -198,10 +198,9 @@
             const contextoSocialInput = document.getElementById('contexto-social');
             const nivelComplexidadeInputs = document.querySelectorAll('input[name="nivel-complexidade"]');
 
-            let isProcessing = false; // Controla se há uma resposta em processamento
-            let personalizacaoDados = {};  // Para armazenar os dados de personalização
+            let isProcessing = false;
+            let personalizacaoDados = {};
 
-            // Função para mostrar um modal e ocultar o chat-box
             function exibirModal(modal) {
                 historicoBox.style.display = 'none';
                 janelaPersonalizacao.style.display = 'none';
@@ -209,14 +208,12 @@
                 modal.style.display = 'block';
             }
         
-            // Função para fechar todos os modais e mostrar o chat-box
             function fecharModals() {
                 historicoBox.style.display = 'none';
                 janelaPersonalizacao.style.display = 'none';
-                chatBox.classList.remove('ocultar'); // Mostra o chat-box
+                chatBox.classList.remove('ocultar');
             }
             
-            // Função para preencher os campos com os dados da personalização
             async function preencherCamposPersonalizacao() {
                 try {
                     const response = await fetch("{% url 'personalizacao_dados' %}", {
@@ -244,14 +241,12 @@
                     alert('Ocorreu um erro ao carregar os dados de personalização.');
                 }
             }
-        
-            // Adiciona evento para abrir o modal e preencher os campos
+
             buttonPersonalizar.addEventListener('click', function() {
                 preencherCamposPersonalizacao();
                 exibirModal(janelaPersonalizacao);
             });
 
-            /// Função para enviar os dados de personalização
             formularioCustomizar.addEventListener('submit', async function(event) {
                 event.preventDefault();
             
@@ -287,25 +282,22 @@
                     if (!response.ok) throw new Error('Erro ao aplicar personalização');
                     
                     const result = await response.json();
-                    alert(result.message);  // Exibir uma mensagem de sucesso
-                    fecharModals();  // Fecha o modal de personalização
+                    alert(result.message);
+                    fecharModals();
                 } catch (error) {
                     console.error(error);
                     alert('Ocorreu um erro ao tentar personalizar o caso clínico.');
                 }
             });            
 
-            // Função para resetar os campos de personalização e remover a personalização da sessão
             buttonResetar.addEventListener('click', async function() {
                 event.preventDefault();
-                // Limpar os campos de personalização
                 idadeInput.value = '';
                 sexoInput.value = '';
                 historicoMedicoInput.value = '';
                 contextoSocialInput.value = '';
                 nivelComplexidadeInputs.forEach(input => input.checked = false);
         
-                // Remover a personalização da sessão
                 try {
                     const response = await fetch("{% url 'resetar_personalizacao' %}", {
                         method: 'POST',
@@ -318,14 +310,13 @@
                     if (!response.ok) throw new Error('Erro ao resetar personalização');
                     
                     const result = await response.json();
-                    alert(result.message);  // Exibir uma mensagem de sucesso
+                    alert(result.message);
                 } catch (error) {
                     console.error(error);
                     alert('Ocorreu um erro ao tentar resetar a personalização.');
                 }
             });
         
-            // Função para compartilhar o conteúdo da conversa
             function compartilharConteudoConsulta() {
                 const mensagens = chatBox.querySelectorAll('.message');
                 let consultaConteudo = '';
@@ -351,10 +342,8 @@
                 }
             }
         
-            // Adiciona o evento ao botão de compartilhar
             buttonCompartilhar.addEventListener('click', compartilharConteudoConsulta);
         
-            // Função para enviar a mensagem
             function enviarMensagem() {
                 if (isProcessing) return;
 
@@ -368,20 +357,17 @@
                 }
             }
         
-            // Adiciona o evento ao botão de enviar
             buttonEnviar.addEventListener('click', function() {
                 fecharModals();
                 enviarMensagem();
             });
             
-            // Habilita o botão de enviar ao digitar no textarea
             userInput.addEventListener('input', function() {
                 if (!isProcessing) {
                     buttonEnviar.disabled = userInput.value.trim() === '';
                 }
             });
         
-            // Envia a mensagem ao pressionar Enter
             userInput.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter' && !event.shiftKey) {
                     event.preventDefault();
@@ -390,7 +376,6 @@
                 }
             });
         
-            // Adiciona mensagem ao chat
             function adicionarMensagemChat(sender, message) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', sender);
@@ -399,13 +384,11 @@
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         
-            // Processa a mensagem do usuário
             async function processarMensagem(message, personalizacao = null) {
                 try {
                     let endpoint = "{% url 'gerar_caso_stream' %}";
                     let bodyData = { user_input: message };
             
-                    // Se houver dados de personalização, inclui-os na requisição
                     if (personalizacao) {
                         endpoint = "{% url 'personalizar_caso' %}";
                         bodyData = { ...personalizacao, user_input: message };
@@ -463,7 +446,6 @@
                 }
             }   
             
-            // Função para exibir o histórico de mensagens
             function exibirHistorico() {
                 const userId = document.querySelector('input[name="user_id"]').value;
                 fetch(`/pegar_historico/?user_id=${userId}`)
@@ -507,53 +489,25 @@
                     });
             }
 
-            // Evento para exibir o histórico ao clicar no botão "Histórico"
             buttonHistorico.addEventListener('click', function() {
                 exibirModal(historicoBox);
                 exibirHistorico();
-            });
-
-            async function salvarHistorico(userId, message, response) {
-                try {
-                    const result = await fetch('/salvar_historico/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: JSON.stringify({ user_id: userId, message: message, response: response })
-                    });
-            
-                    const data = await result.json();
-                    if (data.status === 'success') {
-                        console.log('Histórico salvo com sucesso');
-                    } else {
-                        console.error('Erro ao salvar histórico:', data.message);
-                    }
-                } catch (error) {
-                    console.error('Erro ao realizar a requisição:', error);
-                }
-            }            
+            });           
         
-            // Fechar o histórico ao clicar no botão de fechar
             buttonFecharHistorico.addEventListener('click', function() {
                 fecharModals();
             });
         
-            // Fechar o histórico ao clicar fora dele
             historicoBox.addEventListener('click', function(event) {
                 if (event.target === historicoBox) {
                     fecharModals();
                 }
             });
 
-             // Função para limitar o número de mensagens no chat
              function limitarMensagensNoChat() {
                 const mensagens = chatBox.querySelectorAll('.message');
             
-                // Verifica se há mais de 50 mensagens
                 if (mensagens.length > 50) {
-                    // Remover as 10 primeiras mensagens
                     for (let i = 0; i < 10; i++) {
                         if (mensagens[i]) {
                             mensagens[i].remove();
@@ -563,7 +517,6 @@
                 }
             }            
             
-            // Função para salvar histórico com limite de mensagens
             async function salvarHistorico(userId, message, response) {
                 try {
                     const result = await fetch('/salvar_historico/', {
@@ -578,7 +531,6 @@
                     const data = await result.json();
                     if (data.status === 'success') {
                         console.log('Histórico salvo com sucesso');
-                        // Após salvar, verificar o limite de mensagens no chat
                         limitarMensagensNoChat();
                     } else {
                         console.error('Erro ao salvar histórico:', data.message);
@@ -588,34 +540,29 @@
                 }
             }
         
-            // Fechar o modal de personalização ao clicar no botão de fechar
             customizarButtonFechar.addEventListener('click', function() {
                 fecharModals();
             });
         
-            // Fechar o modal de personalização ao clicar fora dele
             janelaPersonalizacao.addEventListener('click', function(event) {
                 if (event.target === janelaPersonalizacao) {
                     fecharModals();
                 }
             });
         
-            // Função para resetar o chat-box
             function resetChatBox() {
                 const chatBox = document.getElementById('chat-box');
                 if (chatBox) {
                     const image = chatBox.querySelector('.imagem-chat-box');
                     const messages = chatBox.querySelectorAll('.message');
                     
-                    // Remove apenas as mensagens, mas mantém a imagem
                     messages.forEach(message => message.remove());
                 }
             }
         
-            // Adiciona o evento ao botão de refresh
             buttonNovoCaso.addEventListener('click', function() {
-                fecharModals(); // Fecha todos os modais
-                resetChatBox(); // Limpa o conteúdo do chat-box
+                fecharModals();
+                resetChatBox();
             });
         });         
     </script>

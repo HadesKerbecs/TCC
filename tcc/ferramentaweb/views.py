@@ -27,19 +27,15 @@ def gerar_caso_stream(request):
             data = json.loads(request.body)
             user_input = data.get('user_input', '')
 
-            # Recupera o histórico de conversa da sessão
             chat_historico = request.session.get('chat_historico', [])
 
-            # Adiciona a mensagem do usuário ao histórico
             chat_historico.append({"role": "user", "content": user_input})
 
-            # Recupera a personalização da sessão, se houver
             personalizacao = request.session.get('personalizacao', {})
             nivel_complexidade = personalizacao.get('nivel_complexidade', None)
 
             total_mensagens = Historico_Conversa.objects.filter(user_id=request.session['user_id']).count()
             if total_mensagens >= 50:
-                # Deletar as 10 mensagens mais antigas
                 mensagens_mais_antigas = Historico_Conversa.objects.filter(user_id=request.session['user_id']).order_by('timestamp')[:10]
                 ids_para_deletar = mensagens_mais_antigas.values_list('id', flat=True)
                 Historico_Conversa.objects.filter(id__in=ids_para_deletar).delete()
@@ -61,7 +57,6 @@ def gerar_caso_stream(request):
                 chat_historico = chat_historico[10:]
                 print(f"Histórico truncado: {chat_historico}")
 
-            # Função de streaming para gerar a resposta
             def stream_response():
                 if nivel_complexidade == 'Básico':
                     temperature = 0.5
@@ -96,15 +91,12 @@ def gerar_caso_stream(request):
                     if 'error' in chunk:
                         yield json.dumps({'error': chunk['error']['message']}) + "\n"
 
-                # Adiciona a resposta do modelo ao histórico
                 chat_historico.append({"role": "assistant", "content": accumulated_text})
                 print(f"Histórico final: {chat_historico}")
 
-                # Salva o histórico atualizado na sessão
                 request.session['chat_historico'] = chat_historico
                 request.session.modified = True
 
-                # Salva o histórico no banco de dados
                 try:
                     Historico_Conversa.objects.create(
                         user_id=request.session['user_id'],
@@ -161,7 +153,7 @@ def processar_mensagem(request):
 def salvar_historico(request):
     if request.method == 'POST':
         try:
-            data = json.loads(request.body)  # Capturando o corpo da requisição
+            data = json.loads(request.body)
             user_id = data.get('user_id')
             message = data.get('message')
             response = data.get('response')
@@ -187,13 +179,12 @@ def pegar_historico(request):
     try:
         historico = Historico_Conversa.objects.filter(user_id=user_id).order_by('timestamp')
         
-        # Formatar os dados de maneira organizada
         dados_formatados = []
         for item in historico:
             formatted_entry = {
-                'message': item.message.replace('\n', '<br>'),  # Substitui quebras de linha
+                'message': item.message.replace('\n', '<br>'),
                 'response': item.response.replace('\n', '<br>'),
-                'timestamp': item.timestamp.isoformat(),  # Retorna o timestamp em formato ISO 8601
+                'timestamp': item.timestamp.isoformat(),
                 'user_id': item.user_id
             }
             dados_formatados.append(formatted_entry)
@@ -208,7 +199,6 @@ def personalizar_caso(request):
             if request.content_type != 'application/json':
                 return JsonResponse({'error': 'Tipo de conteúdo inválido. Esperado application/json.'}, status=400)
             
-            # Extrair os dados de personalização enviados pelo formulário
             data = json.loads(request.body)
             idade = data.get('idade')
             sexo = data.get('sexo')
@@ -216,17 +206,14 @@ def personalizar_caso(request):
             contexto_social = data.get('contexto_social')
             nivel_complexidade = data.get('nivel_complexidade')
 
-            # Verificar se os campos obrigatórios foram enviados
             if not all([idade, sexo, historico_medico, contexto_social, nivel_complexidade]):
                 return JsonResponse({'error': 'Todos os campos de personalização são obrigatórios.'}, status=400)
 
-            # Validar dados (exemplo: idade deve ser um número)
             try:
                 idade = int(idade)
             except ValueError:
                 return JsonResponse({'error': 'Idade deve ser um número válido.'}, status=400)
 
-            # Armazenar os dados de personalização na sessão
             request.session['personalizacao'] = {
                 'idade': idade,
                 'sexo': sexo,
@@ -240,12 +227,10 @@ def personalizar_caso(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Falha ao decodificar o JSON enviado.'}, status=400)
 
-    # Retornar erro se não for POST
     return JsonResponse({'error': 'Método não permitido. Use POST.'}, status=405)
 
 def resetar_personalizacao(request):
     if request.method == 'POST':
-        # Remove a personalização da sessão
         if 'personalizacao' in request.session:
             del request.session['personalizacao']
             request.session.modified = True
