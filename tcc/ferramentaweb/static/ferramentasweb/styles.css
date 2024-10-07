@@ -452,6 +452,26 @@ body {
     transform: scale(0.98);
 }
 
+#customizar-formulario input[type="text"] {
+    width: 95%;
+    height: 10px;
+    padding: 5px;
+    border: 1px solid #bdbdbd;
+    border-radius: 4px;
+    font-size: 15px;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+    overflow-y: auto;
+    word-wrap: break-word;
+}
+
+#customizar-formulario textarea#transtorno {
+    width: 95%;
+    height: 20px;
+    resize: none;
+    font-size: 12px;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+}
+
 #iconedoaplicar {
     width: 20px;
     height: 20px;
@@ -589,8 +609,8 @@ body {
         padding: 8px 20px;
     }
 
-    #customizar-formulario textarea {
-        height: 100px;
+    #customizar-formulario textarea#doenca {
+        font-size: 15px;
     }
 
     .form-check-input {
@@ -689,6 +709,10 @@ body {
 
     #customizar-formulario textarea {
         height: 100px;
+    }
+
+    #customizar-formulario textarea#doenca {
+        font-size: 15px;
     }
 
     .form-check-input {

@@ -89,8 +89,8 @@
                             <!-- Campo de Sexo -->
                             <div class="grupo-formulario col-md-6">
                                 <label for="sexo" class="form-label">Sexo</label>
-                                <select id="sexo" name="sexo" class="form-select" aria-label="Selecione o Sexo">
-                                    <option value="" selected disabled>Selecione o Sexo</option>
+                                <select id="sexo" name="sexo" class="form-select" aria-label="Selecione o sexo">
+                                    <option value="" selected disabled>Selecione o sexo</option>
                                     <option value="Masculino">Masculino</option>
                                     <option value="Feminino">Feminino</option>
                                     <option value="Outro">Outro</option>
@@ -100,10 +100,14 @@
             
                         <!-- Campos de Histórico Médico e Contexto Social -->
                         <label for="historico-medico">Histórico Médico</label>
-                        <textarea id="historico-medico" name="historico-medico" placeholder="Histórico Médico"></textarea>
+                        <textarea id="historico-medico" name="historico-medico" placeholder="Insira o histórico médico do paciente"></textarea>
             
                         <label for="contexto-social">Contexto Social</label>
-                        <textarea id="contexto-social" name="contexto-social" placeholder="Contexto Social"></textarea>
+                        <textarea id="contexto-social" name="contexto-social" placeholder="Insira o contexto social do paciente"></textarea>
+
+                        <label for="transtorno">Transtorno Clínico</label>
+                        <textarea id="transtorno" name="transtornoClinico" class="transtorno-area" placeholder="Digite o transtorno do paciente"></textarea>
+
                         <!-- Radio buttons para Nível de Complexidade -->
                         <div class="grupo-formulario">
                             <label>Nível de Complexidade</label>
@@ -196,6 +200,7 @@
             const sexoInput = document.getElementById('sexo');
             const historicoMedicoInput = document.getElementById('historico-medico');
             const contextoSocialInput = document.getElementById('contexto-social');
+            const transtornoClinico = document.getElementById('transtorno').value;
             const nivelComplexidadeInputs = document.querySelectorAll('input[name="nivel-complexidade"]');
 
             let isProcessing = false;
@@ -229,6 +234,7 @@
                         sexoInput.value = data.personalizacao.sexo || '';
                         historicoMedicoInput.value = data.personalizacao.historico_medico || '';
                         contextoSocialInput.value = data.personalizacao.contexto_social || '';
+                        transtornoClinico.value = data.personalizacao.transtorno || '';
 
                         nivelComplexidadeInputs.forEach(input => {
                             if (input.value === data.personalizacao.nivel_complexidade) {
@@ -254,9 +260,10 @@
                 const sexo = document.getElementById('sexo').value;
                 const historicoMedico = document.getElementById('historico-medico').value;
                 const contextoSocial = document.getElementById('contexto-social').value;
+                const transtornoClinico = documentgetElementById('transtorno').value;
                 const nivelComplexidade = document.querySelector('input[name="nivel-complexidade"]:checked').value;
 
-                if (!nivelComplexidadeElement) {
+                if (!nivelComplexidade) {
                     alert('Por favor, selecione um nível de complexidade.');
                     return;
                 }
@@ -266,6 +273,7 @@
                     sexo: sexo,
                     historico_medico: historicoMedico,
                     contexto_social: contextoSocial,
+                    transtorno: transtornoClinico,
                     nivel_complexidade: nivelComplexidade
                 };
             
@@ -296,6 +304,7 @@
                 sexoInput.value = '';
                 historicoMedicoInput.value = '';
                 contextoSocialInput.value = '';
+                transtornoClinico.value = '';
                 nivelComplexidadeInputs.forEach(input => input.checked = false);
         
                 try {

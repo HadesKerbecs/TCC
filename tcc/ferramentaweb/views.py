@@ -47,6 +47,7 @@ def gerar_caso_stream(request):
                         "content": f"O usuário tem {personalizacao['idade']} anos, sexo {personalizacao['sexo']},"
                         f"histórico médico: {personalizacao['historico_medico']},"
                         f"contexto social: {personalizacao['contexto_social']}."
+                        f"transtorno clinico: {personalizacao['transtornoClinico']}"
                         f"O nível de complexidade selecionado é {nivel_complexidade}. Por favor, responda de acordo."
                     })
             else:
@@ -204,9 +205,10 @@ def personalizar_caso(request):
             sexo = data.get('sexo')
             historico_medico = data.get('historico_medico')
             contexto_social = data.get('contexto_social')
+            transtorno = data.get('transtornoClinico')
             nivel_complexidade = data.get('nivel_complexidade')
 
-            if not all([idade, sexo, historico_medico, contexto_social, nivel_complexidade]):
+            if not all([idade, sexo, historico_medico, contexto_social, transtorno, nivel_complexidade]):
                 return JsonResponse({'error': 'Todos os campos de personalização são obrigatórios.'}, status=400)
 
             try:
@@ -218,6 +220,7 @@ def personalizar_caso(request):
                 'idade': idade,
                 'sexo': sexo,
                 'historico_medico': historico_medico,
+                'transtorno': transtorno,
                 'contexto_social': contexto_social,
                 'nivel_complexidade': nivel_complexidade
             }
