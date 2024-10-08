@@ -200,7 +200,7 @@
             const sexoInput = document.getElementById('sexo');
             const historicoMedicoInput = document.getElementById('historico-medico');
             const contextoSocialInput = document.getElementById('contexto-social');
-            const transtornoClinico = document.getElementById('transtorno').value;
+            const transtornoClinico = document.getElementById('transtorno');
             const nivelComplexidadeInputs = document.querySelectorAll('input[name="nivel-complexidade"]');
 
             let isProcessing = false;
@@ -260,7 +260,7 @@
                 const sexo = document.getElementById('sexo').value;
                 const historicoMedico = document.getElementById('historico-medico').value;
                 const contextoSocial = document.getElementById('contexto-social').value;
-                const transtornoClinico = documentgetElementById('transtorno').value;
+                const transtornoClinico = document.getElementById('transtorno').value;
                 const nivelComplexidade = document.querySelector('input[name="nivel-complexidade"]:checked').value;
 
                 if (!nivelComplexidade) {
@@ -273,7 +273,7 @@
                     sexo: sexo,
                     historico_medico: historicoMedico,
                     contexto_social: contextoSocial,
-                    transtorno: transtornoClinico,
+                    transtornoClinico: transtornoClinico,
                     nivel_complexidade: nivelComplexidade
                 };
             

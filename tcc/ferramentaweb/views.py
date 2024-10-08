@@ -1,4 +1,4 @@
-import json, uuid, openai
+import json, uuid, openai, re
 from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
 from .models import Historico_Conversa
@@ -21,56 +21,81 @@ def index(request):
 
     return render(request, 'ferramentaweb/index.html', context)
 
+def normalizar_texto(texto):
+    """Normaliza o texto removendo caracteres especiais e convertendo para minúsculas."""
+    return re.sub(r'\W+', ' ', texto.lower()).strip()
+
+def deve_continuar_conversa(user_input, chat_historico):
+    user_input_normalizado = normalizar_texto(user_input)
+
+    # Verifica se a última mensagem do assistente contém informações relacionadas
+    ultima_resposta_assistente = next((msg for msg in reversed(chat_historico) if msg['role'] == 'assistant'), None)
+    
+    if ultima_resposta_assistente:
+        ultima_resposta = normalizar_texto(ultima_resposta_assistente['content'])
+
+        # Se a entrada do usuário mencionar alguma parte da última resposta do assistente, considera como continuidade
+        if any(term in user_input_normalizado for term in ultima_resposta.split()):
+            return True
+
+    return False
+
 def gerar_caso_stream(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            user_input = data.get('user_input', '')
+            user_input = data.get('user_input', '').strip()
 
+            # Inicializa ou recupera o histórico de conversas da sessão
             chat_historico = request.session.get('chat_historico', [])
+            print("Histórico de conversa antes da nova entrada:", chat_historico)  # Log do histórico
 
+            # Verifica se o usuário deseja continuar a conversa
+            if deve_continuar_conversa(user_input, chat_historico):
+                ultima_mensagem_assistente = next((msg for msg in reversed(chat_historico) if msg['role'] == 'assistant'), None)
+                if ultima_mensagem_assistente:
+                    print("Última mensagem do assistente:", ultima_mensagem_assistente['content'])  # Log da última mensagem
+                    user_input = f"{user_input} Continuando com: {ultima_mensagem_assistente['content']}"
+
+            print("Entrada do usuário para processamento:", user_input)  # Log da entrada do usuário
+
+            # Atualiza o histórico de mensagens com a entrada do usuário
             chat_historico.append({"role": "user", "content": user_input})
 
+            # Limite de mensagens no histórico
+            if len(chat_historico) > 50:
+                # Remove as 10 mensagens mais antigas
+                chat_historico = chat_historico[-50:]
+                print("Histórico ajustado para manter apenas as últimas 50 mensagens.")  # Log após ajuste
+
+            # Configurações de personalização e complexidade
             personalizacao = request.session.get('personalizacao', {})
             nivel_complexidade = personalizacao.get('nivel_complexidade', None)
 
-            total_mensagens = Historico_Conversa.objects.filter(user_id=request.session['user_id']).count()
-            if total_mensagens >= 50:
-                mensagens_mais_antigas = Historico_Conversa.objects.filter(user_id=request.session['user_id']).order_by('timestamp')[:10]
-                ids_para_deletar = mensagens_mais_antigas.values_list('id', flat=True)
-                Historico_Conversa.objects.filter(id__in=ids_para_deletar).delete()
-                print("As 10 mensagens mais antigas foram deletadas.")
-
             if nivel_complexidade and personalizacao:
-                    chat_historico.append({
-                        "role": "system", 
-                        "content": f"O usuário tem {personalizacao['idade']} anos, sexo {personalizacao['sexo']},"
-                        f"histórico médico: {personalizacao['historico_medico']},"
-                        f"contexto social: {personalizacao['contexto_social']}."
-                        f"transtorno clinico: {personalizacao['transtornoClinico']}"
-                        f"O nível de complexidade selecionado é {nivel_complexidade}. Por favor, responda de acordo."
-                    })
-            else:
-                    print("Personalização não aplicada. Continuando sem personalização.")
+                # Adiciona informações de personalização ao histórico
+                chat_historico.append({
+                    "role": "system", 
+                    "content": (f"O usuário tem {personalizacao['idade']} anos, sexo {personalizacao['sexo']}," 
+                                f" histórico médico: {personalizacao['historico_medico']}," 
+                                f" contexto social: {personalizacao['contexto_social']}." 
+                                f" O nível de complexidade selecionado é {nivel_complexidade}.")
+                })
 
-
-            if len(chat_historico) > 50:
-                chat_historico = chat_historico[10:]
-                print(f"Histórico truncado: {chat_historico}")
-
+            # Responde ao usuário
             def stream_response():
-                if nivel_complexidade == 'Básico':
-                    temperature = 0.5
-                    max_tokens = 500
-                elif nivel_complexidade == 'Intermediário':
-                    temperature = 0.7
-                    max_tokens = 750
-                elif nivel_complexidade == 'Avançado':
-                    temperature = 0.9
-                    max_tokens = 1000
-                else:
-                    temperature = 0.7
-                    max_tokens = 750
+                settings = {
+                    'Básico': (0.5, 500),
+                    'Intermediário': (0.7, 750),
+                    'Avançado': (0.9, 1000)
+                }
+                temperature, max_tokens = settings.get(nivel_complexidade, (0.7, 750))
+
+                print("Configurando a chamada para a API:", {
+                    "temperature": temperature,
+                    "max_tokens": max_tokens,
+                    "historico_mensagens": chat_historico
+                })  # Log das configurações da API
 
                 response = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
@@ -89,31 +114,32 @@ def gerar_caso_stream(request):
                             if content:
                                 accumulated_text += content
                                 yield json.dumps({"response": accumulated_text}) + "\n"
-                    if 'error' in chunk:
-                        yield json.dumps({'error': chunk['error']['message']}) + "\n"
 
+                # Atualiza o histórico após a resposta ser gerada
                 chat_historico.append({"role": "assistant", "content": accumulated_text})
-                print(f"Histórico final: {chat_historico}")
-
                 request.session['chat_historico'] = chat_historico
                 request.session.modified = True
 
-                try:
-                    Historico_Conversa.objects.create(
-                        user_id=request.session['user_id'],
-                        message=user_input,
-                        response=accumulated_text,
-                        timestamp=timezone.now(),
-                        nivel_complexidade=nivel_complexidade
-                    )
-                    print(f"Nível de complexidade salvo no banco: {nivel_complexidade}")
-                except Exception as e:
-                    print(f"Erro ao salvar histórico no banco de dados: {e}")
+                # Salva no banco de dados
+                Historico_Conversa.objects.create(
+                    user_id=request.session['user_id'],
+                    message=user_input,
+                    response=accumulated_text,
+                    timestamp=timezone.now(),
+                    nivel_complexidade=nivel_complexidade
+                )
+
+                # Log da última mensagem salva
+                print("Última mensagem salva:")
+                print(f"Usuário: {user_input}")
+                print(f"Assistente: {accumulated_text}")
 
                 yield json.dumps({"response": accumulated_text}) + "\n"
 
             return StreamingHttpResponse(stream_response(), content_type='application/json')
+
         except Exception as e:
+            print(f"Erro durante o processamento: {str(e)}")  # Log de erro
             return StreamingHttpResponse(
                 json.dumps({'error': str(e)}),
                 content_type='application/json'
@@ -142,7 +168,7 @@ def processar_mensagem(request):
             historico = Historico_Conversa.objects.create(user_id=user_id, message=message)
             print(f"Histórico salvo: {historico}")
 
-            response = processo_user_menssagem(message)
+            response = f"Você disse: {message}"
 
             return JsonResponse({'response': response})
         except Exception as e:
@@ -150,6 +176,7 @@ def processar_mensagem(request):
             return JsonResponse({'error': 'Erro ao processar a mensagem.'}, status=500)
     else:
         return JsonResponse({'error': 'Método não permitido.'}, status=405)
+
 
 def salvar_historico(request):
     if request.method == 'POST':
@@ -220,8 +247,8 @@ def personalizar_caso(request):
                 'idade': idade,
                 'sexo': sexo,
                 'historico_medico': historico_medico,
-                'transtorno': transtorno,
                 'contexto_social': contexto_social,
+                'transtorno': transtorno,
                 'nivel_complexidade': nivel_complexidade
             }
 
@@ -244,5 +271,5 @@ def resetar_personalizacao(request):
 def obter_dados_personalizacao(request):
     if request.method == 'GET':
         personalizacao = request.session.get('personalizacao', {})
-        return JsonResponse({'personalizacao': personalizacao})
+        return JsonResponse(personalizacao)
     return JsonResponse({'error': 'Método não permitido.'}, status=405)
