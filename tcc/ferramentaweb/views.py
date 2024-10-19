@@ -56,9 +56,17 @@ def gerar_caso_stream(request):
             chat_historico.append({"role": "user", "content": user_input})
             
             if len(chat_historico) > 50:
-                chat_historico = chat_historico[-50:]
-                print("Histórico ajustado para manter apenas as últimas 50 mensagens.")
-            
+                chat_historico = chat_historico[10:]
+                request.session['chat_historico'] = chat_historico
+                request.session.modified = True
+                print("Removendo as 10 mensagens mais antigas do histórico.")
+
+                mensagens_antigas = Historico_Conversa.objects.filter(user_id=request.session['user_id']).order_by('timestamp')[:10]
+                for mensagem in mensagens_antigas:
+                    mensagem.delete()
+                    
+                print("Removendo as 10 mensagens mais antigas do banco de dados.")
+                
             def stream_response():
                 settings = {
                     'Básico': (0.5, 500),
@@ -113,7 +121,6 @@ def gerar_caso_stream(request):
             )
     else:
         return JsonResponse({'error': 'Método não permitido.'}, status=405)
-
 def processo_user_menssagem(message):
     response = f"Você disse: {message}"
     return response

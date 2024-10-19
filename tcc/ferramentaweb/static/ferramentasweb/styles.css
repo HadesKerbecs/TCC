@@ -421,7 +421,7 @@ body {
     padding: 5px;
     border: 1px solid #bdbdbd;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 13px;
     font-family: 'Plus Jakarta Sans', Arial, sans-serif;
 }
 
@@ -592,7 +592,7 @@ body {
 
     #customizar-formulario .grupo-formulario select, #customizar-formulario textarea {
         padding: 8px;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     #customizar-formulario .grupo-formulario label {
@@ -601,7 +601,7 @@ body {
     
     #customizar-formulario .grupo-formulario input[type="number"] {
         padding: 10px;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     #customizar-formulario button {
@@ -609,8 +609,8 @@ body {
         padding: 8px 20px;
     }
 
-    #customizar-formulario textarea#doenca {
-        font-size: 15px;
+    #customizar-formulario textarea#transtorno {
+        font-size: 14px;
     }
 
     .form-check-input {
@@ -711,7 +711,7 @@ body {
         height: 100px;
     }
 
-    #customizar-formulario textarea#doenca {
+    #customizar-formulario textarea#transtorno {
         font-size: 15px;
     }
 
