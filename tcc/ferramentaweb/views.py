@@ -18,12 +18,10 @@ def index(request):
         ]
     
     for entry in historico_salvo:
-        if {"role": "user", "content": entry.message} not in request.session['chat_historico']:
-            request.session['chat_historico'].append({"role": "user", "content": entry.message})
-            request.session['chat_historico'].append({"role": "assistant", "content": entry.response})
+        request.session['chat_historico'].append({"role": "user", "content": entry.message})
+        request.session['chat_historico'].append({"role": "assistant", "content": entry.response})
     
-    request.session.modified = True 
-
+    request.session.modified = True
     context = {
         'user_id': user_id,
     }
@@ -34,16 +32,16 @@ def gerar_caso_stream(request):
         try:
             data = json.loads(request.body)
             user_input = data.get('user_input', '').strip()
-            
+
             if 'chat_historico' not in request.session:
                 request.session['chat_historico'] = [
                     {"role": "system", "content": "Você é um especialista em psicopatologia. Responda de forma útil e apropriada com base no contexto de psicopatologia."}
                 ]
-            
+
             chat_historico = request.session.get('chat_historico', [])
             personalizacao = request.session.get('personalizacao', {})
             nivel_complexidade = personalizacao.get('nivel_complexidade', None)
-            
+
             if nivel_complexidade and personalizacao:
                 chat_historico.append({
                     "role": "system",
@@ -52,13 +50,21 @@ def gerar_caso_stream(request):
                                 f" contexto social: {personalizacao['contexto_social']}."
                                 f" O nível de complexidade selecionado é {nivel_complexidade}.")
                 })
-            
+
             chat_historico.append({"role": "user", "content": user_input})
-            
+
             if len(chat_historico) > 50:
-                chat_historico = chat_historico[-50:]
-                print("Histórico ajustado para manter apenas as últimas 50 mensagens.")
-            
+                chat_historico = chat_historico[-10:]
+                request.session['chat_historico'] = chat_historico
+                request.session.modified = True
+                print("Removendo as 10 mensagens mais antigas do histórico.")
+
+                mensagens_antigas = Historico_Conversa.objects.filter(user_id=request.session['user_id']).order_by('timestamp')[:10]
+                for mensagem in mensagens_antigas:
+                    mensagem.delete()
+                
+                print("Removendo as 10 mensagens mais antigas do banco de dados.")
+
             def stream_response():
                 settings = {
                     'Básico': (0.5, 500),
@@ -87,11 +93,11 @@ def gerar_caso_stream(request):
                             if content:
                                 accumulated_text += content
                                 yield json.dumps({"response": accumulated_text}) + "\n"
-                
+
                 chat_historico.append({"role": "assistant", "content": accumulated_text})
                 request.session['chat_historico'] = chat_historico
                 request.session.modified = True
-                
+
                 Historico_Conversa.objects.create(
                     user_id=request.session['user_id'],
                     message=user_input,
@@ -102,9 +108,9 @@ def gerar_caso_stream(request):
                 print(f"Usuário: {user_input}")
                 print(f"Assistente: {accumulated_text}")
                 yield json.dumps({"response": accumulated_text}) + "\n"
-            
+
             return StreamingHttpResponse(stream_response(), content_type='application/json')
-        
+
         except Exception as e:
             print(f"Erro durante o processamento: {str(e)}")
             return StreamingHttpResponse(
