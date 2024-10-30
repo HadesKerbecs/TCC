@@ -32,31 +32,58 @@ def gerar_caso_stream(request):
         try:
             data = json.loads(request.body)
             user_input = data.get('user_input', '').strip()
-            
+
             if 'chat_historico' not in request.session:
                 request.session['chat_historico'] = [
                     {"role": "system", "content": "Você é um especialista em psicopatologia. Responda de forma útil e apropriada com base no contexto de psicopatologia."}
                 ]
 
-            chat_historico = request.session['chat_historico']
-            
-            chat_historico.append({"role": "user", "content": user_input})
+            historico_simples = request.session['chat_historico'][-2:] if len(request.session['chat_historico']) > 1 else request.session['chat_historico']
+
+            historico_simples.append({"role": "user", "content": user_input})
+
+            contexto_completo = data.get('usar_contexto_completo', False)
+            if contexto_completo:
+                chat_historico = request.session['chat_historico'] + [{"role": "user", "content": user_input}]
+            else:
+                chat_historico = historico_simples
 
             if len(chat_historico) > 50:
-                chat_historico = chat_historico[-50:]
+                chat_historico = chat_historico[10:]
+                request.session['chat_historico'] = chat_historico
+                request.session.modified = True
+                print("Removendo as 10 mensagens mais antigas do histórico.")
+
+                mensagens_antigas = Historico_Conversa.objects.filter(user_id=request.session['user_id']).order_by('timestamp')[:10]
+                for mensagem in mensagens_antigas:
+                    mensagem.delete()
+                    
+                print("Removendo as 10 mensagens mais antigas do banco de dados.")
 
             request.session['chat_historico'] = chat_historico
             request.session.modified = True
 
             personalizacao = request.session.get('personalizacao', {})
             nivel_complexidade = personalizacao.get('nivel_complexidade', None)
+
+            if nivel_complexidade and personalizacao:
+                chat_historico.append({
+                    "role": "system",
+                    "content": (f"O usuário tem {personalizacao['idade']} anos, sexo {personalizacao['sexo']},"
+                                f" histórico médico: {personalizacao['historico_medico']},"
+                                f" contexto social: {personalizacao['contexto_social']}."
+                                f" O nível de complexidade selecionado é {nivel_complexidade}.")
+                })
+            
+            chat_historico.append({"role": "user", "content": user_input})
+
             settings = {
                 'Básico': (0.5, 500),
                 'Intermediário': (0.7, 750),
                 'Avançado': (0.9, 1000)
             }
             temperature, max_tokens = settings.get(nivel_complexidade, (0.7, 750))
-            
+
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=chat_historico,
@@ -76,8 +103,7 @@ def gerar_caso_stream(request):
                                 accumulated_text += content
                                 yield json.dumps({"response": accumulated_text}) + "\n"
                 
-                chat_historico.append({"role": "assistant", "content": accumulated_text})
-                request.session['chat_historico'] = chat_historico
+                request.session['chat_historico'].append({"role": "assistant", "content": accumulated_text})
                 request.session.modified = True
 
                 Historico_Conversa.objects.create(
@@ -88,14 +114,9 @@ def gerar_caso_stream(request):
                     nivel_complexidade=nivel_complexidade
                 )
 
-                print(f"Usuário: {user_input}")
-                print(f"Assistente: {accumulated_text}")
-                yield json.dumps({"response": accumulated_text}) + "\n"
-
             return StreamingHttpResponse(stream_response(), content_type='application/json')
 
         except Exception as e:
-            print(f"Erro durante o processamento: {str(e)}")
             return StreamingHttpResponse(
                 json.dumps({'error': str(e)}),
                 content_type='application/json'
