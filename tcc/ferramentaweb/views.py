@@ -1,7 +1,7 @@
 import json, uuid, openai, re
 from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import render
-from .models import Historico_Conversa
+from .models import Historico_Conversa, Historico_Conversa_Transferida
 from django.utils import timezone
 
 openai.api_key = ''
@@ -37,36 +37,37 @@ def gerar_caso_stream(request):
                 request.session['chat_historico'] = [
                     {"role": "system", "content": "Você é um especialista em psicopatologia. Responda de forma útil e apropriada com base no contexto de psicopatologia."}
                 ]
+                
+            request.session['chat_historico'].append({"role": "user", "content": user_input})
+            chat_historico = request.session['chat_historico']
 
-            historico_simples = request.session['chat_historico'][-2:] if len(request.session['chat_historico']) > 1 else request.session['chat_historico']
+            if len(chat_historico) > 10:
+                print("Iniciando transferência das mensagens antigas...")
 
-            historico_simples.append({"role": "user", "content": user_input})
+                total_mensagens = Historico_Conversa.objects.filter(user_id=request.session["user_id"]).count()
+                if total_mensagens > 1:
+                    mensagens_antigas = Historico_Conversa.objects.filter(user_id=request.session["user_id"]).order_by('timestamp')[:total_mensagens - 1]
 
-            contexto_completo = data.get('usar_contexto_completo', False)
-            if contexto_completo:
-                chat_historico = request.session['chat_historico'] + [{"role": "user", "content": user_input}]
-            else:
-                chat_historico = historico_simples
+                    for mensagem in mensagens_antigas:
+                        Historico_Conversa_Transferida.objects.create(
+                            user_id=mensagem.user_id,
+                            message=mensagem.message,
+                            response=mensagem.response,
+                            timestamp=mensagem.timestamp,
+                            nivel_complexidade=mensagem.nivel_complexidade
+                        )
+                        mensagem.delete()
 
-            if len(chat_historico) > 50:
-                chat_historico = chat_historico[10:]
-                request.session['chat_historico'] = chat_historico
-                request.session.modified = True
-                print("Removendo as 10 mensagens mais antigas do histórico.")
+                    print("Transferência completa. Excluindo mensagens antigas da sessão...")
 
-                mensagens_antigas = Historico_Conversa.objects.filter(user_id=request.session['user_id']).order_by('timestamp')[:10]
-                for mensagem in mensagens_antigas:
-                    mensagem.delete()
-                    
-                print("Removendo as 10 mensagens mais antigas do banco de dados.")
-
-            request.session['chat_historico'] = chat_historico
-            request.session.modified = True
+                    request.session['chat_historico'] = request.session['chat_historico'][-2:]
+                else:
+                    print("Nenhuma mensagem antiga encontrada para transferência.")
 
             personalizacao = request.session.get('personalizacao', {})
             nivel_complexidade = personalizacao.get('nivel_complexidade', None)
 
-            if nivel_complexidade and personalizacao:
+            if nivel_complexidade:
                 chat_historico.append({
                     "role": "system",
                     "content": (f"O usuário tem {personalizacao['idade']} anos, sexo {personalizacao['sexo']},"
@@ -74,8 +75,6 @@ def gerar_caso_stream(request):
                                 f" contexto social: {personalizacao['contexto_social']}."
                                 f" O nível de complexidade selecionado é {nivel_complexidade}.")
                 })
-            
-            chat_historico.append({"role": "user", "content": user_input})
 
             settings = {
                 'Básico': (0.5, 500),
@@ -102,7 +101,7 @@ def gerar_caso_stream(request):
                             if content:
                                 accumulated_text += content
                                 yield json.dumps({"response": accumulated_text}) + "\n"
-                
+
                 request.session['chat_historico'].append({"role": "assistant", "content": accumulated_text})
                 request.session.modified = True
 
@@ -123,7 +122,6 @@ def gerar_caso_stream(request):
             )
     else:
         return JsonResponse({'error': 'Método não permitido.'}, status=405)
-
 
 def processo_user_menssagem(message):
     response = f"Você disse: {message}"
