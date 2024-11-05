@@ -41,6 +41,10 @@ def gerar_caso_stream(request):
             request.session['chat_historico'].append({"role": "user", "content": user_input})
             chat_historico = request.session['chat_historico']
 
+            chat_historico.append ({
+                "role" : "system",
+                "content" : "Lembre-se, você deve responder somente com informações relacionadas à psicopatologia"
+            })
             if len(chat_historico) > 10:
                 print("Iniciando transferência das mensagens antigas...")
 
