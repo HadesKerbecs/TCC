@@ -41,13 +41,27 @@ def gerar_caso_stream(request):
             request.session['chat_historico'].append({"role": "user", "content": user_input})
             chat_historico = request.session['chat_historico']
 
-            chat_historico.append ({
-                "role" : "system",
-                "content" : "Lembre-se, você deve responder somente com informações relacionadas à psicopatologia"
-            })
-            if len(chat_historico) > 10:
-                print("Iniciando transferência das mensagens antigas...")
+            personalizacao = request.session.get('personalizacao', None)
+            nivel_complexidade = personalizacao.get('nivel_complexidade') if personalizacao else None
 
+            if personalizacao:
+                chat_historico.append({
+                    "role": "system",
+                    "content": (
+                        f"O usuário tem {personalizacao['idade']} anos, sexo {personalizacao['sexo']}, "
+                        f"histórico médico: {personalizacao['historico_medico']}, "
+                        f"contexto social: {personalizacao['contexto_social']}. "
+                        f"O nível de complexidade selecionado é {nivel_complexidade}."
+                    )
+                })
+
+            chat_historico.append({
+                "role": "system",
+                "content": "Responda de forma útil e apropriada com base no contexto de psicopatologia. Não responda a perguntas fora desse contexto."
+            })
+
+            if len(chat_historico) > 5:
+                print("Iniciando transferência das mensagens antigas...")
                 total_mensagens = Historico_Conversa.objects.filter(user_id=request.session["user_id"]).count()
                 if total_mensagens > 1:
                     mensagens_antigas = Historico_Conversa.objects.filter(user_id=request.session["user_id"]).order_by('timestamp')[:total_mensagens - 1]
@@ -63,22 +77,7 @@ def gerar_caso_stream(request):
                         mensagem.delete()
 
                     print("Transferência completa. Excluindo mensagens antigas da sessão...")
-
                     request.session['chat_historico'] = request.session['chat_historico'][-2:]
-                else:
-                    print("Nenhuma mensagem antiga encontrada para transferência.")
-
-            personalizacao = request.session.get('personalizacao', {})
-            nivel_complexidade = personalizacao.get('nivel_complexidade', None)
-
-            if nivel_complexidade:
-                chat_historico.append({
-                    "role": "system",
-                    "content": (f"O usuário tem {personalizacao['idade']} anos, sexo {personalizacao['sexo']},"
-                                f" histórico médico: {personalizacao['historico_medico']},"
-                                f" contexto social: {personalizacao['contexto_social']}."
-                                f" O nível de complexidade selecionado é {nivel_complexidade}.")
-                })
 
             settings = {
                 'Básico': (0.5, 500),
@@ -88,7 +87,7 @@ def gerar_caso_stream(request):
             temperature, max_tokens = settings.get(nivel_complexidade, (0.7, 750))
 
             response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4",
                 messages=chat_historico,
                 max_tokens=max_tokens,
                 temperature=temperature,
@@ -126,6 +125,7 @@ def gerar_caso_stream(request):
             )
     else:
         return JsonResponse({'error': 'Método não permitido.'}, status=405)
+
 
 def processo_user_menssagem(message):
     response = f"Você disse: {message}"
