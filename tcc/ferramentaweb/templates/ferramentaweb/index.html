@@ -22,7 +22,6 @@
             <h1></h1>
             <div class="menu-item">
                 <div class="button-container">
-                    <!-- Botão Gerar Novo Caso -->
                     <button id="button-novocaso" type="button" class="btn btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stack" viewBox="0 0 16 16">
                                 <path d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.6.6 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.6.6 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.6.6 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535z"/>
@@ -31,7 +30,6 @@
                         Gerar Novo Caso
                     </button>
 
-                    <!-- Botão Histórico -->
                     <button type="button" class="btn btn-primary" id="button-historico">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wechat" viewBox="0 0 16 16">
                                 <path d="M11.176 14.429c-2.665 0-4.826-1.8-4.826-4.018 0-2.22 2.159-4.02 4.824-4.02S16 8.191 16 10.411c0 1.21-.65 2.301-1.666 3.036a.32.32 0 0 0-.12.366l.218.81a.6.6 0 0 1 .029.117.166.166 0 0 1-.162.162.2.2 0 0 1-.092-.03l-1.057-.61a.5.5 0 0 0-.256-.074.5.5 0 0 0-.142.021 5.7 5.7 0 0 1-1.576.22M9.064 9.542a.647.647 0 1 0 .557-1 .645.645 0 0 0-.646.647.6.6 0 0 0 .09.353Zm3.232.001a.646.646 0 1 0 .546-1 .645.645 0 0 0-.644.644.63.63 0 0 0 .098.356"/>
@@ -40,7 +38,6 @@
                         Histórico
                     </button>
 
-                    <!-- Botão Compartilhar -->
                     <button type="button" class="btn btn-primary" id="button-compartilhar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
                                 <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
@@ -48,7 +45,6 @@
                         Compartilhar
                     </button>
 
-                    <!-- Botão Personalizar -->
                     <button type="button" class="btn btn-primary" id="button-personalizar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                                 <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
@@ -68,7 +64,6 @@
         <div class="main-content">
             <h2>Casos Hipotéticos</h2>
             <img id="icone-central" src="{% static 'ferramentasweb/images/psicosimula.png' %}" alt="Ícone Central">
-            <!-- Modal para personalização -->
             <div id="janela-de-personalizacao" class="janela ocultar">
                 <div class="modal-content">
                     <form id="customizar-formulario">
@@ -78,15 +73,12 @@
                             </svg></span>
                         <h2 id="personalizarcaso">Personalize o Caso Clínico</h2>
                         
-                        <!-- Container para Idade e Sexo lado a lado -->
                         <div class="row-formulario">
-                            <!-- Campo de Idade -->
                             <div class="grupo-formulario col-md-6">
                                 <label for="idade" class="form-label">Idade</label>
                                 <input type="number" id="idade" name="idade" class="form-control" min="0" max="120" placeholder="Digite sua idade">
                             </div>
             
-                            <!-- Campo de Sexo -->
                             <div class="grupo-formulario col-md-6">
                                 <label for="sexo" class="form-label">Sexo</label>
                                 <select id="sexo" name="sexo" class="form-select" aria-label="Selecione o sexo">
@@ -98,7 +90,6 @@
                             </div>
                         </div>
             
-                        <!-- Campos de Histórico Médico e Contexto Social -->
                         <label for="historico-medico">Histórico Médico</label>
                         <textarea id="historico-medico" name="historico-medico" placeholder="Insira o histórico médico do paciente"></textarea>
             
@@ -108,7 +99,6 @@
                         <label for="transtorno">Transtorno Clínico</label>
                         <textarea id="transtorno" name="transtornoClinico" class="transtorno-area" placeholder="Digite o transtorno do paciente"></textarea>
 
-                        <!-- Radio buttons para Nível de Complexidade -->
                         <div class="grupo-formulario">
                             <label>Nível de Complexidade</label>
                             <div class="radio-group">
