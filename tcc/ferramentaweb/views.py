@@ -14,7 +14,8 @@ def index(request):
     
     if 'chat_historico' not in request.session:
         request.session['chat_historico'] = [
-            {"role": "system", "content": "Você é um especialista em psicopatologia. Responda de forma útil e apropriada com base no contexto de psicopatologia."}
+            {"role": "system", "content": "Você é um especialista em psicopatologia. Responda de forma útil e apropriada com base no contexto de psicopatologia."
+            "Se a mensagem do usuário estiver fora desse contexto, explique educadamente que só pode ajudar em questões relacionadas a psicopatologia."}
         ]
     
     for entry in historico_salvo:
@@ -34,12 +35,10 @@ def gerar_caso_stream(request):
             user_input = data.get('user_input', '').strip()
 
             if 'chat_historico' not in request.session:
-                request.session['chat_historico'] = [
-                    {"role": "system", "content": (
-                        "Você é um especialista em psicopatologia. Responda de forma útil e apropriada com base no contexto de psicopatologia. "
-                        "Se a mensagem do usuário estiver fora desse contexto, explique educadamente que só pode ajudar em questões relacionadas a psicopatologia."
-                    )}
-                ]
+                return StreamingHttpResponse(
+                    json.dumps({'error': 'Histórico de conversa não inicializado. Por favor, recarregue a página.'}),
+                    content_type='application/json'
+                )
 
             chat_historico = request.session['chat_historico']
             chat_historico.append({"role": "user", "content": user_input})
@@ -74,7 +73,16 @@ def gerar_caso_stream(request):
             if ultima_resposta:
                 chat_historico.append({
                     "role": "system",
-                    "content": f"Baseie sua resposta na seguinte interação anterior: {ultima_resposta}"
+                    "content": f"Continue respondendo com base no seguinte transtorno ou tema: {ultima_resposta}. Responda sempre no contexto de psicopatologia."
+                })
+
+            if len(chat_historico) == 2:
+                chat_historico.insert(0, {
+                    "role": "system",
+                    "content": (
+                        "Você é um especialista em psicopatologia. Responda apenas com base nesse contexto. "
+                        "Se a pergunta não for relacionada a psicopatologia, explique educadamente que não pode ajudar com outros temas."
+                    )
                 })
 
             personalizacao = request.session.get('personalizacao', None)
