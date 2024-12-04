@@ -40,6 +40,18 @@ def gerar_caso_stream(request):
                 )
 
             chat_historico = request.session['chat_historico']
+            personalizacao = request.session.get('personalizacao', {})
+            nivel_complexidade = personalizacao.get('nivel_complexidade', None)
+
+            if nivel_complexidade and personalizacao:
+                chat_historico.append({
+                    "role": "system",
+                    "content": (f"O usuário tem {personalizacao['idade']} anos, sexo {personalizacao['sexo']},"
+                                f" histórico médico: {personalizacao['historico_medico']},"
+                                f" contexto social: {personalizacao['contexto_social']}."
+                                f" O nível de complexidade selecionado é {nivel_complexidade}.")
+                })
+
             chat_historico.append({"role": "user", "content": user_input})
 
             if len(chat_historico) > 20:
@@ -83,9 +95,6 @@ def gerar_caso_stream(request):
                         "Se a pergunta não for relacionada a psicopatologia, explique educadamente que não pode ajudar com outros temas."
                     )
                 })
-
-            personalizacao = request.session.get('personalizacao', None)
-            nivel_complexidade = personalizacao.get('nivel_complexidade') if personalizacao else None
 
             settings = {
                 'Básico': (0.5, 500),
