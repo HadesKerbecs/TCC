@@ -54,9 +54,10 @@ def gerar_caso_stream(request):
 
             chat_historico.append({"role": "user", "content": user_input})
 
+
             if len(chat_historico) > 20:
                 print("Iniciando transferência das mensagens antigas...")
-
+                print("Tamanho do chat_historico:", len(chat_historico))
                 total_mensagens = Historico_Conversa.objects.filter(user_id=request.session["user_id"]).count()
                 if total_mensagens > 1:
                     mensagens_antigas = Historico_Conversa.objects.filter(user_id=request.session["user_id"]).order_by('timestamp')[:total_mensagens - 1]
@@ -69,8 +70,7 @@ def gerar_caso_stream(request):
                             timestamp=mensagem.timestamp,
                             nivel_complexidade=mensagem.nivel_complexidade
                         )
-                        # NÃO APAGAR, APENAS TRANSFERIR!
-                        # mensagem.delete()
+                        mensagem.delete()
 
                     print("Transferência para a tabela secundária completa.")
 
