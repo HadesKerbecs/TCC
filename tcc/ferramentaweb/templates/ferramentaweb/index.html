@@ -75,28 +75,38 @@
                         
                         <div class="row-formulario">
                             <div class="grupo-formulario col-md-6">
-                                <label for="idade" class="form-label">Idade</label>
-                                <input type="number" id="idade" name="idade" class="form-control" min="0" max="120" placeholder="Digite sua idade">
+                                <label for="idade" class="form-label">Faixa Etária</label>
+                                <select id="idade" name="idade" class="form-select" aria-label="Selecione a faixa etária">
+                                    <option value="" selected disabled>Selecione a faixa etária</option>
+                                    <option value="Infância (0-12)">Infância (0-12 anos)</option>
+                                    <option value="Adolescência (13-17 anos)">Adolescência (13-17 anos)</option>
+                                    <option value="Jovem Adulto (18-25 anos)">Jovem Adulto (18-25 anos)</option>
+                                    <option value="Adulto (26-59 anos)">Adulto (26-59 anos)</option>
+                                    <option value="Idoso (60+ anos)">Idoso (60+ anos)</option>
+                                </select>
                             </div>
             
                             <div class="grupo-formulario col-md-6">
-                                <label for="sexo" class="form-label">Sexo</label>
+                                <label for="sexo" class="form-label">Identidade de Gênero</label>
                                 <select id="sexo" name="sexo" class="form-select" aria-label="Selecione o sexo">
-                                    <option value="" selected disabled>Selecione o sexo</option>
+                                    <option value="" selected disabled>Selecione a identidade</option>
                                     <option value="Masculino">Masculino</option>
                                     <option value="Feminino">Feminino</option>
+                                    <option value="Não Binário">Não Binário</option>
+                                    <option value="Transgênero">Transgênero</option>
                                     <option value="Outro">Outro</option>
+                                    <option value="Prefiro não informar">Prefiro não informar</option>
                                 </select>
                             </div>
                         </div>
             
-                        <label for="historico-medico">Histórico Médico</label>
-                        <textarea id="historico-medico" name="historico-medico" placeholder="Insira o histórico médico do paciente"></textarea>
+                        <label for="historico-medico">Histórico Clínico</label>
+                        <textarea id="historico-medico" name="historico-medico" placeholder="Insira a histórica clínica do paciente"></textarea>
             
                         <label for="contexto-social">Contexto Social</label>
                         <textarea id="contexto-social" name="contexto-social" placeholder="Insira o contexto social do paciente"></textarea>
 
-                        <label for="transtorno">Transtorno Clínico</label>
+                        <label for="transtorno">Transtorno Psicológico</label>
                         <textarea id="transtorno" name="transtornoClinico" class="transtorno-area" placeholder="Digite o transtorno do paciente"></textarea>
 
                         <div class="grupo-formulario">

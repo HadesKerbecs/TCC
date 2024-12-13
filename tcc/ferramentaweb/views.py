@@ -14,6 +14,7 @@ def index(request):
     if 'chat_historico' not in request.session:
         request.session['chat_historico'] = [
             {"role": "system", "content": "Você é um especialista em psicopatologia. Responda de forma útil e apropriada com base no contexto de psicopatologia."
+            "Ao gerar respostas, use terminologia baseada no DSM-5 ou CID-11. Considere diferentes abordagens terapêuticas (psicodinâmica, comportamental, humanista, entre outras)." 
             "Se a mensagem do usuário estiver fora desse contexto, explique educadamente que só pode ajudar em questões relacionadas a psicopatologia."}
         ]
     
@@ -91,7 +92,8 @@ def gerar_caso_stream(request):
                 chat_historico.insert(0, {
                     "role": "system",
                     "content": (
-                        "Você é um especialista em psicopatologia. Responda apenas com base nesse contexto. "
+                        "Você é um especialista em psicopatologia. Responda apenas com base nesse contexto. Ao gerar respostas, use terminologia baseada no DSM-5 ou CID-11."
+                        "Considere diferentes abordagens terapêuticas (psicodinâmica, comportamental, humanista, entre outras)."
                         "Se a pergunta não for relacionada a psicopatologia, explique educadamente que não pode ajudar com outros temas."
                     )
                 })
@@ -232,11 +234,6 @@ def personalizar_caso(request):
 
             if not all([idade, sexo, historico_medico, contexto_social, transtorno, nivel_complexidade]):
                 return JsonResponse({'error': 'Todos os campos de personalização são obrigatórios.'}, status=400)
-
-            try:
-                idade = int(idade)
-            except ValueError:
-                return JsonResponse({'error': 'Idade deve ser um número válido.'}, status=400)
 
             request.session['personalizacao'] = {
                 'idade': idade,
